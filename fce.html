@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FCE – First Certificate in English</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+  header { background: var(--navy); color: white; padding: 0; }
+  .header-inner { max-width: 1100px; margin: 0 auto; padding: 28px 24px 24px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 28px; font-weight: 600; }
+  .gold-bar { height: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  .back { color: var(--gold); text-decoration: none; font-weight: 600; margin-bottom: 20px; display: inline-block; }
+  h2 { font-family: 'Source Serif 4', serif; font-size: 26px; margin-bottom: 30px; color: var(--navy); }
+  .test-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .test-card { background: white; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(26,39,68,0.06); }
+  .test-card h3 { font-family: 'Source Serif 4', serif; font-size: 20px; margin-bottom: 12px; color: var(--navy); }
+  .part-links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .part-btn { background: var(--navy); color: white; padding: 6px 14px; border-radius: 9999px; font-size: 13px; text-decoration: none; }
+  .part-btn:hover { background: var(--navy-mid); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <h1>FCE – First Certificate</h1>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+  <a href="index.html" class="back">← Back to Home</a>
+  <h2>Available FCE Tests</h2>
+  <div class="test-grid">
+    <div class="test-card"><h3>Test 1</h3><div class="part-links">
+      <a href="fce_part1_test1.html" class="part-btn">1</a><a href="fce_part2_test1.html" class="part-btn">2</a><a href="fce_part3_test1.html" class="part-btn">3</a><a href="fce_part4_test1.html" class="part-btn">4</a><a href="fce_part5_test1.html" class="part-btn">5</a><a href="fce_part6_test1.html" class="part-btn">6</a><a href="fce_part7_test1.html" class="part-btn">7</a>
+    </div></div>
+    <div class="test-card"><h3>Test 2</h3><div class="part-links">
+      <a href="fce_part1_test2.html" class="part-btn">1</a><a href="fce_part2_test2.html" class="part-btn">2</a><a href="fce_part3_test2.html" class="part-btn">3</a><a href="fce_part4_test2.html" class="part-btn">4</a><a href="fce_part5_test2.html" class="part-btn">5</a><a href="fce_part6_test2.html" class="part-btn">6</a><a href="fce_part7_test2.html" class="part-btn">7</a>
+    </div></div>
+  </div>
+  <a href="teacher.html" style="display:block;margin:60px auto 0;width:fit-content;padding:16px 40px;background:var(--gold);color:var(--navy);font-size:18px;font-weight:600;border-radius:12px;text-decoration:none;">Teacher Dashboard</a>
+</main>
+</body>
+</html>
