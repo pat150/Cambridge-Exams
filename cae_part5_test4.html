@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 5 – Test 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  /* Two-column layout for Part 5 */
+  .p5-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 0; }
+  .passage-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); }
+  .passage-card h2 { font-family: 'Source Serif 4', serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--navy); text-align: center; }
+  .instructions { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; padding-bottom: 12px; border-bottom: 1px solid var(--cream-dark); }
+  .instructions strong { color: var(--text); }
+  .passage-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.85; color: var(--text); max-height: 70vh; overflow-y: auto; padding-right: 4px; }
+  .questions-col { }
+  .questions-section h3 { font-family: 'Source Serif 4', serif; font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--cream-dark); }
+  .question-block { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(26,39,68,0.04); }
+  .question-text { font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 12px; font-weight: 600; }
+  .q-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; }
+  .options-list { display: flex; flex-direction: column; gap: 6px; }
+  .option-btn { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); transition: all 0.15s; text-align: left; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .option-letter { font-weight: 700; font-size: 12px; flex-shrink: 0; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(26,39,68,0.1); margin-top: 1px; }
+  .option-btn.selected .option-letter { background: rgba(255,255,255,0.2); }
+  .submit-row { margin-top: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: start; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 13px; line-height: 1.5; }
+  .result-q-text { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .result-detail .your-answer { color: var(--text-muted); }
+  .result-detail .correct-answer { font-weight: 600; color: var(--correct); }
+  .result-detail .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); }
+  .save-status.error { color: var(--wrong); }
+  @media (max-width: 700px) { .p5-layout { grid-template-columns: 1fr; } .header-right { display: none; } .passage-text { max-height: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 5</span></h1>
+    </div>
+    <div class="header-right">
+      Test 4<br>Multiple Choice<br>6 questions
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field">
+        <label>Your full name</label>
+        <input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Class code</label>
+        <input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off">
+      </div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 5</div>
+      <div class="meta-pill">Multiple Choice</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="p5-layout">
+      <div>
+        <div class="passage-card">
+          <h2>SEEING THE WORLD</h2>
+          <div class="instructions">
+            For questions <strong>31–36</strong>, choose the answer (A, B, C or D) which you think fits best according to the text.
+          </div>
+          <div class="passage-text">
+            The taxi is late, and I get nervous. Once at the airport I'm thrown into the harsh lights of Terminal B, running with my suitcase so I can wait in a long security line. My belt buckle sets off the metal detector, and my aftershave is confiscated. By now you can probably guess the punchline of this very banal story: my flight has been cancelled due to bad weather. I will be stuck here for the next 218 minutes, my only consolation a plastic cup of coffee and the predictably tasteless sandwich. Then I will miss my connecting flight and wait, in a different city, with the same menu, for another plane. It's not the flying I mind – I will always be awed by the physics that gets a fat metal bird into the sky. The rest of the journey, however, will inevitably feel like a depressing lesson in the ills of modernity, from the pre-dawn X-ray screening to the sad airport malls peddling rubbishy souvenirs.
+
+            <br><br>
+
+            So why do we travel? Sometimes it's because we have to, but most travel isn't non-negotiable. (In recent years only 30% of trips over 100 kilometres were made for business.) Instead we travel because we want to, because the annoyances are outweighed by the thrill of being someplace new. Because we need a vacation. Because work is stressful. Because home is boring. Because New York is New York. Travel, in other words, is a basic human desire. We're a migratory species. But here's my question: is this collective urge to travel still a worthwhile compulsion? Or is it like the taste for fatty foods: one of those instincts we should have lost a long time ago?
+
+            <br><br>
+
+            The good news is that pleasure is not the only advantage of travel. In fact, several new science papers suggest that travel is essential for effective thinking. Of course it's not enough simply to jump on a plane: if we want to experience the psychological benefits of travel, then we have to rethink why we do it. An Englishman, for example, might take a short break in Paris so as not to think about those troubles he's leaving behind. But here's the twist: that tourist is actually most likely to solve his stubbornest problems while sitting in a stylish Parisian café. Our thoughts are constrained by the familiar, and with a near-infinite number of things to think about, our brain spends most of its time choosing what not to notice. As a result, imagination is traded for efficiency. Putting some space between you and home, however, makes it easier to see something new in the old; the mundane is grasped from a slightly more abstract perspective. So while contemplating some delicious French pastry, we should be mulling over those domestic riddles we just can't solve.
+
+            <br><br>
+
+            And that isn't the only psychological perk of travel. Recently researchers at business schools in France and the USA have reported that students who had lived abroad were 20% more likely to solve a classic experiment, known as the Candle Task, than students who had never lived outside their birth country. In this task, subjects are given a candle, a cardboard box containing drawing pins, and some matches. They are told to attach the candle to a piece of corkboard on a wall so that it can burn properly and no wax drips on to the floor. Nearly 90% of people either try to pin the candle directly to the board, or melt it with the matches so that it sticks to the board. Neither strategy works. Only a slim minority of subjects come up with the solution, which involves attaching the candle to the cardboard box with wax and then pinning the box to the board. According to the researchers, the experience of another culture gives us the open-mindedness to realise that a single thing can have multiple meanings. Consider the act of leaving food on the plate: in some Oriental countries this is seen as a compliment, a signal that the host has provided enough to eat. But in many Western countries the same act is a subtle insult, an indication that the food wasn't good enough to finish. Such cultural contrasts mean that seasoned travellers are alive to ambiguity, and more willing to accept that there are different (and equally valid) ways of interpreting the world.
+          </div>
+        </div>
+      </div>
+
+      <div class="questions-col">
+        <div class="questions-section">
+          <h3>Questions 31–36</h3>
+          <div id="questions-container"></div>
+          <div class="submit-row">
+            <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+            <div class="progress-note">Answered: <span id="answered-count">0</span> / 6</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 6</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 5 – Test 4",
+  level: "CAE",
+  part: 5,
+  questions: [
+    {
+      num: 31,
+      text: "What is the writer's attitude towards flying in the first paragraph?",
+      options: {
+        A: "He is frustrated by the inefficiencies of air travel.",
+        B: "He is surprised by the poor standard of airport facilities.",
+        C: "He is anxious for the flight to be over as soon as possible.",
+        D: "He is resigned to the tediousness of the airport experience."
+      },
+      answer: "D"
+    },
+    {
+      num: 32,
+      text: "The writer mentions business trips to make the point that",
+      options: {
+        A: "relatively few people travel out of necessity.",
+        B: "relatively few journeys are taken for pleasure.",
+        C: "the majority of people travel without a valid reason to do so.",
+        D: "the majority of journeys are made for the same few reasons."
+      },
+      answer: "A"
+    },
+    {
+      num: 33,
+      text: "What does the writer recommend in the third paragraph?",
+      options: {
+        A: "having a holiday so as to take a rest from everyday worries",
+        B: "going as far away as possible rather than spending holidays at home",
+        C: "taking full advantage of the cultural experiences that travel can offer",
+        D: "travelling in order to gain original insights into familiar situations"
+      },
+      answer: "D"
+    },
+    {
+      num: 34,
+      text: "According to the writer, recent 'Candle Task' results suggest a link between living abroad and",
+      options: {
+        A: "practical skills.",
+        B: "mental flexibility.",
+        C: "determination to solve problems.",
+        D: "confidence in one's own resourcefulness."
+      },
+      answer: "B"
+    },
+    {
+      num: 35,
+      text: "The writer mentions leaving food on one's plate in order to highlight",
+      options: {
+        A: "the difficulties travellers face when interpreting cultural conventions.",
+        B: "the importance of behaving naturally in different contexts.",
+        C: "the wide variation in levels of politeness across the world.",
+        D: "the effect of exposure to foreign influences."
+      },
+      answer: "D"
+    },
+    {
+      num: 36,
+      text: "What would be a suitable subtitle for this article?",
+      options: {
+        A: "How to understand the mentality of different cultures",
+        B: "How to overcome the more inconvenient aspects of travel",
+        C: "How distance and difference can boost our creative thinking",
+        D: "How other places can change the way we perceive ourselves"
+      },
+      answer: "C"
+    }
+  ]
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const block = document.createElement("div");
+    block.className = "question-block";
+    block.innerHTML = `
+      <div class="q-label">Question ${q.num}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options-list" id="opts-${q.num}"></div>
+    `;
+    container.appendChild(block);
+    const list = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D"].forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.id = `opt-${q.num}-${letter}`;
+      btn.innerHTML = `<span class="option-letter">${letter}</span>${q.options[letter]}`;
+      btn.onclick = () => selectOption(q.num, letter);
+      list.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => {
+    const btn = document.getElementById(`opt-${qNum}-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < EXAM.questions.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${EXAM.questions.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = `<div class="result-q-text">${q.text}</div>`;
+    if (isCorrect) {
+      detailHTML += `<span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    } else if (chosen) {
+      detailHTML += `<span class="wrong-answer">${chosen}: ${q.options[chosen]}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    } else {
+      detailHTML += `<span class="your-answer">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num, student_answer: selections[q.num] || null,
+    correct_answer: q.answer, is_correct: (selections[q.num] === q.answer)
+  }));
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher."; status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

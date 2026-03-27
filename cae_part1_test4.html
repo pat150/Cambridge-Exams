@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 1 – Test 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-mid: #243258;
+    --gold: #c8973a;
+    --gold-light: #e8b86d;
+    --cream: #f9f6f0;
+    --cream-dark: #efe9df;
+    --text: #1e1e1e;
+    --text-muted: #6b6b6b;
+    --correct: #2d7a4f;
+    --correct-bg: #eaf5ee;
+    --wrong: #b83232;
+    --wrong-bg: #fdf0f0;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; padding: 0; }
+  .header-inner { max-width: 860px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-primary:disabled { background: #aaa; cursor: not-allowed; }
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+  .passage-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); }
+  .passage-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 16px; color: var(--navy); text-align: center; }
+  .instructions { font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; padding-bottom: 16px; border-bottom: 1px solid var(--cream-dark); }
+  .instructions strong { color: var(--text); }
+  .example-box { background: var(--cream); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: var(--text-muted); }
+  .example-box strong { color: var(--text); }
+  .passage-text { font-family: 'Source Serif 4', serif; font-size: 16px; line-height: 1.9; color: var(--text); }
+  .gap { display: inline-block; background: var(--cream-dark); border-bottom: 2px solid var(--navy); padding: 0 4px; min-width: 90px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); border-radius: 2px; margin: 0 2px; vertical-align: baseline; }
+  .questions-section h3 { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--cream-dark); }
+  .question-row { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--cream-dark); }
+  .q-num { font-weight: 700; font-size: 14px; color: var(--navy); padding-top: 10px; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .option-btn { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); transition: all 0.15s; text-align: left; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .option-letter { font-weight: 700; font-size: 13px; flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(26,39,68,0.1); }
+  .option-btn.selected .option-letter { background: rgba(255,255,255,0.2); }
+  .submit-row { margin-top: 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 13px 36px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: center; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 14px; line-height: 1.5; }
+  .result-detail .your-answer { color: var(--text-muted); }
+  .result-detail .correct-answer { font-weight: 600; color: var(--correct); }
+  .result-detail .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); }
+  .save-status.error { color: var(--wrong); }
+  @media (max-width: 580px) { .options-grid { grid-template-columns: 1fr; } .header-right { display: none; } .entry-card { padding: 28px 20px; } .passage-card { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 1</span></h1>
+    </div>
+    <div class="header-right">
+      Test 4<br>Multiple Choice Cloze<br>8 questions
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+
+  <!-- SCREEN 1: ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field">
+        <label>Your full name</label>
+        <input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Class code</label>
+        <input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off">
+      </div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: EXAM -->
+  <div id="screen-exam" class="screen">
+
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 1</div>
+      <div class="meta-pill">Multiple Choice Cloze</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="passage-card">
+      <h2>Dressing for success</h2>
+      <div class="instructions">
+        For questions <strong>1–8</strong>, read the text below and decide which answer (<strong>A, B, C</strong> or <strong>D</strong>) best fits each gap. There is an example at the beginning (0).
+      </div>
+      <div class="example-box">
+        <strong>Example (0):</strong> &nbsp;A assessment &nbsp; B account &nbsp; C expression &nbsp; <strong>D estimate</strong> &nbsp;→ &nbsp;<strong>Answer: B (account)</strong>
+      </div>
+      <div class="passage-text">
+        Whether you like it or not, when you go for a job interview your personal appearance will
+        be judged as an <span class="gap">(0) account</span> of who you are. Just from looking at you, the interviewer will start
+        <span class="gap" id="gap-1">(1) ·····</span> an opinion about your capabilities, your attitude to work and how well you might
+        <span class="gap" id="gap-2">(2) ·····</span> their organisation. The right image is one that helps the interviewer <span class="gap" id="gap-3">(3) ·····</span> you
+        as one of their team and <span class="gap" id="gap-4">(4) ·····</span> them that you could represent their company. So, find
+        out about the company dress code prior to the interview, or see how people are dressed
+        on their corporate website.
+
+        <br><br>
+
+        However, even if you <span class="gap" id="gap-5">(5) ·····</span> the image right, it may not <span class="gap" id="gap-6">(6) ·····</span> be remarked on. The
+        interviewer will just sense that you 'look right', and feel <span class="gap" id="gap-7">(7) ·····</span> to being convinced
+        that you are the right person for the job. But if you get it wrong, it can be very difficult to
+        <span class="gap" id="gap-8">(8) ·····</span> the negative impression you may already have made.
+      </div>
+    </div>
+
+    <div class="questions-section">
+      <h3>Questions 1–8 — Choose the best answer for each gap</h3>
+      <div id="questions-container"></div>
+      <div class="submit-row">
+        <button class="btn-primary" id="submit-btn" onclick="submitExam()">Submit answers</button>
+        <div class="progress-note">Answered: <span id="answered-count">0</span> / 8</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCREEN 3: RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 8</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 1 – Test 4",
+  level: "CAE",
+  part: 1,
+  questions: [
+    { num: 1, options: { A: "shaping", B: "making", C: "creating", D: "forming" }, answer: "B" },
+    { num: 2, options: { A: "put up with", B: "settle down to", C: "fit in with", D: "live up to" }, answer: "C" },
+    { num: 3, options: { A: "visualise", B: "reflect", C: "observe", D: "foresee" }, answer: "A" },
+    { num: 4, options: { A: "reassures", B: "clarifies", C: "encourages", D: "supports" }, answer: "A" },
+    { num: 5, options: { A: "put", B: "get", C: "hit", D: "set" }, answer: "B" },
+    { num: 6, options: { A: "significantly", B: "necessarily", C: "appropriately", D: "strictly" }, answer: "B" },
+    { num: 7, options: { A: "open", B: "free", C: "alert", D: "aware" }, answer: "A" },
+    { num: 8, options: { A: "overtake", B: "overthrow", C: "overdo", D: "overcome" }, answer: "D" }
+  ]
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const row = document.createElement("div");
+    row.className = "question-row";
+    row.innerHTML = `<div class="q-num">${q.num}</div><div class="options-grid" id="opts-${q.num}"></div>`;
+    container.appendChild(row);
+    const grid = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D"].forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.id = `opt-${q.num}-${letter}`;
+      btn.innerHTML = `<span class="option-letter">${letter}</span>${q.options[letter]}`;
+      btn.onclick = () => selectOption(q.num, letter);
+      grid.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => {
+    const btn = document.getElementById(`opt-${qNum}-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  const q = EXAM.questions.find(q => q.num === qNum);
+  const gap = document.getElementById(`gap-${qNum}`);
+  if (gap) gap.textContent = `(${qNum}) ${q.options[letter]}`;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < EXAM.questions.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${EXAM.questions.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = "";
+    if (isCorrect) {
+      detailHTML = `<span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    } else if (chosen) {
+      detailHTML = `<span class="wrong-answer">${chosen}: ${q.options[chosen]}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    } else {
+      detailHTML = `<span class="your-answer">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct);
+}
+
+async function saveToSupabase(score, pct) {
+  const status = document.getElementById("save-status");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num,
+    student_answer: selections[q.num] || null,
+    correct_answer: q.answer,
+    is_correct: (selections[q.num] === q.answer)
+  }));
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher."; status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 6 – Test 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .instructions-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 18px 24px; margin-bottom: 20px; }
+  .instructions { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  .instructions strong { color: var(--text); }
+
+  /* Reviewers grid */
+  .reviewers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .reviewer-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 20px 22px; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .reviewer-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .reviewer-card p { font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.8; color: var(--text); }
+
+  /* Questions */
+  .questions-section h3 { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--cream-dark); }
+  .question-row { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 12px; }
+  .question-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.6; color: var(--text); margin-bottom: 12px; }
+  .q-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; }
+  .options-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+  .option-btn { display: flex; align-items: center; gap: 8px; padding: 9px 16px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); transition: all 0.15s; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .submit-row { margin-top: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: start; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 13px; line-height: 1.5; }
+  .result-q-text { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .result-detail .correct-answer { font-weight: 600; color: var(--correct); }
+  .result-detail .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-detail .your-answer { color: var(--text-muted); }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); }
+  .save-status.error { color: var(--wrong); }
+  @media (max-width: 680px) { .reviewers-grid { grid-template-columns: 1fr; } .header-right { display: none; } .entry-card { padding: 28px 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 6</span></h1>
+    </div>
+    <div class="header-right">
+      Test 4<br>Cross-text Multiple Matching<br>4 questions
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field">
+        <label>Your full name</label>
+        <input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Class code</label>
+        <input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off">
+      </div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 6</div>
+      <div class="meta-pill">Cross-text Multiple Matching</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="instructions-card">
+      <div class="instructions">
+        You are going to read four reviews of a book entitled <em>Why Translation Matters</em>. For questions <strong>37–40</strong>, choose from the reviews <strong>A–D</strong>. The reviews may be chosen more than once.
+      </div>
+    </div>
+
+    <div class="reviewers-grid">
+      <div class="reviewer-card">
+        <div class="reviewer-label">Reviewer A</div>
+        <p>In <em>Why Translation Matters</em>, Grossman discusses a number of complex issues. Is a translation merely a reflection in a clouded looking glass that will never mirror the true original? Is a translator merely a sophisticated tool, a human machine soon to be replaced by a computer program? She answers these and many other questions with a lyrical eloquence that is graceful and inspiring. In the process, we are also shown detailed examples of her solutions to knotty problems; here we see her joy in discovery and doing, the best reasons for pursuing a true vocation. Such inner drive is indispensable, because as she rightly says, 'Translation is a strange craft, generally appreciated by writers, undervalued by publishers, trivialised by the academic world, and practically ignored by reviewers.' And yet, where literature exists, translation exists and it is a good thing that these issues should be explored.</p>
+      </div>
+      <div class="reviewer-card">
+        <div class="reviewer-label">Reviewer B</div>
+        <p>Books by translators are few and far between. This short book was originally given as a series of three university lectures, and the ploys of a lecturer let down the writer: rhetorical questions, academic jargon. Grossman's best thinking about translation, and her best defence of translation, will be reflected in her translations themselves. It is on the rare occasions that she focuses on overcoming the challenges that her craft throws up that the book becomes more pleasurable to read. She vents her frustration on the reader, and some of this is certainly justified: translators ask for very little – simply to be read, included in the cultural debate, understood – yet almost invariably fail to be given the credit they are due. Translation, for all that it seems a technical matter, is actually anything but. It's a mode of reading so sympathetic and creative that the outcome is wholly original.</p>
+      </div>
+      <div class="reviewer-card">
+        <div class="reviewer-label">Reviewer C</div>
+        <p>There is a theory that all language is a form of translation, that we speak in order to translate the unknown into the known, the non-verbal into the verbal. Edith Grossman draws upon this theory in her book, rightly suggesting, I believe, that the translation of a literary work from one language into another involves much the same creative process as that which provoked the originating author, and the end product therefore stands alone. After a rich career, she is eminently well-qualified to speak on behalf of literary translators everywhere. Nevertheless, the role of the translator is undoubtedly one of the most unappreciated and unacknowledged in the world of literature. Grossman's beautifully crafted book draws attention to this and may help to address the problem. It is accessible to the layperson and should be required reading on all university literature courses.</p>
+      </div>
+      <div class="reviewer-card">
+        <div class="reviewer-label">Reviewer D</div>
+        <p><em>Why Translation Matters</em> by Edith Grossman is based on three lectures she gave at a university in the US. As an expert in her field, she has won several awards and would seem to have every reason to feel secure, if not serene. It seems inappropriate, therefore, that she should devote entire pages to criticising publishers and reviewers, in particular, for failing to give translators the respect they deserve. However small-minded these comments may look on the page, they do form a significant part of Grossman's overall argument, which is that literature and translation are 'absolutely inseparable' and thus the translator is engaged in the very same activity as her author, and is, indeed, a writer herself. The translator's version of the text, she maintains, is to be considered an original, too. Grossman's approach is non-theoretical, as she ranges discursively over the usual concerns raised by (chiefly literary) translation in this ultimately charming little book.</p>
+      </div>
+    </div>
+
+    <div class="questions-section">
+      <h3>Which reviewer…</h3>
+      <div id="questions-container"></div>
+      <div class="submit-row">
+        <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+        <div class="progress-note">Answered: <span id="answered-count">0</span> / 4</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 4</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 6 – Test 4",
+  level: "CAE",
+  part: 6,
+  questions: [
+    {
+      num: 37,
+      text: "expresses a different opinion from reviewer A regarding how well the book is written?",
+      answer: "B"
+    },
+    {
+      num: 38,
+      text: "shares reviewer B's view on whether a translation can be considered to be a new work in its own right?",
+      answer: "C"
+    },
+    {
+      num: 39,
+      text: "has a different view from the others on Grossman's complaints about attitudes to translators?",
+      answer: "D"
+    },
+    {
+      num: 40,
+      text: "shares reviewer A's view of the way Grossman describes how she deals with difficulties when translating books?",
+      answer: "B"
+    }
+  ]
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const row = document.createElement("div");
+    row.className = "question-row";
+    row.innerHTML = `
+      <div class="q-label">Question ${q.num}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options-grid" id="opts-${q.num}"></div>
+    `;
+    container.appendChild(row);
+    const grid = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D"].forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.id = `opt-${q.num}-${letter}`;
+      btn.textContent = `Reviewer ${letter}`;
+      btn.onclick = () => selectOption(q.num, letter);
+      grid.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => {
+    const btn = document.getElementById(`opt-${qNum}-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < EXAM.questions.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${EXAM.questions.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = `<div class="result-q-text">${q.text}</div>`;
+    if (isCorrect) {
+      detailHTML += `<span class="correct-answer">✓ Reviewer ${correct}</span>`;
+    } else if (chosen) {
+      detailHTML += `<span class="wrong-answer">Reviewer ${chosen}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ Reviewer ${correct}</span>`;
+    } else {
+      detailHTML += `<span class="your-answer">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ Reviewer ${correct}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num, student_answer: selections[q.num] || null,
+    correct_answer: q.answer, is_correct: (selections[q.num] === q.answer)
+  }));
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher."; status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

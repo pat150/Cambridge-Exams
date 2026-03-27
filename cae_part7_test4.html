@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 7 – Test 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .instructions-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 18px 24px; margin-bottom: 20px; }
+  .instructions { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  .instructions strong { color: var(--text); }
+
+  .p7-layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; margin-bottom: 28px; }
+
+  /* Main article */
+  .article-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .article-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; color: var(--navy); text-align: center; }
+  .article-subtitle { font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 18px; font-style: italic; }
+  .article-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.85; color: var(--text); }
+  .gap-box {
+    display: block;
+    background: var(--cream);
+    border: 2px dashed var(--navy);
+    border-radius: 6px;
+    text-align: center;
+    padding: 10px;
+    margin: 14px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gap-box:hover { background: var(--cream-dark); }
+  .gap-box.assigned { background: var(--navy); color: white; border-style: solid; }
+
+  /* Removed paragraphs */
+  .paragraphs-col { }
+  .paragraphs-col h3 { font-family: 'Source Serif 4', serif; font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--cream-dark); }
+  .para-card {
+    background: white;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .para-card:hover { border-color: var(--navy); background: var(--cream); }
+  .para-card.selected { border-color: var(--gold); background: #fffbf0; }
+  .para-card.used { opacity: 0.45; cursor: default; }
+  .para-card.extra { border-style: dashed; }
+  .para-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .para-text { font-family: 'Source Serif 4', serif; font-size: 12.5px; line-height: 1.65; color: var(--text); }
+
+  /* Questions summary */
+  .questions-section h3 { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--cream-dark); }
+  .assignments-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .assignment-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px; text-align: center; }
+  .assignment-gap { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+  .assignment-value { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); }
+  .assignment-value.empty { color: var(--cream-dark); }
+  .submit-row { margin-top: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  .hint-text { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 14px; }
+  .result-detail .correct-answer { font-weight: 600; color: var(--correct); }
+  .result-detail .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-detail .your-answer { color: var(--text-muted); }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); }
+  .save-status.error { color: var(--wrong); }
+  @media (max-width: 720px) { .p7-layout { grid-template-columns: 1fr; } .header-right { display: none; } .assignments-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 7</span></h1>
+    </div>
+    <div class="header-right">
+      Test 4<br>Gapped Text<br>6 questions
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field">
+        <label>Your full name</label>
+        <input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Class code</label>
+        <input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off">
+      </div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 7</div>
+      <div class="meta-pill">Gapped Text</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="instructions-card">
+      <div class="instructions">
+        You are going to read part of a review of a book about grass. Six paragraphs have been removed from the article. Choose from the paragraphs <strong>A–G</strong> the one which fits each gap (<strong>41–46</strong>). There is one extra paragraph which you do not need to use. Click a paragraph letter in the article, then click the paragraph on the right to assign it.
+      </div>
+    </div>
+
+    <div class="p7-layout">
+      <div class="article-card">
+        <h2>The Story of Grass</h2>
+        <div class="article-subtitle">John Carey reviews <em>The Forgiveness of Nature; The Story of Grass</em> by Graham Harvey</div>
+        <div class="article-text">
+          There is no doubting the radical importance of Graham Harvey's message. His case is that grass is unique among the world's plants not just in its arctic-to-equator adaptability and species diversity, but in the power of its elaborate root system to enrich soil with useful carbon compounds. The method of land management that turns this to advantage is mixed crop and cattle farming using crop rotation.
+
+          <div class="gap-box" id="gap-41" onclick="selectGap(41)">GAP 41 — click to select</div>
+
+          This traditional, nature-based farming practice received a boost in the 17th century, when it was discovered that fertility was enormously increased if the pasture incorporated clover flowers, since clover has the ability to convert nitrogen from the atmosphere into soluble soil nitrates. In the century and a half to 1850, grain yields and animal products doubled because of the clover revolution, and British farming was able to feed an extra seven million people as the industrial revolution spurred population growth.
+
+          <div class="gap-box" id="gap-42" onclick="selectGap(42)">GAP 42 — click to select</div>
+
+          When these incentives were introduced in the last quarter of the 20th century, farmers scrambled to get rid of their cattle, plough up their pastures, and turn their farms into various kinds of cereal monoculture, with fields full of single crops. These need heavy applications of chemicals to maintain yields. The high levels of artificial nitrogen that result make the crops susceptible to disease, particularly mildew, which have to be countered with yet more chemicals in the form of fungicides.
+
+          <div class="gap-box" id="gap-43" onclick="selectGap(43)">GAP 43 — click to select</div>
+
+          Intensive agriculture has had a similar effect on hay meadows. These used to flourish in Britain, and their mix of grasses supported the evolution of a rich diversity of animals and birds. Covering grassland with artificial fertiliser reverses this process. It allows one or two fast-growing varieties to eliminate the others, together with the wildlife they supported, producing monotonous acres of rye-grass.
+
+          <div class="gap-box" id="gap-44" onclick="selectGap(44)">GAP 44 — click to select</div>
+
+          In Harvey's view, British agriculture seems little more than an elaborate means of transferring money from the taxpayer to the pockets of the agrochemical industry, and laying waste the countryside in the process. The more intensive the farm, the more its owner can claim public subsidy. The European Union's common agricultural policy does not escape his attention. It has, in his opinion, outlawed the traditional mixed farm, since it requires farmers to choose between intensive crop or intensive cattle production.
+
+          <div class="gap-box" id="gap-45" onclick="selectGap(45)">GAP 45 — click to select</div>
+
+          Harvey runs the story of British agriculture alongside the story of the American prairies – flat grasslands without trees. Again the hero is grass, and the villains are well-meaning farmers with no understanding of ecology. The earliest American settlers, in the 17th century, saw no use for the prairies and labelled them desert. In fact, although arid, they were a rich and delicate ecosystem, supporting vast herds of bison which, at their peak, equalled in weight the entire current human population of north America. In three generations, all this was wiped out. The bison were slaughtered, and the prairies ploughed up for wheat and maize.
+
+          <div class="gap-box" id="gap-46" onclick="selectGap(46)">GAP 46 — click to select</div>
+
+          Now the prairies have to be dosed with artificial fertiliser and pesticides, and the government spends millions of dollars on irrigation. It is a depressing picture which mirrors the story across the Atlantic.
+        </div>
+      </div>
+
+      <div class="paragraphs-col">
+        <h3>Removed paragraphs</h3>
+        <p class="hint-text">Click a gap in the article first, then select the paragraph here.</p>
+        <div id="paragraphs-container"></div>
+      </div>
+    </div>
+
+    <div class="questions-section">
+      <h3>Your assignments</h3>
+      <div class="assignments-grid" id="assignments-grid"></div>
+      <div class="submit-row">
+        <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+        <div class="progress-note">Assigned: <span id="answered-count">0</span> / 6</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 6</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 7 – Test 4",
+  level: "CAE",
+  part: 7,
+  gaps: [41, 42, 43, 44, 45, 46],
+  answers: { 41: "C", 42: "E", 43: "D", 44: "A", 45: "G", 46: "F" },
+  paragraphs: {
+    A: "But it's not just institutions that incur Harvey's anger, the phasing out of grass has also compounded the greenhouse effect. Grasslands take carbon from the atmosphere and lock it safely in the soil. They are far more effective at doing this than tropical rain forests, and Harvey contends that a return to grass-based husbandry would crucially alleviate global warming.",
+    B: "Its presence is a result of the clearing of forest land to make way for crops and pasture. While many deplore this development it is the end result of the need to supply cheap food.",
+    C: "With this system, cattle graze on fields consisting just of grass, known as pastures. After four years these are ploughed up and planted with food crops. At the same time, other fields on the same farm will now have been exhausted by food production, so they are returned to pasture again.",
+    D: "The result is depressingly predictable – all these substances damage the soil and destroy its wildlife, from micro-organisms up to earthworms, insects and small mammals. The landscape falls silent.",
+    E: "Farming of this kind is now virtually obsolete in the country, largely because farm subsidies encourage farmers to abandon crop rotation based on grass and to rely on chemical fertilisers instead.",
+    F: "At first, yields of these crops were huge, drawing on organic matter in the topsoil accumulated over centuries. But in the next 30 years, they fell by three-quarters. Then came the 'high' winds of the 1930s, when the degraded soil literally blew away.",
+    G: "This particular species spread with frightening speed in the 20th century. By 1984, the total area of species-rich grassland remaining in the country was just 3% of what it had been in 1930, and the destruction is continuing to the present day."
+  }
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "";
+let assignments = {}; // { 41: "C", 42: "E", ... }
+let selectedGap = null;
+
+function buildParagraphs() {
+  const container = document.getElementById("paragraphs-container");
+  container.innerHTML = "";
+  ["A","B","C","D","E","F","G"].forEach(letter => {
+    const card = document.createElement("div");
+    card.className = "para-card";
+    card.id = `para-${letter}`;
+    card.innerHTML = `<div class="para-label">Paragraph ${letter}</div><div class="para-text">${EXAM.paragraphs[letter]}</div>`;
+    card.onclick = () => assignParagraph(letter);
+    container.appendChild(card);
+  });
+}
+
+function buildAssignmentsGrid() {
+  const grid = document.getElementById("assignments-grid");
+  grid.innerHTML = "";
+  EXAM.gaps.forEach(gap => {
+    const item = document.createElement("div");
+    item.className = "assignment-item";
+    item.id = `assign-${gap}`;
+    item.innerHTML = `<div class="assignment-gap">Gap ${gap}</div><div class="assignment-value empty" id="av-${gap}">—</div>`;
+    grid.appendChild(item);
+  });
+}
+
+function selectGap(gapNum) {
+  // Deselect previous
+  if (selectedGap) {
+    const el = document.getElementById(`gap-${selectedGap}`);
+    if (el && !assignments[selectedGap]) el.style.borderColor = "";
+    else if (el && assignments[selectedGap]) el.style.borderColor = "";
+  }
+  selectedGap = gapNum;
+  const el = document.getElementById(`gap-${gapNum}`);
+  if (el) { el.style.outline = "3px solid var(--gold)"; el.style.outlineOffset = "2px"; }
+  // Remove outline from others
+  EXAM.gaps.forEach(g => {
+    if (g !== gapNum) {
+      const ge = document.getElementById(`gap-${g}`);
+      if (ge) { ge.style.outline = ""; ge.style.outlineOffset = ""; }
+    }
+  });
+}
+
+function assignParagraph(letter) {
+  if (!selectedGap) {
+    alert("Please click a gap in the article first.");
+    return;
+  }
+  // If this paragraph was used elsewhere, remove that assignment
+  EXAM.gaps.forEach(g => {
+    if (assignments[g] === letter && g !== selectedGap) {
+      delete assignments[g];
+      const gapEl = document.getElementById(`gap-${g}`);
+      if (gapEl) { gapEl.textContent = `GAP ${g} — click to select`; gapEl.classList.remove("assigned"); }
+      const av = document.getElementById(`av-${g}`);
+      if (av) { av.textContent = "—"; av.classList.add("empty"); }
+    }
+  });
+
+  // Assign
+  assignments[selectedGap] = letter;
+  const gapEl = document.getElementById(`gap-${selectedGap}`);
+  if (gapEl) { gapEl.textContent = `GAP ${selectedGap} → Paragraph ${letter}`; gapEl.classList.add("assigned"); gapEl.style.outline = ""; gapEl.style.outlineOffset = ""; }
+  const av = document.getElementById(`av-${selectedGap}`);
+  if (av) { av.textContent = letter; av.classList.remove("empty"); }
+
+  // Update paragraph card states
+  ["A","B","C","D","E","F","G"].forEach(l => {
+    const card = document.getElementById(`para-${l}`);
+    if (!card) return;
+    const usedIn = Object.entries(assignments).find(([g, p]) => p === l);
+    if (usedIn) { card.classList.add("used"); card.classList.remove("selected"); }
+    else { card.classList.remove("used"); }
+  });
+
+  selectedGap = null;
+  document.getElementById("answered-count").textContent = Object.keys(assignments).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildParagraphs();
+  buildAssignmentsGrid();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(assignments).length < EXAM.gaps.length) {
+    if (!confirm(`You have only assigned ${Object.keys(assignments).length} of ${EXAM.gaps.length} gaps. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  const answers = [];
+
+  EXAM.gaps.forEach(gap => {
+    const chosen = assignments[gap] || null;
+    const correct = EXAM.answers[gap];
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    answers.push({ question_number: gap, student_answer: chosen, correct_answer: correct, is_correct: isCorrect });
+
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = "";
+    if (isCorrect) {
+      detailHTML = `<span class="correct-answer">✓ Paragraph ${correct}</span>`;
+    } else if (chosen) {
+      detailHTML = `<span class="wrong-answer">Paragraph ${chosen}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ Paragraph ${correct}</span>`;
+    } else {
+      detailHTML = `<span class="your-answer">Not assigned</span> &nbsp;→&nbsp; <span class="correct-answer">✓ Paragraph ${correct}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${gap}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+
+  const pct = Math.round((score / EXAM.gaps.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.gaps.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher."; status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

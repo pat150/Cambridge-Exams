@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 8 – Test 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 1020px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 1020px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .instructions-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 18px 24px; margin-bottom: 20px; }
+  .instructions { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  .instructions strong { color: var(--text); }
+
+  /* Two-column: questions left, texts right */
+  .p8-layout { display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
+
+  /* Questions */
+  .questions-col h3 { font-family: 'Source Serif 4', serif; font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--cream-dark); }
+  .question-row { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  .q-num { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; }
+  .question-text { font-family: 'Source Serif 4', serif; font-size: 13.5px; line-height: 1.6; color: var(--text); margin-bottom: 10px; }
+  .options-grid { display: flex; gap: 6px; flex-wrap: wrap; }
+  .option-btn { padding: 7px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); transition: all 0.15s; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+
+  /* Texts */
+  .texts-col { }
+  .texts-col h2 { font-family: 'Source Serif 4', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 16px; text-align: center; }
+  .person-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(26,39,68,0.04); }
+  .person-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .person-name { font-family: 'Source Serif 4', serif; font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+  .person-card p { font-family: 'Source Serif 4', serif; font-size: 13.5px; line-height: 1.8; color: var(--text); }
+
+  .submit-row { margin-top: 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: start; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 13px; line-height: 1.5; }
+  .result-q-text { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .result-detail .correct-answer { font-weight: 600; color: var(--correct); }
+  .result-detail .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-detail .your-answer { color: var(--text-muted); }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); }
+  .save-status.error { color: var(--wrong); }
+  @media (max-width: 780px) { .p8-layout { grid-template-columns: 1fr; } .header-right { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 8</span></h1>
+    </div>
+    <div class="header-right">
+      Test 4<br>Multiple Matching<br>10 questions
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field">
+        <label>Your full name</label>
+        <input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Class code</label>
+        <input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off">
+      </div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 8</div>
+      <div class="meta-pill">Multiple Matching</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="instructions-card">
+      <div class="instructions">
+        You are going to read an article in which five people talk about careers in archaeology. For questions <strong>47–56</strong>, choose from the people (<strong>A–E</strong>). The people may be chosen more than once.
+      </div>
+    </div>
+
+    <div class="p8-layout">
+      <div class="questions-col">
+        <h3>Which person…</h3>
+        <div id="questions-container"></div>
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 10</div>
+        </div>
+      </div>
+
+      <div class="texts-col">
+        <h2>Careers in archaeology</h2>
+
+        <div class="person-card">
+          <div class="person-label">Person A</div>
+          <div class="person-name">Jack Stone from The Archaeological Association</div>
+          <p>The visibility of archaeology on TV and in the press has increased enormously in recent years. Whether this makes it an attractive career, given an economic climate in which young people understandably favour jobs with good salaries – not common in archaeology – is debatable, but generally, it's had a positive impact. Many archaeologists are hired by small companies to work on excavations; these jobs are often interesting but don't tend to last more than a few months at a time. Then, there are those who work for government organisations, caring for the historical environment. These jobs are more stable, but there are fewer of them. Some people stay on at university doing research and teaching, and others do museum work. In my experience, most people go into archaeology with their feet firmly on the ground.</p>
+        </div>
+
+        <div class="person-card">
+          <div class="person-label">Person B</div>
+          <div class="person-name">Dr Paul Simpson, university lecturer</div>
+          <p>It's probably what they see on film and TV, but many people assume that archaeology equals digging big holes. While this is obviously an aspect of our work, the bulk of what we do nowadays is lab-based. Few university programmes cover the ground archaeology does. Spanning sciences and humanities, it requires all sorts of skills, and in my department at least, we teach everything from human evolution to the industrial revolution. The number of people wanting to study archaeology is regrettably small – tiny relative to history, for example. Potential salaries partly explain this, but it's also down to misguided school teachers saying, 'Why not choose a safe subject like business?' Perhaps they forget it's perfectly feasible to study archaeology and then succeed in an unrelated career. Having said this, half the final-year students in my department stay in archaeology, and tend to be obsessive about it. There's something about telling stories based on evidence you've discovered – and knowing that if you hadn't discovered it, no-one would have – that cannot be experienced in any other field.</p>
+        </div>
+
+        <div class="person-card">
+          <div class="person-label">Person C</div>
+          <div class="person-name">Victoria Walker, postgraduate student</div>
+          <p>I'm researching links between Roman civilisation and Ireland 2,000 years ago, which I realise non-archaeologists might think somewhat obscure. I have a fantastic bunch of academics and students backing me up and there's a tremendous sense of being in it together. It's a challenging discipline, and one that because of the fieldwork particularly suits a hands-on person like me. Archaeology's wonderful even if you end up doing a completely different kind of job. With hindsight, I now see that the undergraduate course is as much about learning how to do things that can be used in other areas of life, like how to gather and interpret evidence, as it is about archaeology itself.</p>
+        </div>
+
+        <div class="person-card">
+          <div class="person-label">Person D</div>
+          <div class="person-name">Mark Anderson, field archaeologist</div>
+          <p>My company excavates sites before big construction projects like roads and shopping centres get started on them. Some remains date back many thousands of years, others a couple of centuries; they might be castles, temples, small houses or even just ancient farmland. Over the years, however, I've worked extensively on wetland sites like marshes and river estuaries. This means I have unusual expertise and am in demand for digs in such locations. Much of our work is practical, but we also use imagination to figure out what the tiny fragments we dig up might mean. This, I feel, is something historians, with their access to masses of evidence, tend to miss out on. People say archaeology is a luxury – today's world has far greater problems to solve than investigating how ancient people lived. It's hard to argue with this, but our troubled globe is run by people seeking quick, short-term solutions, and a deeper, longer-term understanding of humanity's history, derived from archaeology, would surely enhance their thinking.</p>
+        </div>
+
+        <div class="person-card">
+          <div class="person-label">Person E</div>
+          <div class="person-name">Tina Cray, museum manager</div>
+          <p>Even at university I was always more interested in the theoretical side of things than digging, but on graduating I assumed, like many others in my position, that excavation is what archaeology's all about. It took me a while to realise there were other paths to explore. I'm now part of a team that runs museums and heritage sites, and we provide a valuable, if underestimated, service to the community. There's the key role museums play in ensuring that knowledge of the past doesn't remain the preserve of a privileged minority. My team has also overseen an impressive rise in the number of tourists visiting museums and monuments, and this has stimulated local businesses and created jobs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 10</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 8 – Test 4",
+  level: "CAE",
+  part: 8,
+  questions: [
+    { num: 47, text: "suggests that archaeology has a unique appeal?", answer: "B" },
+    { num: 48, text: "describes how mutually supportive archaeologists tend to be?", answer: "C" },
+    { num: 49, text: "criticises people who advise against studying archaeology?", answer: "B" },
+    { num: 50, text: "points out the economic contribution that archaeology can make?", answer: "E" },
+    { num: 51, text: "welcomes the media profile that archaeology now has?", answer: "A" },
+    { num: 52, text: "points out that jobs in archaeology can often be short-term?", answer: "A" },
+    { num: 53, text: "emphasises the commitment some archaeology students feel towards their subject?", answer: "B" },
+    { num: 54, text: "mentions the value of an archaeological perspective on wider issues?", answer: "D" },
+    { num: 55, text: "believes archaeologists often overlook job opportunities that exist for them?", answer: "E" },
+    { num: 56, text: "mentions the appeal of studying a subject with a practical side to it?", answer: "C" }
+  ]
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const row = document.createElement("div");
+    row.className = "question-row";
+    row.innerHTML = `
+      <div class="q-num">Question ${q.num}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options-grid" id="opts-${q.num}"></div>
+    `;
+    container.appendChild(row);
+    const grid = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D","E"].forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.id = `opt-${q.num}-${letter}`;
+      btn.textContent = letter;
+      btn.onclick = () => selectOption(q.num, letter);
+      grid.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D","E"].forEach(l => {
+    const btn = document.getElementById(`opt-${qNum}-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < EXAM.questions.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${EXAM.questions.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = `<div class="result-q-text">${q.text}</div>`;
+    if (isCorrect) {
+      detailHTML += `<span class="correct-answer">✓ ${correct}</span>`;
+    } else if (chosen) {
+      detailHTML += `<span class="wrong-answer">${chosen}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}</span>`;
+    } else {
+      detailHTML += `<span class="your-answer">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num, student_answer: selections[q.num] || null,
+    correct_answer: q.answer, is_correct: (selections[q.num] === q.answer)
+  }));
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher."; status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
