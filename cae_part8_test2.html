@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 1060px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 1060px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .exam-grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
+  @media (max-width: 820px) { .exam-grid { grid-template-columns: 1fr; } }
+
+  /* texts */
+  .texts-col { display: flex; flex-direction: column; gap: 16px; }
+  .text-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .text-card-header { background: var(--navy); color: white; padding: 10px 16px; display: flex; align-items: baseline; gap: 10px; }
+  .text-letter { font-weight: 700; font-size: 16px; color: var(--gold-light); }
+  .text-title { font-size: 13px; font-weight: 400; opacity: 0.8; }
+  .text-body { padding: 16px 18px; font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.85; color: var(--text); }
+
+  /* questions panel */
+  .questions-panel { position: sticky; top: 20px; }
+  .questions-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .questions-card h3 { background: var(--navy); color: white; padding: 12px 16px; font-size: 13px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .instructions-sub { padding: 10px 16px; font-size: 12px; color: var(--text-muted); border-bottom: 1px solid var(--cream-dark); line-height: 1.5; }
+  .q8-row { display: grid; grid-template-columns: 1fr 52px; gap: 10px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--cream-dark); }
+  .q8-row:last-child { border-bottom: none; }
+  .q8-num { font-weight: 700; font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
+  .q8-text { font-size: 13px; line-height: 1.4; color: var(--text); }
+  .gap-input {
+    border: none;
+    border-bottom: 2px solid var(--navy);
+    background: var(--cream-dark);
+    padding: 4px 6px;
+    width: 48px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    border-radius: 2px 2px 0 0;
+  }
+  .gap-input:focus { background: #e0dbd0; }
+
+  .submit-row { margin-top: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 11px 28px; font-size: 14px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: center; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 14px; line-height: 1.5; }
+  .correct-answer { font-weight: 600; color: var(--correct); }
+  .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 8</span></h1>
+    </div>
+    <div class="header-right">Test 2<br>Multiple Matching<br>10 questions</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+<main>
+
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field"><label>Your full name</label><input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 8</div>
+      <div class="meta-pill">Multiple Matching</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="exam-grid">
+      <!-- LEFT: four texts -->
+      <div class="texts-col">
+        <div style="background:white;border:1px solid var(--cream-dark);border-radius:var(--radius);padding:16px 20px;font-size:13.5px;color:var(--text-muted);line-height:1.6">
+          You are going to read an article about scientific interpretations of modern art. For questions <strong>47–56</strong>, choose from the sections (<strong>A–D</strong>). The sections may be chosen more than once.
+        </div>
+
+        <div class="text-card">
+          <div class="text-card-header"><span class="text-letter">A</span></div>
+          <div class="text-body">Standing in front of Jackson Pollock's Summertime: Number 9A one day I was struck by a strange feeling. What I once considered an ugly collection of random paint splatters now spoke to me as a joyous celebration of movement and energy. It was the first time a piece of abstract art had stirred my emotions. Like many, I used to dismiss these works as a waste of time and energy. How could anyone find meaning in what looked like a collection of colourful splodges thrown haphazardly at a canvas? Yet here I was, in London's Tate Modern gallery, moved by Pollock's work. So, why are we attracted to paintings and sculptures that seem to bear no relation to the physical world? Little did I know that researchers have already started to investigate this question. By studying the brain's responses to different paintings, they have been examining the way the mind perceives art, and how masterpieces hijack the brain's visual system.</div>
+        </div>
+
+        <div class="text-card">
+          <div class="text-card-header"><span class="text-letter">B</span></div>
+          <div class="text-body">Studies in the emerging field of neuroaesthetics have already offered insights into many masterpieces. The blurred imagery of paintings of the Impressionist era towards the end of the 19th century seems to stimulate a part of the brain which is geared towards detecting threats in our rather blurry peripheral vision. The same part of the brain also plays a crucial role in our feelings and emotions, which might explain why many people find these pieces so moving. Could the same approach tell us anything about modern art, the defining characteristic of which has been to remove almost everything that could be literally interpreted? Although such works often sell for vast sums of money, they have attracted many sceptics, who claim that modern artists lack the skills or competence of the masters before them. Instead they believe that many people claim to like these works simply because they are in fashion.</div>
+        </div>
+
+        <div class="text-card">
+          <div class="text-card-header"><span class="text-letter">C</span></div>
+          <div class="text-body">In an attempt to make sense of how we perceive art, scientists have designed experiments that play with volunteers' expectations of the pieces they are viewing. The volunteers viewed pairs of paintings – either creations by famous abstract artists or the doodles of infants, chimps and elephants. Then they had to judge which they liked best. A third of the paintings were given no captions, while the rest were labelled. The twist was that sometimes the labels were mixed up so that the volunteers might think they were viewing a chimp's messy brushstrokes, while they were actually seeing an abstract piece by a famous artist. Some sceptics might argue that it is impossible to tell the difference, but in each set of trials, the volunteers generally went for the work of the well-accepted human artists. Somehow it seems that the viewer can sense the artist's vision in these paintings, even if they can't explain why. Yet, the experiment did not explain how we detect the hand of the human artist, nor the reason why the paintings appeal to us. But how does the artist hold our attention with an image that bears no likeness to anything in the real world? Of course, each artist's unique style will speak to us in a different way, so there can be no single answer.</div>
+        </div>
+
+        <div class="text-card">
+          <div class="text-card-header"><span class="text-letter">D</span></div>
+          <div class="text-body">A few studies have tackled the issue of how people process images, a case in point being Robert Pepperell's attempt to understand the way we deal with works which do not offer even the merest glimpse of a recognisable object for the brain to latch on to. But they may instead catch our attention through particularly well-proportioned compositions that appeal to the brain's visual system. We may also be drawn in by pieces that hit a specific point in the brain's ability to process complex scenes, which, in turn, may be why certain artists use a particular level of detail to please the brain. According to one psychologist, if there is too little detail we find the work boring, but too much complexity results in a kind of perceptual overload.</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: questions -->
+      <div class="questions-panel">
+        <div class="questions-card">
+          <h3>In which section does the writer…</h3>
+          <div class="instructions-sub">Type A, B, C or D for each question. Sections may be used more than once.</div>
+          <div id="questions-container"></div>
+        </div>
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle"><div class="score-num" id="res-score">0</div><div class="score-denom">out of 10</div></div>
+      <div class="results-info"><h2 id="res-name">Results</h2><p id="res-class"></p><div class="pct" id="res-pct"></div></div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+<script>
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+const QUESTIONS = [
+  { num: 47, text: "mention certain viewers being able to relate to what artists had in mind?", answer: "C" },
+  { num: 48, text: "refer to a doubt about the merit of a piece of artwork?", answer: "A" },
+  { num: 49, text: "highlight a need for artists to strike the right balance?", answer: "D" },
+  { num: 50, text: "indicate a possible reason for difficulty in reaching a consensus?", answer: "C" },
+  { num: 51, text: "state that people may have a shallow reason for liking a piece of art?", answer: "B" },
+  { num: 52, text: "suggest that some artists are aware of how they can satisfy the brain?", answer: "D" },
+  { num: 53, text: "refer to a shift in her own perception?", answer: "A" },
+  { num: 54, text: "point out shortcomings in a specific piece of research?", answer: "C" },
+  { num: 55, text: "mention the possibility of extending the scope of an existing research area?", answer: "B" },
+  { num: 56, text: "describe a procedure employed in the gathering of some scientific data?", answer: "C" }
+];
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  QUESTIONS.forEach(q => {
+    const row = document.createElement("div");
+    row.className = "q8-row";
+    row.innerHTML = `
+      <div><div class="q8-num">${q.num}</div><div class="q8-text">${q.text}</div></div>
+      <input class="gap-input" id="gap-${q.num}" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleInput(this, ${q.num})">
+    `;
+    container.appendChild(row);
+  });
+}
+
+function handleInput(input, num) {
+  const val = input.value.toUpperCase().replace(/[^A-D]/g, "");
+  input.value = val;
+  if (val) selections[num] = val; else delete selections[num];
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  if (!name || !code) { document.getElementById("entry-error").style.display = "block"; return; }
+  document.getElementById("entry-error").style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < QUESTIONS.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${QUESTIONS.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  const answers = [];
+  QUESTIONS.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const isCorrect = chosen === q.answer;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detail = isCorrect
+      ? `<span class="correct-answer">✓ Section ${q.answer}</span>`
+      : chosen
+        ? `<span class="wrong-answer">Section ${chosen}</span> → <span class="correct-answer">✓ Section ${q.answer}</span>`
+        : `<span style="color:var(--text-muted)">Not answered</span> → <span class="correct-answer">✓ Section ${q.answer}</span>`;
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detail}</div><div class="result-badge">${isCorrect?"✓":"✗"}</div>`;
+    list.appendChild(item);
+    answers.push({ question_number: q.num, student_answer: chosen, correct_answer: q.answer, is_correct: isCorrect });
+  });
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · CAE Part 8 – Test 2`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = { student_name: studentName, class_code: classCode, exam_title: "CAE Part 8 – Test 2", exam_level: "CAE", exam_part: 8, score, total_questions: QUESTIONS.length, percentage: pct, answers, submitted_at: new Date().toISOString() };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" }, body: JSON.stringify(payload) });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch(e) { status.textContent = "Results could not be saved (network error)."; status.className = "save-status error"; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

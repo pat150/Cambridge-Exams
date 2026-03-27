@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .instructions-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 20px; font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  .instructions-card strong { color: var(--text); }
+
+  /* four texts grid */
+  .texts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 700px) { .texts-grid { grid-template-columns: 1fr; } }
+
+  .text-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .text-card-header { background: var(--navy); color: white; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+  .text-letter { font-weight: 700; font-size: 16px; color: var(--gold-light); }
+  .text-author { font-size: 13px; font-weight: 600; }
+  .text-body { padding: 16px; font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.8; color: var(--text); }
+
+  /* questions */
+  .questions-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+  .questions-card h3 { background: var(--cream); padding: 12px 16px; font-family: 'Source Serif 4', serif; font-size: 15px; font-weight: 600; color: var(--navy); border-bottom: 1px solid var(--cream-dark); }
+  .q6-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--cream-dark); }
+  .q6-row:last-child { border-bottom: none; }
+  .q6-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.6; color: var(--text); }
+  .q6-num { font-weight: 700; font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+  .q6-options { display: flex; gap: 6px; }
+  .writer-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--cream-dark); background: white; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 14px; color: var(--navy); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+  .writer-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .writer-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+
+  .submit-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+  .submit-row .btn-primary { width: auto; padding: 13px 36px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: center; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 14px; line-height: 1.5; }
+  .correct-answer { font-weight: 600; color: var(--correct); }
+  .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 6</span></h1>
+    </div>
+    <div class="header-right">Test 2<br>Multiple Matching<br>4 questions</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+<main>
+
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field"><label>Your full name</label><input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 6</div>
+      <div class="meta-pill">Multiple Matching</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="instructions-card">
+      You are going to read four extracts from online articles about sports psychology. For questions <strong>37–40</strong>, choose from the extracts <strong>A–D</strong>. The extracts may be chosen more than once.
+    </div>
+
+    <div class="texts-grid">
+      <div class="text-card">
+        <div class="text-card-header"><span class="text-letter">A</span><span class="text-author">Dorothy Common</span></div>
+        <div class="text-body">Is the ever growing discipline of sports psychology contributing effectively to sporting performance or is it, as many people think, simply the art of 'stating the blindingly obvious'? I have certainly seen evidence that those in journalistic circles are yet to be fully convinced. And it is certainly true that sport psychologists should strive to increase the sophistication of their approaches to research, making use of more reliable scientific methods. Yet it's a shame that people should be so sceptical. Essentially, sports psychology asks this simple question: considering the undeniable role mental life plays in deciding the outcomes of our sporting efforts, why is mental training not incorporated to the equivalent degree into the athlete's typical training? If, say, a track sprinter is susceptible to letting their head get the better of them (temper issues, nerves, anxiety), then why should they spend their training just working on their strengths (the physical side)?</div>
+      </div>
+      <div class="text-card">
+        <div class="text-card-header"><span class="text-letter">B</span><span class="text-author">Jahangir Khan</span></div>
+        <div class="text-body">There is a popular view, largely based on a well-known case with a prominent runner, that sports psychology is something for treating athletes with mental disorders. This has no basis in fact and stems from making assumptions based on a limited understanding of psychology and how it is applied in settings. In my area of particular expertise, football, rugby and hockey, there exists a culture of what one psychologist calls 'folk psychology'. That is, there are usually individuals (typically an older dominant coach) who communicate non-scientific words of wisdom which, consciously or unconsciously, affect everyone, usually to detrimental effect in the long run. Think of a young player who is told to 'dig deep' and give it '110%' consistently. This gives a mental aspect to training that is non-scientific and misguided. But this is in stark contrast to the reality of modern day psychology research, which is based upon rigorous scientific methodologies.</div>
+      </div>
+      <div class="text-card">
+        <div class="text-card-header"><span class="text-letter">C</span><span class="text-author">Brian D. Rossweller</span></div>
+        <div class="text-body">Research into sports psychology is increasingly evidence-based, using the gold standard methodology of 'randomized control group designs'. Nevertheless, using the term 'psychology' in relation to psychological efforts with athletes, especially those involved in team sports, can be both an asset and a hindrance to understanding the field. Psychology as a field has become much more acceptable in social life. It seems that every time a person flicks through the television channels they are likely to see a psychologist talking about something or other. Thus people tend to view psychologists, including those seen on sports programmes, as knowledgeable and as providing information useful to everyday life. However, the flip side is that most people know someone who sees a clinical psychologist or therapist for a mind-related problem. In our society there has been a stigma attached to such problems and so many people have attached negative connotations to seeing a psychologist and may misunderstand the nature of seeing a sports psychologist.</div>
+      </div>
+      <div class="text-card">
+        <div class="text-card-header"><span class="text-letter">D</span><span class="text-author">Xiu Li</span></div>
+        <div class="text-body">There is still some distance between research and coaching practice. Sports psychology has been able to develop a relatively significant research base in the last fifteen years; aided by general experimental researchers often using athletes as an easily identifiable and obtainable population. Yet, as a practising sports psychologist I recently observed an athletics coach, whose reaction to a promising middle-distance runner losing a winning position on the last lap was to prioritise developing a sprint finish. What he didn't address was the fact that the runner failed to focus whenever he got overtaken. Then again, I also witnessed some baseball coaches doing some work – which I would have been proud of in my professional capacity – on assessing and profiling strengths and weaknesses, and also on performance anxiety. So things vary, and some trainers are clearly more knowledgeable than others. But it is not surprising that, as a result, public conceptions are confused on the issue.</div>
+      </div>
+    </div>
+
+    <div class="questions-card">
+      <h3>Which expert…</h3>
+      <div id="questions-container"></div>
+    </div>
+
+    <div class="submit-row">
+      <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+      <div class="progress-note">Answered: <span id="answered-count">0</span> / 4</div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle"><div class="score-num" id="res-score">0</div><div class="score-denom">out of 4</div></div>
+      <div class="results-info"><h2 id="res-name">Results</h2><p id="res-class"></p><div class="pct" id="res-pct"></div></div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+<script>
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+const QUESTIONS = [
+  { num: 37, text: "shares Khan's opinion on why public misconceptions about sports psychology have occurred?", answer: "C" },
+  { num: 38, text: "has a different view from Khan on whether some psychological training used in sports is helpful to the players?", answer: "D" },
+  { num: 39, text: "has a different view from Rossweller on how the media regard sports psychologists?", answer: "A" },
+  { num: 40, text: "has a different opinion from the other three experts on the current state of research in sports psychology?", answer: "A" }
+];
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  QUESTIONS.forEach(q => {
+    const row = document.createElement("div");
+    row.className = "q6-row";
+    row.innerHTML = `
+      <div><div class="q6-num">${q.num}</div><div class="q6-text">${q.text}</div></div>
+      <div class="q6-options" id="opts-${q.num}"></div>
+    `;
+    container.appendChild(row);
+    const opts = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D"].forEach(l => {
+      const btn = document.createElement("button");
+      btn.className = "writer-btn";
+      btn.id = `opt-${q.num}-${l}`;
+      btn.textContent = l;
+      btn.onclick = () => selectOption(q.num, l);
+      opts.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => document.getElementById(`opt-${qNum}-${l}`)?.classList.remove("selected"));
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  if (!name || !code) { document.getElementById("entry-error").style.display = "block"; return; }
+  document.getElementById("entry-error").style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < QUESTIONS.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${QUESTIONS.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  const answers = [];
+  QUESTIONS.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const isCorrect = chosen === q.answer;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detail = isCorrect
+      ? `<span class="correct-answer">✓ ${q.answer}</span>`
+      : chosen
+        ? `<span class="wrong-answer">${chosen}</span> → <span class="correct-answer">✓ ${q.answer}</span>`
+        : `<span style="color:var(--text-muted)">Not answered</span> → <span class="correct-answer">✓ ${q.answer}</span>`;
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detail}</div><div class="result-badge">${isCorrect?"✓":"✗"}</div>`;
+    list.appendChild(item);
+    answers.push({ question_number: q.num, student_answer: chosen, correct_answer: q.answer, is_correct: isCorrect });
+  });
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · CAE Part 6 – Test 2`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = { student_name: studentName, class_code: classCode, exam_title: "CAE Part 6 – Test 2", exam_level: "CAE", exam_part: 6, score, total_questions: QUESTIONS.length, percentage: pct, answers, submitted_at: new Date().toISOString() };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" }, body: JSON.stringify(payload) });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch(e) { status.textContent = "Results could not be saved (network error)."; status.className = "save-status error"; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

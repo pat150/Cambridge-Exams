@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  /* entry */
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  /* exam layout — two column */
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .exam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 720px) { .exam-grid { grid-template-columns: 1fr; } }
+
+  .passage-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); position: sticky; top: 20px; max-height: 85vh; overflow-y: auto; }
+  .passage-card h2 { font-family: 'Source Serif 4', serif; font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--navy); text-align: center; }
+  .passage-card .byline { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 16px; font-style: italic; }
+  .instructions { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; padding-bottom: 14px; border-bottom: 1px solid var(--cream-dark); }
+  .passage-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.9; color: var(--text); }
+  .passage-text p { margin-bottom: 12px; }
+  .passage-text p:last-child { margin-bottom: 0; }
+
+  /* questions panel */
+  .questions-panel { display: flex; flex-direction: column; gap: 16px; }
+  .q-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .q-card-header { background: var(--cream); padding: 12px 16px; border-bottom: 1px solid var(--cream-dark); display: flex; gap: 10px; align-items: baseline; }
+  .q-num { font-weight: 700; font-size: 14px; color: var(--navy); flex-shrink: 0; }
+  .q-text { font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.5; color: var(--text); }
+  .q-options { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .option-btn { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); transition: all 0.15s; text-align: left; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .option-letter { font-weight: 700; font-size: 12px; width: 20px; height: 20px; border-radius: 50%; background: rgba(26,39,68,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .option-btn.selected .option-letter { background: rgba(255,255,255,0.2); }
+
+  .submit-row { margin-top: 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 13px 36px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  /* results */
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: center; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 14px; line-height: 1.5; }
+  .correct-answer { font-weight: 600; color: var(--correct); }
+  .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 5</span></h1>
+    </div>
+    <div class="header-right">Test 2<br>Multiple Choice<br>6 questions</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+<main>
+
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field"><label>Your full name</label><input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 5</div>
+      <div class="meta-pill">Multiple Choice Reading</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+    <div class="exam-grid">
+      <!-- LEFT: passage -->
+      <div class="passage-card">
+        <h2>Howard's Career as a Palaeontologist</h2>
+        <div class="instructions">Read the extract from a novel. For questions 31–36, choose the answer (A, B, C or D) which you think fits best according to the text.</div>
+        <div class="passage-text">
+          <p>Howard became a palaeontologist because of a rise in interest rates when he was six years old. His father, a cautious man with a large mortgage and thoughts focussed merely on how the economic situation would affect him, announced that the projected holiday to Spain was no longer feasible. A chalet was rented on the English coast instead and thus, on a dank August afternoon, Howard picked up a coiled fossil shell, called an ammonite, on the beach.</p>
+          <p>He knew for a long time that he wanted to become a palaeontologist, and towards the end of his time at university he became clear as to what sort of palaeontologist he wanted to be. He found the focus of his interest reaching further and further back in time. The more spectacular areas were not for him, he realised, turning his back on the Jurassic, on dinosaurs. He was drawn particularly to the beginnings, to that ultimate antiquity where everything is decided, from which, against all odds, we derive. So he studied delicate creatures revealed on the surface of grey rocks.</p>
+          <p>Work on his doctoral thesis came to an end, and, he knew, possibly a bitter one. Would he get a job? Would he get a job in the sort of institution he sought? He was far from being without self-esteem and knew that his potential was good. But he knew that those who deserve do not always get, and that while the objectives of science may be pure and uncompromising, the process of appointment to an academic position is not. When the Assistant Lectureship at Tavistock College in London came up, he applied at once, though without high hopes.</p>
+          <p>On the morning of Howard's interview, the professor who would chair the panel had a row with his wife. As a consequence he left home in a state of irritation and inattention, drove his car violently into a gatepost and ended up in the Casualty Department of the local hospital. The interview took place without him and without the support he had intended to give to a candidate who had been a student of his.</p>
+          <p>The professor who replaced him on the panel was a hated colleague, whose main concern was to oppose the appointment of his enemy's protégé; he was able to engineer without much difficulty that Howard got the job. Howard, surprised at the evident favouritism from a man he did not know, was fervently grateful until, months later, a colleague kindly enlightened him as to the correct interpretation of events. Howard was only slightly chagrined. It would have been nice to think that he was the obvious candidate, or that he had captivated those present with his ability and personality. But by then the only thing that really mattered was that he had the job and that he could support himself by doing the sort of work he wanted to do.</p>
+          <p>He often found himself contrasting the orderly nature of his professional life – where the pursuit of scientific truth was concerned, it was possible to plan a course of action and carry it out – with the anarchy of private concerns. The world teems with people who can determine the quality of your existence, and on occasion some total stranger can reach in and manipulate the entire narrative, as Howard was to find when his briefcase, containing the notes for a lecture he was about to give, was stolen at an Underground station.</p>
+          <p>Fuming, Howard returned to the college. He made an explanatory phone call and postponed the lecture. He reported the theft to the appropriate authorities and then went for a restorative coffee. He joined a colleague who was entertaining a visiting curator from the Natural History Museum in Nairobi. And thus it was that Howard learnt of the recently acquired collection of fossils, as yet uncatalogued and unidentified, the study of which would provide him with his greatest challenge and ensure his professional future. But for the theft, but for that now benevolent stranger … Within half an hour he had dismantled and reassembled his plans. He would not go to a conference in Stockholm. He would not spend a fortnight taking students on a field trip to Scotland. He would pull out every stop and somehow scramble together the funds for a visit to the museum in Nairobi.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: questions -->
+      <div>
+        <div class="questions-panel" id="questions-panel"></div>
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle"><div class="score-num" id="res-score">0</div><div class="score-denom">out of 6</div></div>
+      <div class="results-info"><h2 id="res-name">Results</h2><p id="res-class"></p><div class="pct" id="res-pct"></div></div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+<script>
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+const QUESTIONS = [
+  { num: 31, text: "What is suggested about Howard's father in the first paragraph?", options: { A: "He'd foreseen a change in the economic climate.", B: "He acted in character when cancelling the holiday.", C: "He'd never been in favour of holidays abroad.", D: "He tended to make decisions spontaneously." }, answer: "B" },
+  { num: 32, text: "What area of palaeontology did Howard develop a special interest in at university?", options: { A: "the earliest life forms", B: "the dating of pieces of evidence", C: "the scale of pre-historic creatures", D: "the fragile beauty of many fossils" }, answer: "A" },
+  { num: 33, text: "What concerned Howard about the chances of getting a job?", options: { A: "his lack of work experience", B: "his uncertainty of his own worth", C: "that jobs were not always awarded on merit", D: "that jobs in his field were always in short supply" }, answer: "C" },
+  { num: 34, text: "The result of Howard's job interview depended on", options: { A: "a change of heart by a member of the panel.", B: "the relative strengths of the candidates.", C: "the performance of a favoured candidate.", D: "the conflict between two members of staff." }, answer: "D" },
+  { num: 35, text: "How did Howard feel when he learnt the truth about his appointment?", options: { A: "pleased he would be so well paid", B: "unconcerned about why he got the job", C: "dismayed at not being the best candidate", D: "gratified to think he'd made a good impression" }, answer: "B" },
+  { num: 36, text: "Over the text as a whole, the writer suggests that the course of Howard's career was determined to a large extent by", options: { A: "a series of random coincidences.", B: "an interest developed in childhood.", C: "a belief in scientific certainties.", D: "a mix of hard work and academic success." }, answer: "A" }
+];
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const panel = document.getElementById("questions-panel");
+  panel.innerHTML = "";
+  QUESTIONS.forEach(q => {
+    const card = document.createElement("div");
+    card.className = "q-card";
+    card.innerHTML = `<div class="q-card-header"><span class="q-num">${q.num}</span><span class="q-text">${q.text}</span></div><div class="q-options" id="opts-${q.num}"></div>`;
+    panel.appendChild(card);
+    const opts = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D"].forEach(l => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.id = `opt-${q.num}-${l}`;
+      btn.innerHTML = `<span class="option-letter">${l}</span>${q.options[l]}`;
+      btn.onclick = () => selectOption(q.num, l);
+      opts.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => document.getElementById(`opt-${qNum}-${l}`)?.classList.remove("selected"));
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  if (!name || !code) { document.getElementById("entry-error").style.display = "block"; return; }
+  document.getElementById("entry-error").style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < QUESTIONS.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${QUESTIONS.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  const answers = [];
+  QUESTIONS.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const isCorrect = chosen === q.answer;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detail = isCorrect
+      ? `<span class="correct-answer">✓ ${q.answer}: ${q.options[q.answer]}</span>`
+      : chosen
+        ? `<span class="wrong-answer">${chosen}: ${q.options[chosen]}</span> → <span class="correct-answer">✓ ${q.answer}: ${q.options[q.answer]}</span>`
+        : `<span style="color:var(--text-muted)">Not answered</span> → <span class="correct-answer">✓ ${q.answer}: ${q.options[q.answer]}</span>`;
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detail}</div><div class="result-badge">${isCorrect?"✓":"✗"}</div>`;
+    list.appendChild(item);
+    answers.push({ question_number: q.num, student_answer: chosen, correct_answer: q.answer, is_correct: isCorrect });
+  });
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · CAE Part 5 – Test 2`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = { student_name: studentName, class_code: classCode, exam_title: "CAE Part 5 – Test 2", exam_level: "CAE", exam_part: 5, score, total_questions: QUESTIONS.length, percentage: pct, answers, submitted_at: new Date().toISOString() };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" }, body: JSON.stringify(payload) });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch(e) { status.textContent = "Results could not be saved (network error)."; status.className = "save-status error"; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

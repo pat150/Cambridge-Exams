@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .exam-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  @media (max-width: 780px) { .exam-grid { grid-template-columns: 1fr; } }
+
+  /* main article */
+  .passage-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); }
+  .passage-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; color: var(--navy); text-align: center; }
+  .passage-card .byline { font-size: 13px; color: var(--text-muted); text-align: center; font-style: italic; margin-bottom: 16px; }
+  .instructions { font-size: 13px; color: var(--text-muted); line-height: 1.6; padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid var(--cream-dark); }
+  .passage-text { font-family: 'Source Serif 4', serif; font-size: 15px; line-height: 1.9; color: var(--text); }
+  .passage-text p { margin-bottom: 14px; }
+
+  .gap-block {
+    background: var(--cream);
+    border: 2px dashed var(--navy);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gap-block .gap-label { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 13px; color: var(--navy); flex-shrink: 0; }
+  .gap-input {
+    border: none;
+    border-bottom: 2px solid var(--navy);
+    background: white;
+    padding: 4px 8px;
+    width: 60px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    border-radius: 2px 2px 0 0;
+  }
+  .gap-input:focus { background: var(--cream-dark); }
+  .gap-hint { font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+  /* removed paragraphs panel */
+  .paragraphs-panel { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 6px rgba(26,39,68,0.04); position: sticky; top: 20px; }
+  .paragraphs-panel h3 { background: var(--navy); color: white; padding: 12px 16px; font-family: 'Source Serif 4', serif; font-size: 14px; font-weight: 600; }
+  .removed-para { padding: 12px 16px; border-bottom: 1px solid var(--cream-dark); }
+  .removed-para:last-child { border-bottom: none; }
+  .para-letter { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 13px; color: var(--navy); margin-bottom: 4px; }
+  .para-text { font-family: 'Source Serif 4', serif; font-size: 13px; line-height: 1.6; color: var(--text); }
+
+  .submit-row { margin-top: 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 13px 36px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+  .results-list { display: flex; flex-direction: column; gap: 10px; }
+  .result-item { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 14px 18px; display: grid; grid-template-columns: 28px 1fr auto; gap: 12px; align-items: center; }
+  .result-item.correct { border-left: 4px solid var(--correct); }
+  .result-item.wrong { border-left: 4px solid var(--wrong); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-detail { font-size: 14px; line-height: 1.5; }
+  .correct-answer { font-weight: 600; color: var(--correct); }
+  .wrong-answer { font-weight: 600; color: var(--wrong); text-decoration: line-through; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .correct .result-badge { background: var(--correct-bg); color: var(--correct); }
+  .wrong .result-badge { background: var(--wrong-bg); color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 7</span></h1>
+    </div>
+    <div class="header-right">Test 2<br>Gapped Text<br>6 questions</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+<main>
+
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field"><label>Your full name</label><input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 7</div>
+      <div class="meta-pill">Gapped Text</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="exam-grid">
+      <!-- LEFT: article with gaps -->
+      <div class="passage-card">
+        <h2>Stargazing in East Africa</h2>
+        <div class="byline">Jonathan Ford went to Tanzania on an 'astro-safari', which combines animal-watching with looking at the stars.</div>
+        <div class="instructions">Six paragraphs have been removed from the article. Choose from the paragraphs A–G the one which fits each gap (41–46). There is one extra paragraph which you do not need to use.</div>
+
+        <div class="passage-text">
+          <p>We are gathered about a campfire on the dusty edge of the Serengeti National Park. After a long day scanning the savannah for creatures with jaws, claws, tusks, the flames are comforting. Normally on one of these trips, this is the moment at which the day starts to wind down; when tourists compare the animals they've had the chance of seeing and capturing on film.</p>
+
+          <div class="gap-block">
+            <span class="gap-label">Gap 41</span>
+            <input class="gap-input" id="gap-41" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleGapInput(this, 41)">
+            <span class="gap-hint">Enter A–G</span>
+          </div>
+
+          <p>Amateur astronomy is enjoying a surge of popularity and remote hotels around the world are installing telescopes and hiring expert star guides. Nevertheless, when I first heard about the idea of an 'astro-safari', I was sceptical. Wasn't the whole point of going to Africa to look around at hyenas and gazelles, say, rather than up at constellations that have scarcely changed since our ancestors first struggled to stand upright?</p>
+
+          <div class="gap-block">
+            <span class="gap-label">Gap 42</span>
+            <input class="gap-input" id="gap-42" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleGapInput(this, 42)">
+            <span class="gap-hint">Enter A–G</span>
+          </div>
+
+          <p>So it was with certain qualms that I found myself in Tanzania, on one of the first such safaris in Africa. The plan was simple. We would spend four days travelling through the spectacular Ngorongoro crater and the highlands, before dropping down on to the plain, animal watching by day and stargazing by night. We would hit the Serengeti plains just as 1.5 million wildebeest were making their way across, accompanied by zebras and gazelles, one of east Africa's most thrilling sights.</p>
+
+          <div class="gap-block">
+            <span class="gap-label">Gap 43</span>
+            <input class="gap-input" id="gap-43" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleGapInput(this, 43)">
+            <span class="gap-hint">Enter A–G</span>
+          </div>
+
+          <p>We were in luck: Nick Howes, a science writer for the European Space Agency learnt to love astronomy at an early age. A natural communicator, Howes promptly reassured us that degrees in astrophysics are all very well, but cutting-edge astronomy relies on the work of thousands of amateurs. They are just like us, but with better lenses and more patience.</p>
+
+          <div class="gap-block">
+            <span class="gap-label">Gap 44</span>
+            <input class="gap-input" id="gap-44" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleGapInput(this, 44)">
+            <span class="gap-hint">Enter A–G</span>
+          </div>
+
+          <p>The vocabulary, however, was alluringly alien: not just nebulae and supernovae, but globular clusters and Magellanic Clouds. Howes continued the astral tour even in daylight hours. To do so, he had brought with him a solar scope that you screw into a telescope. This allows you to look directly into the sun, and, if you are lucky, see the huge 'coronal mass injections' that spurt from the surface of our very own star.</p>
+
+          <div class="gap-block">
+            <span class="gap-label">Gap 45</span>
+            <input class="gap-input" id="gap-45" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleGapInput(this, 45)">
+            <span class="gap-hint">Enter A–G</span>
+          </div>
+
+          <p>In fact, 'seeing' here in the Serengeti – astronomer-speak for clarity – is among the best in the world. But it was the unexpected spectacles that caused the greatest delight: one evening, a great fireball streaked across the sky, seeming to plunge to earth some way to the south.</p>
+
+          <div class="gap-block">
+            <span class="gap-label">Gap 46</span>
+            <input class="gap-input" id="gap-46" maxlength="1" autocomplete="off" spellcheck="false" oninput="handleGapInput(this, 46)">
+            <span class="gap-hint">Enter A–G</span>
+          </div>
+
+          <p>Appropriate perhaps, considering that this is the part of the world where mankind first lived and looked at the night sky. Within 24 hours of arriving, the raw tourist finds himself asking all the big questions – the origins of the universe, why life started here of all places … and the relative scariness of hyenas and asteroids. It was completely different to sitting in front of a TV screen where everything seemed more certain.</p>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 6</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: removed paragraphs -->
+      <div class="paragraphs-panel">
+        <h3>Removed paragraphs — choose one for each gap</h3>
+        <div class="removed-para"><div class="para-letter">A</div><div class="para-text">Stars, unlike elephants and giraffes, can surely be seen any winter evening from anyone's back garden. And it was doubtful that anything could be learnt from peering through a telescope that some professor couldn't get across on a TV programme.</div></div>
+        <div class="removed-para"><div class="para-letter">B</div><div class="para-text">We mobbed our guide with fretful questions. He shrugged and laughed. It could be a meteor. 'You have to get used to not knowing. That's the hardest part of the job,' he said. It was then I became aware of the point of being here.</div></div>
+        <div class="removed-para"><div class="para-letter">C</div><div class="para-text">What was less clear was how our night-time viewing would go. Our group featured no one who could confidently say what they were looking at in the sky, so much depended on the astronomer accompanying us.</div></div>
+        <div class="removed-para"><div class="para-letter">D</div><div class="para-text">Indeed, we learnt that Nik Szymanek, one of the world's finest astro-photographers, is a London Tube driver by day. Tom Boles, who has discovered more supernovas than anyone living, turns out to be a retired telecoms engineer.</div></div>
+        <div class="removed-para"><div class="para-letter">E</div><div class="para-text">But here the banter is not of giraffe and rhino but of astronomical terms like quarks and parsecs. A particular constellation of stars known as Leo will be turning up, cloud permitting, later that night. Who will be awake? 'We won't be able to see it till about 3.30 in the morning,' says our guide, cheerily unfazed by the idea of staying up till dawn.</div></div>
+        <div class="removed-para"><div class="para-letter">F</div><div class="para-text">My nonchalance didn't stand a chance against this passion and knowledge. I soon realised that the sky over my London home is a moth-eaten faded curtain compared with the lavishly studded dome that dominates the wilds of Africa. This is due, of course, to the total absence of light pollution.</div></div>
+        <div class="removed-para"><div class="para-letter">G</div><div class="para-text">I wasn't sure whether it had been the right decision, even though seeing the animals at close range was thrilling. But then I saw the Carina Nebula, nothing but the faintest of glows to the naked eye but a furnace of throbbing scientific possibility when seen through the telescope.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle"><div class="score-num" id="res-score">0</div><div class="score-denom">out of 6</div></div>
+      <div class="results-info"><h2 id="res-name">Results</h2><p id="res-class"></p><div class="pct" id="res-pct"></div></div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+
+</main>
+<script>
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+const QUESTIONS = [
+  { num: 41, answer: "E" },
+  { num: 42, answer: "A" },
+  { num: 43, answer: "C" },
+  { num: 44, answer: "D" },
+  { num: 45, answer: "F" },
+  { num: 46, answer: "B" }
+];
+
+let studentName = "", classCode = "", selections = {};
+
+function handleGapInput(input, num) {
+  const val = input.value.toUpperCase().replace(/[^A-G]/g, "");
+  input.value = val;
+  if (val) selections[num] = val; else delete selections[num];
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  if (!name || !code) { document.getElementById("entry-error").style.display = "block"; return; }
+  document.getElementById("entry-error").style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < QUESTIONS.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${QUESTIONS.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  const answers = [];
+  QUESTIONS.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const isCorrect = chosen === q.answer;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detail = isCorrect
+      ? `<span class="correct-answer">✓ Paragraph ${q.answer}</span>`
+      : chosen
+        ? `<span class="wrong-answer">Paragraph ${chosen}</span> → <span class="correct-answer">✓ Paragraph ${q.answer}</span>`
+        : `<span style="color:var(--text-muted)">Not answered</span> → <span class="correct-answer">✓ Paragraph ${q.answer}</span>`;
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detail}</div><div class="result-badge">${isCorrect?"✓":"✗"}</div>`;
+    list.appendChild(item);
+    answers.push({ question_number: q.num, student_answer: chosen, correct_answer: q.answer, is_correct: isCorrect });
+  });
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · CAE Part 7 – Test 2`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct, answers);
+}
+
+async function saveToSupabase(score, pct, answers) {
+  const status = document.getElementById("save-status");
+  const payload = { student_name: studentName, class_code: classCode, exam_title: "CAE Part 7 – Test 2", exam_level: "CAE", exam_part: 7, score, total_questions: QUESTIONS.length, percentage: pct, answers, submitted_at: new Date().toISOString() };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" }, body: JSON.stringify(payload) });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch(e) { status.textContent = "Results could not be saved (network error)."; status.className = "save-status error"; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

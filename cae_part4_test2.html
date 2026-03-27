@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Reading & Use of English – Part 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; padding: 0; }
+  .header-inner { max-width: 860px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .passage-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); }
+  .instructions { font-size: 13.5px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; padding-bottom: 16px; border-bottom: 1px solid var(--cream-dark); }
+  .instructions strong { color: var(--text); }
+  .example-box { background: var(--cream); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+  .example-box strong { color: var(--text); }
+
+  /* Part 4 question blocks */
+  .q4-block {
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .q4-header {
+    background: var(--cream);
+    padding: 12px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .q4-num { font-weight: 700; font-size: 15px; color: var(--navy); flex-shrink: 0; }
+  .q4-sentence1 { font-family: 'Source Serif 4', serif; font-size: 15px; line-height: 1.6; color: var(--text); }
+  .q4-keyword-row {
+    background: var(--navy);
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--gold-light);
+  }
+  .q4-body { padding: 14px 16px; }
+  .q4-sentence2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .gap-input {
+    border: none;
+    border-bottom: 2px solid var(--navy);
+    background: var(--cream-dark);
+    padding: 4px 8px;
+    width: 100%;
+    max-width: 360px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    text-transform: uppercase;
+    outline: none;
+    border-radius: 2px 2px 0 0;
+  }
+  .gap-input:focus { background: #e0dbd0; }
+
+  .submit-row { margin-top: 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .submit-row .btn-primary { width: auto; padding: 13px 36px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+  .progress-note span { font-weight: 600; color: var(--navy); }
+
+  /* self-mark results */
+  .results-header { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 8px; display: flex; align-items: center; gap: 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); flex-wrap: wrap; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--navy); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-circle .score-num { font-family: 'Source Serif 4', serif; font-size: 30px; font-weight: 600; line-height: 1; }
+  .score-circle .score-denom { font-size: 12px; opacity: 0.7; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .results-info p { font-size: 14px; color: var(--text-muted); }
+  .results-info .pct { font-size: 28px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+
+  .self-mark-note {
+    background: #fff8e6;
+    border: 1px solid #e8c96d;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #6b4f00;
+    margin-bottom: 20px;
+  }
+
+  .result-q4 {
+    background: white;
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .result-q4-header {
+    background: var(--cream);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .result-q4-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .result-q4-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .answer-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .answer-box { padding: 10px 14px; border-radius: 6px; font-size: 13px; }
+  .answer-box.yours { background: var(--cream); border: 1px solid var(--cream-dark); }
+  .answer-box.model { background: var(--correct-bg); border: 1px solid var(--correct); }
+  .answer-box .label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
+  .answer-box.yours .label { color: var(--text-muted); }
+  .answer-box.model .label { color: var(--correct); }
+  .answer-box .value { font-weight: 600; font-family: 'DM Sans', sans-serif; font-size: 14px; text-transform: uppercase; }
+
+  .self-mark-btns { display: flex; gap: 8px; }
+  .mark-btn {
+    padding: 7px 18px;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid;
+    transition: all 0.15s;
+  }
+  .mark-btn.correct-btn { border-color: var(--correct); color: var(--correct); background: white; }
+  .mark-btn.correct-btn:hover, .mark-btn.correct-btn.active { background: var(--correct); color: white; }
+  .mark-btn.wrong-btn { border-color: var(--wrong); color: var(--wrong); background: white; }
+  .mark-btn.wrong-btn:hover, .mark-btn.wrong-btn.active { background: var(--wrong); color: white; }
+
+  .final-score-row { margin-top: 20px; background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .final-score-row .label { font-size: 13px; color: var(--text-muted); }
+  .final-score-val { font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 600; color: var(--navy); }
+  .save-status { margin-top: 16px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+
+  @media (max-width: 580px) {
+    .header-right { display: none; }
+    .answer-compare { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge C1 Advanced</div>
+      <h1>Reading & Use of English <span>· Part 4</span></h1>
+    </div>
+    <div class="header-right">Test 2<br>Key Word Transformation<br>6 questions</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Before you begin</h2>
+      <p>Enter your name and class code to start the exercise. Your results will be saved automatically when you submit.</p>
+      <div class="field"><label>Your full name</label><input type="text" id="input-name" placeholder="e.g. María García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-A" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter both your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise →</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">CAE · Part 4</div>
+      <div class="meta-pill">Key Word Transformation</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="passage-card">
+      <div class="instructions">
+        For questions <strong>25–30</strong>, complete the second sentence so that it has a similar meaning to the first sentence, using the word given. <strong>Do not change the word given.</strong> You must use between <strong>three</strong> and <strong>six</strong> words, including the word given.
+      </div>
+      <div class="example-box">
+        <strong>Example (0):</strong><br>
+        James would only speak to the head of department alone. &nbsp;<strong>ON</strong><br>
+        James …… to the head of department alone.<br>
+        <strong>Answer: INSISTED ON SPEAKING</strong>
+      </div>
+
+      <div class="q4-block">
+        <div class="q4-header"><span class="q4-num">25</span><span class="q4-sentence1">The other students don't mind whether you give your presentation on Thursday or Friday.</span></div>
+        <div class="q4-keyword-row">DIFFERENCE</div>
+        <div class="q4-body">
+          <div class="q4-sentence2">It …………………………………… the other students whether you give your presentation on Thursday or Friday.</div>
+          <input class="gap-input" id="gap-25" maxlength="60" autocomplete="off" spellcheck="false" oninput="updateCount()" placeholder="type your answer in capitals">
+        </div>
+      </div>
+
+      <div class="q4-block">
+        <div class="q4-header"><span class="q4-num">26</span><span class="q4-sentence1">'What are you thinking of doing for the college's centenary celebration?' the tutor asked the students.</span></div>
+        <div class="q4-keyword-row">MIND</div>
+        <div class="q4-body">
+          <div class="q4-sentence2">The tutor asked the students what …………………………………… for the college's centenary celebration.</div>
+          <input class="gap-input" id="gap-26" maxlength="60" autocomplete="off" spellcheck="false" oninput="updateCount()" placeholder="type your answer in capitals">
+        </div>
+      </div>
+
+      <div class="q4-block">
+        <div class="q4-header"><span class="q4-num">27</span><span class="q4-sentence1">Dr. Ramesh's colleagues regarded him so highly that they forgave his inability to remember people's names.</span></div>
+        <div class="q4-keyword-row">HELD</div>
+        <div class="q4-body">
+          <div class="q4-sentence2">Dr. Ramesh …………………………………… by his colleagues that they forgave his inability to remember people's names.</div>
+          <input class="gap-input" id="gap-27" maxlength="60" autocomplete="off" spellcheck="false" oninput="updateCount()" placeholder="type your answer in capitals">
+        </div>
+      </div>
+
+      <div class="q4-block">
+        <div class="q4-header"><span class="q4-num">28</span><span class="q4-sentence1">As learning new languages had never been a problem for her, Katy didn't expect to have any difficulties when she went to live abroad.</span></div>
+        <div class="q4-keyword-row">COME</div>
+        <div class="q4-body">
+          <div class="q4-sentence2">Learning new languages had …………………………………… her so Katy didn't expect to have any difficulties when she went to live abroad.</div>
+          <input class="gap-input" id="gap-28" maxlength="60" autocomplete="off" spellcheck="false" oninput="updateCount()" placeholder="type your answer in capitals">
+        </div>
+      </div>
+
+      <div class="q4-block">
+        <div class="q4-header"><span class="q4-num">29</span><span class="q4-sentence1">I think we owe this passenger an apology, as she was apparently given incorrect train times by our call centre staff.</span></div>
+        <div class="q4-keyword-row">MISINFORMED</div>
+        <div class="q4-body">
+          <div class="q4-sentence2">I think we owe this passenger an apology, as she seems …………………………………… train times by our call centre staff.</div>
+          <input class="gap-input" id="gap-29" maxlength="60" autocomplete="off" spellcheck="false" oninput="updateCount()" placeholder="type your answer in capitals">
+        </div>
+      </div>
+
+      <div class="q4-block">
+        <div class="q4-header"><span class="q4-num">30</span><span class="q4-sentence1">If her party wins the election, which is unlikely, she'll become President.</span></div>
+        <div class="q4-keyword-row">EVENT</div>
+        <div class="q4-body">
+          <div class="q4-sentence2">In the …………………………………… the election, she'll become President.</div>
+          <input class="gap-input" id="gap-30" maxlength="60" autocomplete="off" spellcheck="false" oninput="updateCount()" placeholder="type your answer in capitals">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="submit-row">
+      <button class="btn-primary" style="width:auto;padding:13px 36px" onclick="submitExam()">Submit answers</button>
+      <div class="progress-note">Answered: <span id="answered-count">0</span> / 6</div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">—</div>
+        <div class="score-denom">out of 6</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+
+    <div class="self-mark-note">
+      ℹ️ Part 4 has multiple valid answers. Compare your answer with the model answer below and mark each question yourself.
+    </div>
+
+    <div id="results-list"></div>
+
+    <div class="final-score-row">
+      <div class="label">Your final score (update as you mark each question)</div>
+      <div class="final-score-val"><span id="live-score">0</span> / 6</div>
+    </div>
+
+    <div class="save-status" id="save-status"></div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+const QUESTIONS = [
+  { num: 25, model: "MAKES NO / LITTLE DIFFERENCE TO  or  DOES NOT / DOESN'T MAKE ANY / A / MUCH DIFFERENCE TO" },
+  { num: 26, model: "THEY HAD (GOT) IN MIND" },
+  { num: 27, model: "WAS HELD IN SUCH (HIGH) REGARD / ESTEEM" },
+  { num: 28, model: "ALWAYS COME EASILY / NATURALLY TO" },
+  { num: 29, model: "TO HAVE BEEN MISINFORMED ABOUT / OVER / REGARDING / CONCERNING / ON" },
+  { num: 30, model: "UNLIKELY EVENT OF HER PARTY WINNING  or  UNLIKELY EVENT (THAT) HER PARTY WINS" }
+];
+
+let studentName = "", classCode = "";
+let selfMarks = {}; // { 25: true/false, ... }
+let studentAnswers = {};
+let saved = false;
+
+function updateCount() {
+  let filled = 0;
+  QUESTIONS.forEach(q => { if (document.getElementById(`gap-${q.num}`).value.trim()) filled++; });
+  document.getElementById("answered-count").textContent = filled;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  if (!name || !code) { document.getElementById("entry-error").style.display = "block"; return; }
+  document.getElementById("entry-error").style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  showScreen("screen-exam");
+  document.getElementById("gap-25").focus();
+}
+
+function submitExam() {
+  const filled = QUESTIONS.filter(q => document.getElementById(`gap-${q.num}`).value.trim()).length;
+  if (filled < QUESTIONS.length) {
+    if (!confirm(`You have only answered ${filled} of ${QUESTIONS.length} questions. Submit anyway?`)) return;
+  }
+  QUESTIONS.forEach(q => {
+    studentAnswers[q.num] = document.getElementById(`gap-${q.num}`).value.trim().toUpperCase() || "—";
+  });
+  showResults();
+}
+
+function showResults() {
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · CAE Part 4 – Test 2`;
+  document.getElementById("res-pct").textContent = "Mark each question below";
+
+  QUESTIONS.forEach(q => {
+    const block = document.createElement("div");
+    block.className = "result-q4";
+    block.innerHTML = `
+      <div class="result-q4-header">
+        <span class="result-q4-num">Question ${q.num}</span>
+      </div>
+      <div class="result-q4-body">
+        <div class="answer-compare">
+          <div class="answer-box yours">
+            <div class="label">Your answer</div>
+            <div class="value">${studentAnswers[q.num]}</div>
+          </div>
+          <div class="answer-box model">
+            <div class="label">Model answer</div>
+            <div class="value" style="font-size:12px;line-height:1.5">${q.model}</div>
+          </div>
+        </div>
+        <div class="self-mark-btns">
+          <button class="mark-btn correct-btn" id="correct-${q.num}" onclick="markQ(${q.num}, true)">✓ Correct</button>
+          <button class="mark-btn wrong-btn" id="wrong-${q.num}" onclick="markQ(${q.num}, false)">✗ Incorrect</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(block);
+  });
+
+  showScreen("screen-results");
+}
+
+function markQ(num, isCorrect) {
+  selfMarks[num] = isCorrect;
+  document.getElementById(`correct-${num}`).classList.toggle("active", isCorrect);
+  document.getElementById(`wrong-${num}`).classList.toggle("active", !isCorrect);
+  updateLiveScore();
+}
+
+function updateLiveScore() {
+  const score = Object.values(selfMarks).filter(Boolean).length;
+  document.getElementById("live-score").textContent = score;
+  document.getElementById("res-score").textContent = score;
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById("res-pct").textContent = `${pct}%`;
+
+  // Save once all questions marked
+  if (Object.keys(selfMarks).length === QUESTIONS.length && !saved) {
+    saved = true;
+    saveToSupabase(score, pct);
+  }
+}
+
+async function saveToSupabase(score, pct) {
+  const status = document.getElementById("save-status");
+  status.textContent = "Saving results…";
+  const answers = QUESTIONS.map(q => ({
+    question_number: q.num,
+    student_answer: studentAnswers[q.num] || null,
+    correct_answer: q.model,
+    is_correct: selfMarks[q.num] || false
+  }));
+  const payload = { student_name: studentName, class_code: classCode, exam_title: "CAE Part 4 – Test 2", exam_level: "CAE", exam_part: 4, score, total_questions: QUESTIONS.length, percentage: pct, answers, submitted_at: new Date().toISOString() };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" }, body: JSON.stringify(payload) });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch(e) { status.textContent = "Results could not be saved (network error)."; status.className = "save-status error"; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
