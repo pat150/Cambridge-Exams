@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAE Speaking · Part 3 — Cambridge Exam Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --bg:#f5f0e8; --bg2:#ede7d9; --ink:#1a1410; --ink2:#4a3f30; --ink3:#8a7a65;
+  --accent:#b5460f; --gold:#c9a84c; --green:#2c6e49;
+  --border:rgba(26,20,16,0.12); --card:#ffffff;
+}
+body { min-height:100vh; background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--ink); }
+body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; }
+
+/* TOPBAR */
+.topbar { position:sticky; top:0; z-index:100; background:rgba(245,240,232,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 40px; height:58px; }
+.topbar-left { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.topbar-left:hover .back-arrow { transform:translateX(-3px); }
+.back-arrow { width:28px; height:28px; border:1px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; color:var(--ink2); transition:transform 0.2s; }
+.topbar-home { font-size:0.78rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); }
+.topbar-right { display:flex; align-items:center; gap:8px; }
+.level-pill { background:var(--accent); color:#fff; font-size:0.7rem; font-weight:500; letter-spacing:2px; padding:3px 10px; border-radius:2px; text-transform:uppercase; }
+.part-pill { background:var(--bg2); border:1px solid var(--border); color:var(--ink3); font-size:0.7rem; letter-spacing:2px; padding:3px 10px; border-radius:2px; text-transform:uppercase; }
+
+/* PAGE */
+.page { position:relative; z-index:1; max-width:800px; margin:0 auto; padding:40px 32px 80px; }
+
+/* TASK META BAR */
+.task-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
+.task-info { display:flex; align-items:center; gap:10px; }
+.task-badge { font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); background:var(--bg2); border:1px solid var(--border); padding:5px 12px; border-radius:3px; }
+.task-theme { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ink2); }
+.new-task-btn { background:transparent; border:1px solid var(--border); color:var(--ink3); font-size:0.75rem; letter-spacing:1px; padding:6px 14px; border-radius:3px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; }
+.new-task-btn:hover { border-color:var(--accent); color:var(--accent); }
+.new-task-btn:disabled { opacity:0.3; cursor:not-allowed; }
+
+/* MAIN QUESTION */
+.main-question {
+  background:var(--ink);
+  color:var(--bg);
+  border-radius:8px;
+  padding:28px 32px;
+  margin-bottom:28px;
+  text-align:center;
+}
+.main-question-label { font-size:0.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+.main-question-text { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:300; line-height:1.35; color:#fff; }
+
+/* TOPICS ROW */
+.topics-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+.topic-pill { padding:7px 14px; border-radius:20px; font-size:0.82rem; border:1.5px solid var(--border); background:var(--bg2); color:var(--ink3); transition:all 0.2s; cursor:default; }
+.topic-pill.active { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:500; }
+.topic-pill.done { background:var(--green); border-color:var(--green); color:#fff; }
+
+/* TIMER BAR */
+.timer-bar-outer { display:flex; align-items:center; gap:16px; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px 20px; margin-bottom:28px; }
+.timer-num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--ink); min-width:64px; line-height:1; }
+.timer-num.warning { color:var(--accent); }
+.timer-track { flex:1; height:4px; background:var(--bg2); border-radius:2px; overflow:hidden; }
+.timer-fill { height:100%; background:var(--green); border-radius:2px; transition:width 1s linear, background 0.4s; width:100%; }
+.timer-btns { display:flex; gap:8px; }
+.tbtn { padding:8px 18px; border-radius:4px; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500; cursor:pointer; border:none; transition:all 0.15s; }
+.tbtn-primary { background:var(--ink); color:var(--bg); }
+.tbtn-primary:hover { background:var(--ink2); }
+.tbtn-ghost { background:transparent; border:1px solid var(--border); color:var(--ink2); }
+.tbtn-ghost:hover { border-color:var(--ink2); }
+
+/* TOPIC CARD */
+.topic-card { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:16px; overflow:hidden; animation:rise 0.3s ease; }
+@keyframes rise { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+
+.topic-card-header { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; align-items:baseline; gap:14px; }
+.topic-num-big { font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:var(--border); line-height:1; flex-shrink:0; }
+.topic-head-right { flex:1; }
+.topic-label { font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); margin-bottom:4px; }
+.topic-name-big { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:400; color:var(--ink); line-height:1.15; }
+
+.topic-card-body { padding:24px; }
+
+/* Speak prompt */
+.speak-prompt { font-size:1rem; line-height:1.7; color:var(--ink2); margin-bottom:20px; padding:16px 20px; background:var(--bg); border-left:4px solid var(--accent); border-radius:0 6px 6px 0; }
+.speak-prompt strong { color:var(--ink); font-weight:500; }
+
+/* Partner prompts */
+.partner-wrap { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.partner-btn { display:flex; align-items:flex-start; gap:14px; padding:14px 18px; background:var(--bg); border:1.5px solid var(--border); border-radius:7px; cursor:pointer; text-align:left; font-family:'DM Sans',sans-serif; transition:all 0.18s; width:100%; }
+.partner-btn:hover:not(.open) { border-color:var(--green); background:#f0f5f2; }
+.partner-btn.open { border-color:var(--green); background:rgba(44,110,73,0.06); cursor:default; }
+.partner-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.partner-inner { flex:1; }
+.partner-top-label { font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; color:var(--green); font-weight:500; margin-bottom:4px; }
+.partner-placeholder { font-size:0.88rem; color:var(--ink3); font-style:italic; }
+.partner-text { font-size:0.95rem; color:var(--ink); line-height:1.65; display:none; }
+.partner-reply { font-size:0.75rem; color:var(--green); margin-top:8px; display:none; }
+
+/* Vocab */
+.vocab-row { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px; align-items:center; }
+.vocab-label { font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); font-weight:500; margin-right:4px; }
+.vocab-chip { background:var(--bg2); border:1px solid var(--border); border-radius:3px; padding:4px 12px; font-size:0.82rem; color:var(--ink2); }
+
+/* Next btn */
+.next-topic-btn { width:100%; padding:14px; background:var(--ink); color:var(--bg); border:none; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:500; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s; }
+.next-topic-btn:hover:not(:disabled) { background:var(--ink2); }
+.next-topic-btn:disabled { opacity:0.3; cursor:not-allowed; }
+.next-topic-btn.decision { background:var(--green); }
+.next-topic-btn.decision:hover:not(:disabled) { background:#245a3c; }
+
+/* Decision */
+.decision-card { background:var(--card); border:2px solid var(--green); border-radius:10px; padding:36px 32px; text-align:center; animation:rise 0.3s ease; margin-bottom:16px; }
+.dec-icon { font-size:2.4rem; margin-bottom:14px; }
+.dec-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:var(--ink); margin-bottom:10px; }
+.dec-q { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--ink2); font-style:italic; line-height:1.4; margin-bottom:24px; max-width:520px; margin-left:auto; margin-right:auto; }
+.dec-timer { font-family:'Cormorant Garamond',serif; font-size:3.5rem; color:var(--green); line-height:1; margin-bottom:6px; }
+.dec-timer-label { font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); margin-bottom:20px; }
+.dec-phrases { display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin-bottom:22px; }
+.dec-phrase { background:var(--bg2); border:1px solid var(--border); border-radius:3px; padding:5px 12px; font-size:0.8rem; color:var(--ink2); font-style:italic; }
+.dec-start { padding:12px 32px; background:var(--green); color:#fff; border:none; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:500; cursor:pointer; transition:all 0.15s; }
+.dec-start:hover { background:#245a3c; }
+.dec-start:disabled { opacity:0.35; cursor:not-allowed; }
+
+/* Complete */
+.complete-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:48px 32px; text-align:center; animation:rise 0.3s ease; }
+.complete-icon { font-size:3rem; margin-bottom:16px; }
+.complete-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:var(--ink); margin-bottom:10px; }
+.complete-sub { font-size:0.92rem; color:var(--ink3); line-height:1.7; margin-bottom:28px; }
+.restart-btn { padding:13px 32px; background:var(--ink); color:var(--bg); border:none; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:500; cursor:pointer; transition:all 0.15s; }
+.restart-btn:hover { background:var(--ink2); }
+
+@media(max-width:600px) {
+  .topbar{padding:0 16px;} .page{padding:24px 16px 60px;}
+  .main-question-text{font-size:1.35rem;} .topic-name-big{font-size:1.5rem;}
+  .timer-bar-outer{flex-wrap:wrap;} .topics-row{gap:6px;}
+  .topic-pill{font-size:0.76rem;padding:5px 10px;}
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a class="topbar-left" href="cae.html">
+    <div class="back-arrow">←</div>
+    <span class="topbar-home">C1 Advanced</span>
+  </a>
+  <div class="topbar-right">
+    <span class="part-pill">Speaking</span>
+    <span class="level-pill">Part 3</span>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="task-meta">
+    <div class="task-info">
+      <span class="task-badge">Task <span id="taskNum">—</span> of 10</span>
+      <span class="task-theme" id="taskTheme">Loading…</span>
+    </div>
+    <button class="new-task-btn" id="newTaskBtn" onclick="loadNewTask()">↺ New task</button>
+  </div>
+
+  <div class="main-question">
+    <div class="main-question-label">Discuss all five topics, then reach a decision</div>
+    <div class="main-question-text" id="mainQuestion">—</div>
+  </div>
+
+  <div class="topics-row" id="topicsRow"></div>
+
+  <div class="timer-bar-outer">
+    <div class="timer-num" id="timerNum">3:00</div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="timer-btns">
+      <button class="tbtn tbtn-primary" id="startBtn" onclick="toggleTimer()">▶ Start</button>
+      <button class="tbtn tbtn-ghost" onclick="resetTimer()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div id="mainCol"></div>
+</div>
+
+<script>
+const TASKS = [
+  { id:1, theme:'The Environment',
+    question:'How do these environmental issues impact on people\'s lives today?',
+    topics:['extreme weather','food shortages','polluted rivers','energy provision','endangered animals'],
+    phases:[
+      {label:'Topic 1: extreme weather',hint:'How does extreme weather affect daily life, homes, infrastructure?'},
+      {label:'Topic 2: food shortages',hint:'Prices, access, political tension — who suffers most?'},
+      {label:'Topic 3: polluted rivers',hint:'Health, communities, wildlife — local and global.'},
+      {label:'Topic 4: energy provision',hint:'Wind farms, renewables — jobs, landscape, debate.'},
+      {label:'Topic 5: endangered animals',hint:'Biodiversity loss — why does it matter for people?'},
+      {label:'🤝 Reach a decision',hint:'Which issue has the greatest impact on people today?'},
+    ],
+    partnerSays:[
+      ['I think extreme weather is becoming almost normalised — floods and heatwaves are constantly in the news. Do you think governments are doing enough to prepare communities?','It\'s interesting — it seems to affect poorer communities far more severely than wealthy ones. Would you agree with that?'],
+      ['Food shortages seem to be getting worse, especially with supply chain disruption. Do you think this is mainly a political problem or a practical one?','I wonder if people in wealthier countries are simply unaware of how serious this is globally. What\'s your view?'],
+      ['Polluted rivers feel like a local issue but actually affect huge numbers of people downstream. Do you think individuals can make a difference here, or does it require government action?','There\'s also the effect on tourism and local economies — how significant do you think that is?'],
+      ['Energy provision is really controversial — nobody wants a wind farm near their home but everyone wants clean energy. How do you think we resolve that tension?','I think the transition to renewables is moving faster than people expected. Do you feel optimistic about it?'],
+      ['Endangered animals feel very distant from everyday life for most people — do you think that\'s why it doesn\'t get enough attention?','There\'s a strong argument that biodiversity loss affects human food chains and medicine. Do you find that convincing?'],
+    ],
+    vocab:[['have a devastating impact on','the knock-on effect','disproportionately affects'],['exacerbate the problem','food insecurity','supply chain disruption'],['downstream consequences','hold corporations accountable','regulatory failure'],['vested interests','the energy transition','public opposition'],['biodiversity loss','ecosystem collapse','raise awareness']],
+    decision:'Which of these environmental issues has the greatest impact on people\'s daily lives?'
+  },
+  { id:2, theme:'Healthy Living',
+    question:'How can these different things contribute to a healthy life?',
+    topics:['busy social life','healthy diet','regular exercise','good working conditions','living close to nature'],
+    phases:[
+      {label:'Topic 1: busy social life',hint:'How do relationships and social connection affect wellbeing?'},
+      {label:'Topic 2: healthy diet',hint:'What role does food play in physical and mental health?'},
+      {label:'Topic 3: regular exercise',hint:'Beyond fitness — how does exercise affect mood and longevity?'},
+      {label:'Topic 4: good working conditions',hint:'Stress, work-life balance, job satisfaction and health.'},
+      {label:'Topic 5: living close to nature',hint:'Green spaces, fresh air, mental health benefits.'},
+      {label:'🤝 Reach a decision',hint:'Which of these contributes most to a healthy life?'},
+    ],
+    partnerSays:[
+      ['There\'s a lot of research suggesting that loneliness is as harmful as smoking — do you think we underestimate the importance of social life?','It seems like quality matters more than quantity when it comes to friendships. Would you agree with that?'],
+      ['A healthy diet is probably the most fundamental factor — but it\'s also the most affected by income and access. Do you think it\'s fair to just tell people to eat better?','I find it fascinating how much mental health is influenced by what we eat. Is that something you\'d considered?'],
+      ['Exercise seems to be almost a magic solution — it helps with everything from depression to dementia. Why do you think so many people still don\'t do enough?','I think the key is finding something you actually enjoy rather than forcing yourself to the gym. What works for you personally?'],
+      ['Working conditions are so often overlooked in health conversations — stress and burnout can cause serious physical illness. Do you think employers take this seriously enough?','The pandemic really changed attitudes to flexible working. Do you think that shift has been positive overall?'],
+      ['Living near green spaces has been shown to reduce stress and improve mental health dramatically. Do you think access to nature should be considered a public health issue?','It\'s quite unequal though — people in cities often have very little access. How do you think that could be addressed?'],
+    ],
+    vocab:[['social wellbeing','a sense of belonging','combat isolation'],['nutritional value','processed food','mental and physical health'],['mood-boosting effects','a sedentary lifestyle','proven benefits'],['work-life balance','occupational stress','employee wellbeing'],['access to green spaces','restorative effects','urban planning']],
+    decision:'Which of these factors contributes most to a long and healthy life?'
+  },
+  { id:3, theme:'Everyday Annoyances',
+    question:'Why might these different things annoy people?',
+    topics:['problems with technology','weather','noise','queuing','bad manners'],
+    phases:[
+      {label:'Topic 1: technology problems',hint:'Frustration, dependency, when things go wrong at the worst time.'},
+      {label:'Topic 2: weather',hint:'How does bad weather affect mood, plans, daily life?'},
+      {label:'Topic 3: noise',hint:'Neighbours, traffic, workplaces — impact on wellbeing.'},
+      {label:'Topic 4: queuing',hint:'Cultural attitudes to waiting — why is it so frustrating?'},
+      {label:'Topic 5: bad manners',hint:'What counts as bad manners? Has etiquette changed?'},
+      {label:'🤝 Reach a decision',hint:'Which is most universally annoying, and why?'},
+    ],
+    partnerSays:[
+      ['I think technology problems are so frustrating because we\'ve become completely dependent on it — when it fails, we feel helpless. Would you agree?','There\'s also the feeling that it should just work — we\'ve lost patience for anything less than instant. Do you think that\'s changed us?'],
+      ['Weather is interesting because it\'s completely outside our control, yet it affects our mood so dramatically. Why do you think that is?','I think people in countries with unpredictable climates develop a particular obsession with the weather. Do you notice that?'],
+      ['Noise is one of those things that varies hugely depending on personality — some people are genuinely debilitated by it. Do you think noise pollution is taken seriously enough?','Working in a noisy environment must have real health consequences — is that something workplaces should be responsible for?'],
+      ['Queuing is fascinating culturally — in some countries it\'s a point of national pride, in others total chaos. What\'s your experience?','I think the real frustration is the uncertainty — not knowing how long it will take. Do you think that\'s the main issue?'],
+      ['Bad manners seem increasingly common — or maybe we just notice them more. Do you think social media has made people ruder?','It\'s interesting what counts as bad manners across cultures — something normal in one place is offensive in another. Can you think of examples?'],
+    ],
+    vocab:[['over-reliance on technology','technical failure','lose patience with'],['affect your mood','unpredictable','beyond our control'],['noise pollution','concentration levels','have a detrimental effect on'],['a waste of time','inefficient systems','lack of organisation'],['a decline in standards','social etiquette','increasingly common']],
+    decision:'Which of these everyday annoyances has the biggest negative impact on quality of life?'
+  },
+  { id:4, theme:'Global Issues',
+    question:'Why are these issues important to people around the world today?',
+    topics:['crime','education for all','pollution','poverty','over-population'],
+    phases:[
+      {label:'Topic 1: crime',hint:'How does crime affect communities, trust, and quality of life?'},
+      {label:'Topic 2: education for all',hint:'Access to education — inequality, opportunity, global impact.'},
+      {label:'Topic 3: pollution',hint:'Air, water, soil — consequences for health and the planet.'},
+      {label:'Topic 4: poverty',hint:'Causes, cycles, what can be done — local and global.'},
+      {label:'Topic 5: over-population',hint:'Resources, cities, migration — is it really a problem?'},
+      {label:'🤝 Reach a decision',hint:'Which issue is most urgent for the world today?'},
+    ],
+    partnerSays:[
+      ['Crime doesn\'t just affect victims directly — the fear of crime changes how people live their whole lives. Do you think that fear is proportionate to the actual risk?','There\'s also the question of whether crime is a symptom of other problems like poverty or inequality. What do you think?'],
+      ['Education is probably the most powerful tool for breaking cycles of poverty — but access is still wildly unequal globally. What do you think can actually change that?','It\'s not just about access — quality matters enormously too. Do you think wealthy countries do enough to support education abroad?'],
+      ['Pollution is such a broad topic — air, water, plastic, soil. Do you think people have a real sense of the scale of the problem?','I find it hard to understand why progress is so slow when the science is so clear. What do you think the main obstacles are?'],
+      ['Poverty is sometimes talked about as though it\'s inevitable — but we actually have the resources to eliminate it. Do you find that frustrating?','There\'s a debate about whether aid helps or creates dependency. What\'s your view on the most effective approaches?'],
+      ['Over-population is complex — some argue it\'s a myth and the real issue is overconsumption. What\'s your view?','It intersects with migration and climate — people moving from uninhabitable areas. How do you think countries should respond?'],
+    ],
+    vocab:[['fear of crime','undermine community trust','disproportionately affects'],['equality of opportunity','break the cycle of poverty','access to quality education'],['long-term consequences','hold governments accountable','unsustainable levels of'],['structural inequality','vicious cycle','short-term aid vs. long-term development'],['resource distribution','unsustainable consumption','climate migration']],
+    decision:'Which of these global issues is the most urgent and why?'
+  },
+  { id:5, theme:'Technology & Society',
+    question:'How might these aspects of technology change the way we live in the future?',
+    topics:['artificial intelligence','self-driving vehicles','social media','remote working','online shopping'],
+    phases:[
+      {label:'Topic 1: artificial intelligence',hint:'Jobs, creativity, decision-making — opportunity or threat?'},
+      {label:'Topic 2: self-driving vehicles',hint:'Safety, freedom, impact on transport and cities.'},
+      {label:'Topic 3: social media',hint:'Communication, mental health, politics, misinformation.'},
+      {label:'Topic 4: remote working',hint:'Productivity, isolation, work-life balance, city centres.'},
+      {label:'Topic 5: online shopping',hint:'Convenience vs. high streets, delivery pollution, jobs.'},
+      {label:'🤝 Reach a decision',hint:'Which technology will change daily life most significantly?'},
+    ],
+    partnerSays:[
+      ['AI seems to be developing faster than our ability to regulate it — do you think that\'s genuinely dangerous or are people overreacting?','There\'s also the question of creativity — can AI really replace human artists and writers, or is there something it fundamentally can\'t do?'],
+      ['Self-driving vehicles could transform cities — fewer parking spaces, fewer accidents. But do you think people will actually trust them?','There\'s also the impact on jobs in transport — millions of drivers could be made redundant. How do you think society should handle that?'],
+      ['Social media has transformed how we communicate but also how we feel about ourselves. Do you think the negatives now outweigh the positives?','It\'s also had a huge impact on politics — misinformation spreads so fast. Do you think platforms should be more heavily regulated?'],
+      ['Remote working seemed like a revolution during the pandemic but many companies are pulling people back to the office. What do you think is the right balance?','There\'s also the effect on city centres — empty office blocks, struggling businesses. Is that a problem we should be concerned about?'],
+      ['Online shopping is incredibly convenient but it\'s devastating high streets. Do you feel any personal responsibility for that as a consumer?','The environmental impact of all those delivery vans is significant too. Do you think that\'s something consumers think about?'],
+    ],
+    vocab:[['pose a threat to','reshape the job market','raise ethical questions about'],['autonomous vehicles','gain public trust','transform urban infrastructure'],['misinformation spreads rapidly','regulate social media','have a negative impact on mental health'],['blurring the boundaries between work and home','flexible arrangements','a shift in working culture'],['the decline of the high street','consumer behaviour','carbon footprint']],
+    decision:'Which of these technologies will have the most significant impact on daily life in the future?'
+  },
+  { id:6, theme:'Education',
+    question:'How important are these different aspects of a good education?',
+    topics:['learning a foreign language','sport and physical activity','arts and creativity','digital skills','learning to cook'],
+    phases:[
+      {label:'Topic 1: foreign language',hint:'Career, culture, travel, cognitive benefits.'},
+      {label:'Topic 2: sport and activity',hint:'Health, teamwork, discipline, mental wellbeing.'},
+      {label:'Topic 3: arts and creativity',hint:'Critical thinking, self-expression, cultural value.'},
+      {label:'Topic 4: digital skills',hint:'The job market, everyday life, the digital divide.'},
+      {label:'Topic 5: learning to cook',hint:'Independence, health, culture, social skills.'},
+      {label:'🤝 Reach a decision',hint:'Which should be compulsory in all schools?'},
+    ],
+    partnerSays:[
+      ['Learning a foreign language seems to be declining in many countries — people assume English is enough. Do you think that\'s a problem?','There are also cognitive benefits — bilingual people develop certain skills more strongly. Is that something that should be promoted more?'],
+      ['Sport in schools is often underfunded and marginalised by academic pressure. Do you think that\'s shortsighted?','It also teaches things you can\'t learn in a classroom — teamwork, resilience, losing gracefully. Are those essential life skills?'],
+      ['Arts subjects are often the first to be cut when budgets are tight. Do you think that reflects a misunderstanding of what education is for?','Creativity is increasingly valued by employers too. Does the arts/STEM divide still make sense?'],
+      ['Digital literacy seems absolutely essential now — but what should it include? Coding? Online safety? Media literacy?','There\'s also a growing digital divide between those with access to technology and those without. How should schools address that?'],
+      ['Learning to cook seems almost quaint — but the health implications of not being able to are serious. What do you think?','It\'s also connected to culture and identity — traditional recipes, family history. Is there a case for it beyond practical skills?'],
+    ],
+    vocab:[['cognitive benefits','cultural awareness','an invaluable skill'],['fosters resilience','teamwork and discipline','physical and mental wellbeing'],['critical thinking','self-expression','nurture creativity'],['digital literacy','prepare students for the job market','the digital divide'],['practical life skills','nutritional awareness','independence and self-sufficiency']],
+    decision:'Which of these should be considered the most important and made compulsory in all schools?'
+  },
+  { id:7, theme:'Work & Career',
+    question:'How important are these different factors when choosing a career?',
+    topics:['salary','job security','work-life balance','making a difference to society','opportunities for travel'],
+    phases:[
+      {label:'Topic 1: salary',hint:'How much does money matter? At what point is it enough?'},
+      {label:'Topic 2: job security',hint:'Zero-hours contracts, freelancing, the gig economy.'},
+      {label:'Topic 3: work-life balance',hint:'Burnout, wellbeing, changing attitudes to work.'},
+      {label:'Topic 4: making a difference',hint:'Meaningful work — does purpose outweigh pay?'},
+      {label:'Topic 5: opportunities for travel',hint:'Who values this? How has remote work changed things?'},
+      {label:'🤝 Reach a decision',hint:'Which factor is most important when choosing a career?'},
+    ],
+    partnerSays:[
+      ['Salary is important up to a point — research suggests beyond a certain income more money doesn\'t make you happier. Do you find that convincing?','There\'s also the question of what salary represents — status, security, freedom. Do you think it\'s really about the money itself?'],
+      ['Job security feels increasingly rare — the gig economy and zero-hours contracts have changed everything. Do you think that\'s purely negative or is there freedom in it?','It also seems to affect mental health significantly — the uncertainty can be very stressful. How do you think that should be addressed?'],
+      ['Burnout is at epidemic levels apparently — do you think employers are genuinely trying to address this or just paying lip service?','The four-day working week is being trialled in various places. Do you think that\'s a realistic solution or an unrealistic aspiration?'],
+      ['Meaningful work is increasingly valued — especially by younger generations. Do you think this is a luxury or a genuine shift in values?','There\'s a tension between wanting meaningful work and needing to pay bills. How do people resolve that in practice?'],
+      ['Opportunities for travel used to be a major draw for certain careers — but remote work has changed that. Do you think it still matters as much?','It also depends hugely on your stage of life — travel might be very important at 25 but less so at 40. Would you agree?'],
+    ],
+    vocab:[['financial security','above a certain threshold','beyond a certain point'],['precarious employment','the gig economy','zero-hours contracts'],['work-life balance','at risk of burnout','a healthy boundary between'],['a sense of purpose','meaningful work','make a tangible difference'],['career opportunities','expanding your horizons','flexible arrangements']],
+    decision:'Which of these factors is the most important consideration when choosing a career?'
+  },
+  { id:8, theme:'Cities & Urban Life',
+    question:'What are the main challenges facing people who live in cities today?',
+    topics:['housing costs','air pollution','public transport','loneliness','crime and safety'],
+    phases:[
+      {label:'Topic 1: housing costs',hint:'Renting vs. owning, young people, gentrification.'},
+      {label:'Topic 2: air pollution',hint:'Health, traffic, green spaces, electric vehicles.'},
+      {label:'Topic 3: public transport',hint:'Reliability, cost, impact on quality of life.'},
+      {label:'Topic 4: loneliness',hint:'Anonymity of cities — why are people lonely in crowds?'},
+      {label:'Topic 5: crime and safety',hint:'Fear of crime vs. actual crime — how does it affect city life?'},
+      {label:'🤝 Reach a decision',hint:'Which challenge should city planners prioritise?'},
+    ],
+    partnerSays:[
+      ['Housing costs in cities have become genuinely unaffordable for many — do you think home ownership is still a realistic aspiration for young people?','There\'s also gentrification — when an area becomes desirable, the original community gets priced out. Is that unavoidable?'],
+      ['Air pollution causes serious health problems — respiratory illness, heart disease. Do you think people are sufficiently aware of this?','Electric vehicles might help eventually but the transition is slow. Do you think cities should do more to restrict car use in the meantime?'],
+      ['Public transport is the backbone of a functioning city — but it\'s often unreliable and expensive. Do you think it should be free?','There\'s a strong environmental argument for investing in it too. Do you think that argument is gaining traction with city governments?'],
+      ['Loneliness in cities seems paradoxical — surrounded by millions of people but feeling isolated. Why do you think that happens?','I wonder if the design of cities contributes — huge apartment blocks, commutes where nobody makes eye contact. Could urban design solve this?'],
+      ['The fear of crime often exceeds actual crime rates — but that fear alone damages quality of life. How should cities address the perception as well as the reality?','There\'s also whether crime is a symptom of inequality rather than a standalone problem. What do you think?'],
+    ],
+    vocab:[['housing affordability','social mobility','price out local communities'],['air quality','long-term health consequences','reduce carbon emissions'],['reliable infrastructure','invest in public transport','reduce congestion'],['social isolation','a sense of community','urban anonymity'],['fear of crime','community policing','address the root causes']],
+    decision:'Which of these urban challenges should city planners make their highest priority?'
+  },
+  { id:9, theme:'Leisure & Wellbeing',
+    question:'How do these leisure activities benefit people\'s lives?',
+    topics:['reading','travel and tourism','team sports','volunteering','spending time in nature'],
+    phases:[
+      {label:'Topic 1: reading',hint:'Mental stimulation, empathy, escapism — in decline?'},
+      {label:'Topic 2: travel and tourism',hint:'Broadening horizons vs. environmental cost.'},
+      {label:'Topic 3: team sports',hint:'Fitness, community, discipline, competition.'},
+      {label:'Topic 4: volunteering',hint:'Social bonds, purpose, community impact.'},
+      {label:'Topic 5: time in nature',hint:'Mental health, disconnecting, access inequality.'},
+      {label:'🤝 Reach a decision',hint:'Which has the greatest overall benefit?'},
+    ],
+    partnerSays:[
+      ['Reading seems to be in decline — people read less and scroll more. Do you think that\'s a problem or just a change in how we consume information?','There\'s evidence that reading fiction increases empathy — you inhabit other perspectives. Do you think that benefit is undervalued?'],
+      ['Travel broadens the mind, as they say — but it also has a significant carbon footprint. Do you feel any conflict about that?','Mass tourism can also damage the very places people visit — overtourism is destroying some beautiful locations. What\'s the solution?'],
+      ['Team sports teach things that are hard to learn any other way — how to lose, how to depend on others, how to perform under pressure. Do you agree?','There\'s also a huge community aspect — local sports clubs bring people together across social divides. Is that underappreciated?'],
+      ['Volunteering seems to benefit the volunteer as much as the people helped — there\'s strong evidence it improves mental health. Does that change how we think about it?','It also builds skills and connections that can be valuable professionally. Do you think that motivation makes it less genuine?'],
+      ['Spending time in nature is increasingly recognised as essential for mental health — not just pleasant but genuinely therapeutic. Do you think access is distributed fairly?','There\'s also whether we\'ve become too disconnected from the natural world and what that means long-term. What do you think?'],
+    ],
+    vocab:[['stimulate the imagination','foster empathy','in decline'],['broaden your horizons','at the expense of the environment','responsible tourism'],['instil discipline','foster a sense of community','competitive spirit'],['give something back','a sense of purpose','mutually beneficial'],['restorative effects','access to green spaces','disconnect from technology']],
+    decision:'Which of these leisure activities has the greatest overall benefit for people\'s wellbeing?'
+  },
+  { id:10, theme:'Food & Culture',
+    question:'How do these aspects of food reflect or shape the culture of a country?',
+    topics:['traditional recipes','fast food chains','street food markets','fine dining','food waste'],
+    phases:[
+      {label:'Topic 1: traditional recipes',hint:'Identity, heritage, generational transmission of culture.'},
+      {label:'Topic 2: fast food chains',hint:'Globalisation, convenience, impact on local food culture.'},
+      {label:'Topic 3: street food markets',hint:'Community, diversity, accessibility, tourism.'},
+      {label:'Topic 4: fine dining',hint:'Status, creativity, who has access to it?'},
+      {label:'Topic 5: food waste',hint:'Cultural attitudes to waste — moral and environmental issues.'},
+      {label:'🤝 Reach a decision',hint:'Which aspect best reflects a country\'s culture?'},
+    ],
+    partnerSays:[
+      ['Traditional recipes are a form of cultural memory — when they disappear, something irreplaceable is lost. Do you think younger generations value them enough?','There\'s also the question of what "traditional" means — food cultures have always borrowed and evolved. Is authenticity a myth?'],
+      ['Fast food chains are often criticised for homogenising culture — the same restaurants in every city worldwide. Do you think that\'s a real cultural loss?','There\'s also the economic argument — they provide cheap food and employment. Is criticism of fast food a bit elitist?'],
+      ['Street food markets seem to capture something authentic — accessible, diverse, community-focused. Do you agree?','They\'ve also become very fashionable and sometimes quite expensive. Does that change their character?'],
+      ['Fine dining is creative and culturally significant but accessible only to a tiny minority. Does that limit its cultural importance?','There\'s also an argument that fine dining sets trends that filter down to everyday cooking. Is that convincing?'],
+      ['Food waste is a massive moral issue — we throw away enormous amounts while people go hungry. Do you think individuals or governments are more responsible for addressing this?','Cultural attitudes to waste vary enormously — some cultures have a deep aversion to wasting food, others don\'t. What shapes that?'],
+    ],
+    vocab:[['cultural heritage','pass down through generations','a sense of identity'],['cultural homogenisation','globalisation','at the expense of local culture'],['accessible to all','reflect the diversity of','a sense of community'],['culinary creativity','exclusive vs. accessible','set the trend'],['food waste','moral implications','reduce our environmental impact']],
+    decision:'Which aspect of food culture best reflects the identity of a country?'
+  },
+];
+
+let currentTask = null, lastTaskId = null, sessionStarted = false;
+let timerSecs = 180, timerInt = null, timerRunning = false;
+
+function fmt(s) { return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+
+function beep() {
+  try {
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    [0,0.18,0.36].forEach(o => {
+      const osc=ctx.createOscillator(), g=ctx.createGain();
+      osc.connect(g); g.connect(ctx.destination);
+      osc.frequency.value=660;
+      g.gain.setValueAtTime(0.35,ctx.currentTime+o);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+o+0.14);
+      osc.start(ctx.currentTime+o); osc.stop(ctx.currentTime+o+0.16);
+    });
+  } catch(e){}
+}
+
+function loadNewTask() {
+  if (sessionStarted) return;
+  let t;
+  do { t = TASKS[Math.floor(Math.random()*TASKS.length)]; }
+  while (TASKS.length > 1 && t.id === lastTaskId);
+  lastTaskId = t.id; currentTask = t;
+  document.getElementById('taskNum').textContent = t.id;
+  document.getElementById('taskTheme').textContent = t.theme;
+  document.getElementById('mainQuestion').textContent = t.question;
+  renderTopicPills();
+  renderCards();
+  resetTimer();
+}
+
+function renderTopicPills() {
+  document.getElementById('topicsRow').innerHTML = currentTask.topics.map((tp,i) =>
+    `<span class="topic-pill" id="pill-${i}">${tp}</span>`
+  ).join('');
+}
+
+function updatePills(idx) {
+  currentTask.topics.forEach((_,i) => {
+    const el = document.getElementById('pill-'+i);
+    if (!el) return;
+    el.classList.remove('active','done');
+    if (i < idx) el.classList.add('done');
+    else if (i === idx) el.classList.add('active');
+  });
+}
+
+function renderCards() {
+  const col = document.getElementById('mainCol');
+  col.innerHTML = '';
+  currentTask.topics.forEach((topic, i) => {
+    const partners = currentTask.partnerSays[i]||[];
+    const vocab = currentTask.vocab[i]||[];
+    const isLast = i === currentTask.topics.length-1;
+
+    const card = document.createElement('div');
+    card.className = 'topic-card'; card.id = 'card-'+i;
+    if (i > 0) card.style.display = 'none';
+
+    const partnerHTML = partners.map((p,j) => `
+      <button class="partner-btn" id="pb-${i}-${j}" onclick="openPartner(${i},${j})">
+        <span class="partner-icon">💬</span>
+        <div class="partner-inner">
+          <div class="partner-top-label">Partner might say — tap to reveal</div>
+          <div class="partner-placeholder" id="ph-${i}-${j}">Tap to see what your partner might say, then respond out loud.</div>
+          <div class="partner-text" id="pt-${i}-${j}">${p}</div>
+          <div class="partner-reply" id="pr-${i}-${j}">✓ Now respond out loud — agree, disagree, or build on the point.</div>
+        </div>
+      </button>`).join('');
+
+    const vocabHTML = vocab.length ? `
+      <div class="vocab-row">
+        <span class="vocab-label">Try using:</span>
+        ${vocab.map(v=>`<span class="vocab-chip">${v}</span>`).join('')}
+      </div>` : '';
+
+    card.innerHTML = `
+      <div class="topic-card-header">
+        <div class="topic-num-big">${i+1}</div>
+        <div class="topic-head-right">
+          <div class="topic-label">Topic ${i+1} of ${currentTask.topics.length}</div>
+          <div class="topic-name-big">${topic}</div>
+        </div>
+      </div>
+      <div class="topic-card-body">
+        <div class="speak-prompt">
+          <strong>Your turn first —</strong> speak for 3–4 sentences about <em>${topic}</em> in response to the question above.
+        </div>
+        <div class="partner-wrap">${partnerHTML}</div>
+        ${vocabHTML}
+        <button class="next-topic-btn${isLast?' decision':''}" id="nb-${i}" onclick="nextTopic(${i})">
+          ${isLast ? '🤝 Move to decision' : 'Next topic →'}
+        </button>
+      </div>`;
+    col.appendChild(card);
+    if (i === 0) updatePills(0);
+  });
+
+  // Decision card
+  const dc = document.createElement('div');
+  dc.id = 'decision-card'; dc.className = 'decision-card'; dc.style.display = 'none';
+  dc.innerHTML = `
+    <div class="dec-icon">🤝</div>
+    <div class="dec-title">Reach a Decision</div>
+    <div class="dec-q">"${currentTask.decision}"</div>
+    <div class="dec-timer" id="decTimer">1:00</div>
+    <div class="dec-timer-label">time to agree</div>
+    <div class="dec-phrases">
+      ${["Shall we say that…?","I think we both agree that…","On balance, I'd say…","Would you go along with…?","Taking everything into account…"].map(p=>`<span class="dec-phrase">${p}</span>`).join('')}
+    </div>
+    <button class="dec-start" id="decBtn" onclick="startDecTimer()">▶ Start decision timer</button>`;
+  col.appendChild(dc);
+
+  // Complete card
+  const cc = document.createElement('div');
+  cc.id = 'complete-card'; cc.className = 'complete-card'; cc.style.display = 'none';
+  cc.innerHTML = `
+    <div class="complete-icon">✓</div>
+    <div class="complete-title">Task Complete</div>
+    <div class="complete-sub">Well done — you've worked through all five topics and reached a decision. Try a new task to keep practising.</div>
+    <button class="restart-btn" onclick="loadNewTask()">↺ New random task</button>`;
+  col.appendChild(cc);
+}
+
+function openPartner(ti, pi) {
+  const btn = document.getElementById(`pb-${ti}-${pi}`);
+  if (btn.classList.contains('open')) return;
+  btn.classList.add('open');
+  document.getElementById(`ph-${ti}-${pi}`).style.display = 'none';
+  document.getElementById(`pt-${ti}-${pi}`).style.display = 'block';
+  document.getElementById(`pr-${ti}-${pi}`).style.display = 'block';
+}
+
+function nextTopic(idx) {
+  document.getElementById(`nb-${idx}`).disabled = true;
+  document.getElementById('card-'+idx).style.opacity = '0.45';
+  sessionStarted = true;
+  document.getElementById('newTaskBtn').disabled = true;
+
+  const isLast = idx === currentTask.topics.length-1;
+  updatePills(idx+1);
+
+  if (isLast) {
+    const dc = document.getElementById('decision-card');
+    dc.style.display = 'block';
+    setTimeout(()=>dc.scrollIntoView({behavior:'smooth',block:'start'}),50);
+  } else {
+    const next = document.getElementById('card-'+(idx+1));
+    next.style.display = 'block';
+    setTimeout(()=>next.scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }
+}
+
+let decInt=null, decSecs=60;
+function startDecTimer() {
+  document.getElementById('decBtn').disabled = true;
+  decSecs = 60;
+  const el = document.getElementById('decTimer');
+  decInt = setInterval(()=>{
+    decSecs--;
+    el.textContent = fmt(decSecs);
+    if (decSecs <= 0) {
+      clearInterval(decInt); beep();
+      el.textContent = "Time's up!"; el.style.color = 'var(--accent)';
+      setTimeout(()=>{
+        document.getElementById('decision-card').style.display = 'none';
+        const cc = document.getElementById('complete-card');
+        cc.style.display = 'block';
+        cc.scrollIntoView({behavior:'smooth',block:'start'});
+      }, 1500);
+    }
+  }, 1000);
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInt); timerRunning = false;
+    document.getElementById('startBtn').textContent = '▶ Resume';
+  } else {
+    timerRunning = true;
+    document.getElementById('startBtn').textContent = '⏸ Pause';
+    timerInt = setInterval(()=>{
+      timerSecs--;
+      const el = document.getElementById('timerNum');
+      el.textContent = fmt(timerSecs);
+      el.className = 'timer-num'+(timerSecs<=30?' warning':'');
+      document.getElementById('timerFill').style.width = (timerSecs/180*100)+'%';
+      document.getElementById('timerFill').style.background = timerSecs<=30 ? 'var(--accent)' : 'var(--green)';
+      if (timerSecs<=0) { clearInterval(timerInt); timerRunning=false; beep(); document.getElementById('startBtn').textContent='▶ Start'; }
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInt); timerRunning=false; timerSecs=180;
+  document.getElementById('timerNum').textContent='3:00';
+  document.getElementById('timerNum').className='timer-num';
+  document.getElementById('timerFill').style.width='100%';
+  document.getElementById('timerFill').style.background='var(--green)';
+  document.getElementById('startBtn').textContent='▶ Start';
+}
+
+loadNewTask();
+</script>
+</body>
+</html>
