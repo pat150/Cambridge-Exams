@@ -42,10 +42,11 @@ h1{font-family:'Source Serif 4',serif;font-size:clamp(1.4rem,3.5vw,2rem);
 .spider-section{background:var(--navy);padding:28px 32px}
 .part-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   color:var(--gold);margin-bottom:6px}
-.discuss-q{font-family:'Source Serif 4',serif;font-size:clamp(.95rem,2vw,1.15rem);
-  color:var(--white);line-height:1.5;font-style:italic}
-.spider-wrap{display:flex;justify-content:center;align-items:center;margin-top:20px}
-.spider-svg{width:100%;max-width:560px;height:auto}
+.discuss-q{font-family:'Source Serif 4',serif;font-size:clamp(1rem,2.2vw,1.25rem);
+  color:var(--gold-light);line-height:1.6;font-style:italic;background:rgba(255,255,255,0.07);
+  border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:4px}
+.spider-wrap{display:flex;justify-content:center;align-items:center;margin-top:24px}
+.spider-svg{width:100%;max-width:660px;height:auto}
 /* phase bar */
 .phase-bar{display:flex;background:var(--cream);border-bottom:2px solid var(--cream-dark)}
 .phase-block{flex:1;padding:14px 18px;display:flex;flex-direction:column;gap:8px;
@@ -160,7 +161,7 @@ audio{height:30px;width:100%;accent-color:var(--navy);margin-top:4px}
       <div class="part-label">Part 3 &middot; 4 minutes &middot; Talk together</div>
       <div class="discuss-q" id="discussQ"></div>
       <div class="spider-wrap">
-        <svg class="spider-svg" id="spiderSvg" viewBox="0 0 560 310" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg class="spider-svg" id="spiderSvg" viewBox="0 0 660 380" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
     </div>
 
@@ -335,20 +336,23 @@ function loadTest(idx) {
 function drawSpider(p3) {
   var svg = document.getElementById("spiderSvg");
   while (svg.firstChild) svg.removeChild(svg.firstChild);
-  var cx=280, cy=155, r=110;
+  var cx=330, cy=190, r=145;
   var n = p3.prompts.length;
   var angles = [];
   for (var i=0; i<n; i++) angles.push(-Math.PI/2 + (2*Math.PI/n)*i);
 
-  var rect = svgEl("rect",{x:cx-80,y:cy-42,width:160,height:84,rx:10,
-    fill:"none",stroke:"white","stroke-width":"2"});
+  // Central question box — auto height
+  var cLines = wrapText(p3.question, 22);
+  var boxH = cLines.length * 22 + 24;
+  var boxW = 180;
+  var rect = svgEl("rect",{x:cx-boxW/2,y:cy-boxH/2,width:boxW,height:boxH,rx:12,
+    fill:"rgba(255,255,255,0.10)",stroke:"rgba(201,168,76,0.9)","stroke-width":"2"});
   svg.appendChild(rect);
 
-  var lines = wrapText(p3.question, 20);
-  lines.forEach(function(line, i) {
-    var t = svgEl("text",{x:cx, y:cy - (lines.length-1)*9 + i*18,
+  cLines.forEach(function(line, i) {
+    var t = svgEl("text",{x:cx, y:cy - (cLines.length-1)*11 + i*22,
       "text-anchor":"middle",fill:"white",
-      "font-family":"Source Serif 4,serif","font-size":"12","font-style":"italic","font-weight":"600"});
+      "font-family":"Source Serif 4,serif","font-size":"13","font-style":"italic","font-weight":"600"});
     t.textContent = line;
     svg.appendChild(t);
   });
@@ -356,21 +360,21 @@ function drawSpider(p3) {
   angles.forEach(function(angle, i) {
     var px = cx + r*Math.cos(angle);
     var py = cy + r*Math.sin(angle);
-    var ex = cx + 85*Math.cos(angle);
-    var ey = cy + 45*Math.sin(angle);
-    var ln = svgEl("line",{x1:ex,y1:ey,x2:px,y2:py,
-      stroke:"rgba(201,168,76,0.6)","stroke-width":"1.5"});
+    var ex = cx + (boxW/2 + 8)*Math.cos(angle);
+    var ey = cy + (boxH/2 + 8)*Math.sin(angle);
+    var ln = svgEl("line",{x1:ex,y1:ey,x2:px - 50*Math.cos(angle),y2:py - 50*Math.sin(angle),
+      stroke:"rgba(201,168,76,0.5)","stroke-width":"1.5"});
     svg.appendChild(ln);
-    var circ = svgEl("circle",{cx:px,cy:py,r:"40",
-      fill:"rgba(255,255,255,0.07)",stroke:"rgba(201,168,76,0.8)","stroke-width":"1.5",
+    var circ = svgEl("circle",{cx:px,cy:py,r:"50",
+      fill:"rgba(255,255,255,0.08)",stroke:"rgba(201,168,76,0.85)","stroke-width":"2",
       id:"circ"+i,style:"cursor:pointer"});
     (function(idx){ circ.onclick = function(){ selectPrompt(idx); }; })(i);
     svg.appendChild(circ);
-    var plines = wrapText(p3.prompts[i], 13);
+    var plines = wrapText(p3.prompts[i], 12);
     plines.forEach(function(pl, j) {
-      var pt = svgEl("text",{x:px, y:py - (plines.length-1)*7 + j*14,
+      var pt = svgEl("text",{x:px, y:py - (plines.length-1)*8 + j*16,
         "text-anchor":"middle",fill:"white",
-        "font-family":"DM Sans,sans-serif","font-size":"11","font-weight":"500",
+        "font-family":"DM Sans,sans-serif","font-size":"12","font-weight":"600",
         style:"pointer-events:none"});
       pt.textContent = pl;
       svg.appendChild(pt);
