@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First for Schools Reading & Use of English – Part 5 · Test 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 1000px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+
+  main { max-width: 1000px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .part5-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 860px) { .part5-layout { grid-template-columns: 1fr; } }
+
+  .article-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 28px 32px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); }
+  .article-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 16px; color: var(--navy); text-align: center; }
+  .article-text { font-family: 'Source Serif 4', serif; font-size: 16px; line-height: 1.9; color: var(--text); }
+
+  .questions-panel { position: sticky; top: 16px; }
+  .questions-panel h3 { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--cream-dark); }
+
+  .question-row { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--cream-dark); }
+  .q-num { font-weight: 700; font-size: 14px; color: var(--navy); padding-top: 4px; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .option-btn { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); transition: all 0.15s; text-align: left; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .option-letter { font-weight: 700; font-size: 13px; min-width: 18px; }
+
+  .submit-row { display: flex; align-items: center; gap: 20px; margin-top: 24px; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+
+  .results-header { display: flex; align-items: center; gap: 28px; background: var(--navy); color: white; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-num { font-family: 'Source Serif 4', serif; font-size: 34px; font-weight: 600; line-height: 1; }
+  .score-denom { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .results-info p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+  .pct { font-size: 28px; font-weight: 700; color: var(--gold-light); }
+  .results-list { display: flex; flex-direction: column; gap: 8px; }
+  .result-item { display: grid; grid-template-columns: 28px 1fr 28px; gap: 12px; align-items: center; padding: 12px 16px; border-radius: var(--radius); }
+  .result-item.correct { background: var(--correct-bg); }
+  .result-item.wrong { background: var(--wrong-bg); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); }
+  .correct-answer { color: var(--correct); font-weight: 600; }
+  .wrong-answer { color: var(--wrong); text-decoration: line-through; }
+  .your-answer { color: var(--text-muted); font-style: italic; }
+  .result-badge { font-size: 16px; text-align: center; }
+  .result-item.correct .result-badge { color: var(--correct); }
+  .result-item.wrong .result-badge { color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 12px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); }
+  .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge English · First for Schools</div>
+      <h1>Reading & Use of English &nbsp;<span>Part 5</span></h1>
+    </div>
+    <div class="header-right">Test 4<br>Questions 31–36</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Student login</h2>
+      <p>Enter your details before beginning the exercise.</p>
+      <div class="field"><label>Full name</label><input type="text" id="input-name" placeholder="e.g. Ana García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. FFS-4" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">First for Schools · Part 5</div>
+      <div class="meta-pill">Multiple Choice</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="part5-layout">
+      <!-- Article -->
+      <div class="article-card">
+        <h2>Teenagers and Classical Music</h2>
+        <div class="article-text">
+          When you see a teenager with an MP3 player, you can be pretty certain it's not classical music they're listening to. Most of us can list the names of dozens of pop groups, but ask any of my friends if they know who Brahms was and you can tell by the expression on their face that they haven't a clue. I have just started doing a music degree, but the people on my course know no more about the works of great composers than anyone else our age. And if you don't know who wrote the music, you are unlikely to go out and buy any recordings of their work.<br><br>
+          The statistics must be depressing for a lover of classical music. Apparently only 3% of concert tickets sold last year were for classical music events, and the average classical recording sells a mere 300 copies. I must say I still find that hard to believe. So what has caused this decline in interest for a type of music that has lasted for centuries? The older generation are irritated by our obsession with TV and video games, blaming it for most things, but I don't think there is any connection in this case. The simple truth is that classical music just doesn't hold much attraction for most people, and that is particularly true of teenagers, who are the ones most likely to buy music and concert tickets.<br><br>
+          Now I'm aware that this doesn't apply to everyone my age. I know some teenagers who go to classical music concerts all the time, but they are a minority. Although I am a musician and play in an orchestra, I'm not exactly a classical music fan. I enjoy a huge range of styles, but judging by what's stored on my computer, my classical music consumption is probably pretty close to that 3% figure.<br><br>
+          So why don't teenagers like classical music? Well, first of all, the pace and rhythm of classical music, with its numerous changes of mood, are problematic for us. We like to talk fast, play fast, and think fast. In addition, if you believe the experts, we have difficulty paying attention for more than about three minutes; far too short for most pieces of classical music, but perfect for a pop song. Pop is structurally quite simple and therefore easy to listen to, while appreciating a piece of classical music requires time and concentration. The subject matter of pop music also holds much more appeal than a lengthy piece of classical music with no lyrics. Classical music is incredibly powerful, but not exactly full of the issues that concern teenagers.<br><br>
+          The way we listen to music has also changed. In the past, families would gather at home to make music together, and an ability to play an instrument was highly valued. The only other opportunity to hear music was at a concert. Nowadays, you can find any music you want at the click of a mouse, and yet the sound track to our lives is rarely classical. When did you last go into a shop that had classical music playing in the background?<br><br>
+          In my orchestra we play classical music in all sorts of different places, but no matter how cool the posters are, I see virtually nothing but grey hair when I look into the crowd. Some say that the lack of interest in classical music among teenagers is the fault of our schools, but there are plenty of kids eager to play classical music in their school orchestra. They arrive early to practise and stay after school to rehearse. Classical music appeals to them when they perform, but otherwise it is not their music of choice. The two activities have become separated. When we want to relax, it's always pop music.
+        </div>
+      </div>
+
+      <!-- Questions panel -->
+      <div class="questions-panel">
+        <h3>For questions 31–36, choose the answer (A, B, C or D) which you think fits best according to the text.</h3>
+        <div id="questions-container"></div>
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 6</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+</main>
+
+<script>
+const EXAM = {
+  title: "First for Schools Part 5 – Test 4",
+  level: "First for Schools",
+  part: 5,
+  questions: [
+    { num: 31, text: "In the first paragraph, what does the writer say about teenagers?", options: { A: "Their knowledge of classical music is limited to the names of composers.", B: "They don't listen to classical music because they don't know what to buy.", C: "Even the ones who study music have limited knowledge of classical music.", D: "Some would be embarrassed to admit to having classical music on their MP3 player." }, answer: "C" },
+    { num: 32, text: "How does the writer feel about the statistics she mentions in the second paragraph?", options: { A: "disappointed that people are losing interest in classical music", B: "annoyed that older people criticise the things that she enjoys", C: "surprised that so few people buy classical music recordings", D: "certain that the future of classical music depends on teenagers" }, answer: "C" },
+    { num: 33, text: "What is the meaning of 'classical music consumption' in line 34?", options: { A: "the amount of music she listens to", B: "the amount of music she plays", C: "the number of concerts she attends", D: "the number of recordings she has made" }, answer: "A" },
+    { num: 34, text: "The writer believes that teenagers prefer pop music because", options: { A: "the style of it is always changing.", B: "the words used in it are relevant to their lives.", C: "it suits their many changes of mood.", D: "listening to it helps them to focus." }, answer: "B" },
+    { num: 35, text: "In the fifth paragraph, what does the writer say about classical music?", options: { A: "We only really enjoyed it at concerts.", B: "We don't notice it being played.", C: "We should appreciate the way it is played.", D: "We hear it less than other kinds of music." }, answer: "D" },
+    { num: 36, text: "What is the writer's main point in the last paragraph?", options: { A: "Pop music is generally more relaxing to listen to than classical music.", B: "Those who play classical music often don't like listening to it.", C: "Good classical musicians usually have to spend a lot of time practising.", D: "Schools are to blame if teenagers are not interested in classical music." }, answer: "B" }
+  ]
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const row = document.createElement("div");
+    row.className = "question-row";
+    row.innerHTML = `<div class="q-num">${q.num}</div><div class="options-grid" id="opts-${q.num}"></div>`;
+    container.appendChild(row);
+    const grid = document.getElementById(`opts-${q.num}`);
+    ["A","B","C","D"].forEach(letter => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.id = `opt-${q.num}-${letter}`;
+      btn.innerHTML = `<span class="option-letter">${letter}</span>${q.options[letter]}`;
+      btn.onclick = () => selectOption(q.num, letter);
+      grid.appendChild(btn);
+    });
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => {
+    const btn = document.getElementById(`opt-${qNum}-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  document.getElementById(`opt-${qNum}-${letter}`).classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < EXAM.questions.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${EXAM.questions.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = isCorrect ? `<span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>` :
+      chosen ? `<span class="wrong-answer">${chosen}: ${q.options[chosen]}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>` :
+      `<span class="your-answer">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}: ${q.options[correct]}</span>`;
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct);
+}
+
+async function saveToSupabase(score, pct) {
+  const status = document.getElementById("save-status");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num,
+    student_answer: selections[q.num] || null,
+    correct_answer: q.answer,
+    is_correct: (selections[q.num] === q.answer)
+  }));
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher.";
+    status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
