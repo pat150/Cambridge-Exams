@@ -1,0 +1,317 @@
+<DOCUMENT filename="cae_part8_test8.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambridge English Advanced – Part 8 · Test 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .part8-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 700px) { .part8-layout { grid-template-columns: 1fr; } }
+
+  .academics-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); position: sticky; top: 16px; max-height: 80vh; overflow-y: auto; }
+  .academics-card h2 { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 600; margin-bottom: 16px; color: var(--navy); text-align: center; }
+  .academic { margin-bottom: 28px; }
+  .academic:last-child { margin-bottom: 0; }
+  .academic-label { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); background: var(--cream-dark); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+  .academic-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.85; color: var(--text); }
+  .academic-text p { margin-bottom: 12px; }
+
+  .questions-col { display: flex; flex-direction: column; gap: 14px; }
+  .instructions-banner { background: var(--navy); color: white; border-radius: var(--radius); padding: 14px 18px; font-size: 13.5px; line-height: 1.5; margin-bottom: 4px; }
+  .instructions-banner strong { color: var(--gold-light); }
+
+  .question-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 18px 20px; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .q-num-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .q-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+  .options-list { display: flex; flex-direction: column; gap: 6px; }
+  .option-btn { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); transition: all 0.15s; text-align: left; line-height: 1.4; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .option-letter { font-weight: 700; font-size: 13px; min-width: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .submit-row { display: flex; align-items: center; gap: 20px; margin-top: 8px; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+
+  .results-header { display: flex; align-items: center; gap: 28px; background: var(--navy); color: white; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-num { font-family: 'Source Serif 4', serif; font-size: 34px; font-weight: 600; line-height: 1; }
+  .score-denom { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .results-info p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+  .pct { font-size: 28px; font-weight: 700; color: var(--gold-light); }
+  .results-list { display: flex; flex-direction: column; gap: 8px; }
+  .result-item { display: grid; grid-template-columns: 28px 1fr 28px; gap: 12px; align-items: start; padding: 12px 16px; border-radius: var(--radius); }
+  .result-item.correct { background: var(--correct-bg); } .result-item.wrong { background: var(--wrong-bg); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); padding-top: 2px; }
+  .correct-answer { color: var(--correct); font-weight: 600; } .wrong-answer { color: var(--wrong); }
+  .result-badge { font-size: 16px; text-align: center; }
+  .result-item.correct .result-badge { color: var(--correct); } .result-item.wrong .result-badge { color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 12px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge English · Advanced</div>
+      <h1>Reading & Use of English &nbsp;<span>Part 8</span></h1>
+    </div>
+    <div class="header-right">Test 8<br>Questions 47–56</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Student login</h2>
+      <p>Enter your details before beginning the exercise.</p>
+      <div class="field"><label>Full name</label><input type="text" id="input-name" placeholder="e.g. Ana García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-8" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">Advanced · Part 8</div>
+      <div class="meta-pill">Multiple Matching</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="part8-layout">
+      <!-- Academics -->
+      <div class="academics-card">
+        <h2>Natural Born Linguists</h2>
+        <div class="academic">
+          <div class="academic-label">A Ludmila Orlova</div>
+          <div class="academic-text">
+            <p>Being multilingual is fundamental to who I am because I think in different languages. My mind starts a thought in one language, then finds a particular word in another language that fits exactly what I am thinking. Each language resonates with me in a distinct way. Russian makes me more melancholic because of its minor tone, for example. There's a downside, though: when I'm in a monolingual environment for too long, I yearn to switch to a different language. I have to think 'will this person understand me if I say something in language X?' I had an early start at learning languages. I moved to the US from the former Soviet Union when I was three and learnt English quickly. For some reason though, my primary teacher didn't think I was bright enough to study languages at secondary school, which just goes to show you that general academic achievement isn't always a good indicator of one's ability to learn a language. If I had studied languages the formal way in school, I would never have become a polyglot.</p>
+          </div>
+        </div>
+        <div class="academic">
+          <div class="academic-label">B Simon Richards</div>
+          <div class="academic-text">
+            <p>I was always fascinated by languages and accents – I tried to mimic them all the time when I was a child. At school I was always drawn to the kids who had some link to abroad and I wanted to find out more. I got to study languages at school and university eventually, and it grew from there. Today, my daily life is multilingual. I often get mistaken for other nationalities and I honestly no longer regard nationality as important. It seems almost odd for me to talk about being just British now. Learning languages is an endless and ongoing process for me, which I intend to continue for as many years as my body and mind will allow. When I'm really in the learning zone, my focus is narrow and I try to forget about my other languages. If I didn't, I'd go mad. I simply start a new language and don't think about the others, unless I see obvious links to help the learning process and to understand grammar.</p>
+          </div>
+        </div>
+        <div class="academic">
+          <div class="academic-label">C Anthony Fields</div>
+          <div class="academic-text">
+            <p>I used to spend long summers in Greece and Japan as a child, trying to play with the other kids, but none of them spoke any English. It struck me how nice it would be to be able to talk to anybody in the world, regardless of what language they spoke. Pronunciation is the most important thing for me. So I start off really basic, focusing on that. Once I feel more confident, I move on to music from the language to tune in further. The dead time when you're on a bus or doing any mundane task is ideal for squeezing in crucial subconscious language learning, which will pay off in the long run. Learning new languages never stops: there is always more to learn. But my student days are almost over and the prospect of searching for a career is looming closer – so I am thinking about taking a couple of languages to a much higher level. Speaking other languages at native level is an entirely different task to just being a polyglot.</p>
+          </div>
+        </div>
+        <div class="academic">
+          <div class="academic-label">D Liam Clarke</div>
+          <div class="academic-text">
+            <p>I did poorly in languages in school. I barely passed German and, until I was 21, I only spoke English. I moved to Spain after graduating; after six months, I still hadn't learned any Spanish. I kept telling myself that I didn't have the language gene. Eventually, I decided to put my excuses aside and dive in. It took a while, but as soon as I had a basic conversation, I got hooked. That was ten years ago, and since then I've travelled the world, learning many languages. I don't think visiting the country where the language is spoken is really that necessary nowadays, because of the internet. But if you do travel, it opens a lot of interesting doors. I recently had a birthday lunch with four generations of Italians, for example. No way would that have happened if I'd only spoken English. The initial stage is the hardest, but the only real way to get through this is to grin and bear it. I've learned to ignore the fact that I'm making mistakes. That confidence allows me to strive for the next level.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Questions -->
+      <div class="questions-col">
+        <div class="instructions-banner">
+          For questions <strong>47–56</strong>, choose from the people <strong>(A–D)</strong>. The people may be chosen more than once.
+        </div>
+        <div id="questions-container"></div>
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 10</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 8 – Test 8",
+  level: "Advanced",
+  part: 8,
+  questions: [
+    { num: 47, text: "a lack of concern about their identity?", answer: "B" },
+    { num: 48, text: "advice about when to fit in an important aspect of language acquisition?", answer: "C" },
+    { num: 49, text: "a reason for concentrating on one language at a time?", answer: "B" },
+    { num: 50, text: "a means of coping with the most challenging phase of language acquisition?", answer: "D" },
+    { num: 51, text: "a description of the stages in a person's language learning method?", answer: "C" },
+    { num: 52, text: "an early appreciation of an advantage of being multilingual?", answer: "C" },
+    { num: 53, text: "a long-term view of their own language learning?", answer: "B" },
+    { num: 54, text: "an emotion brought on by the sound of a language?", answer: "A" },
+    { num: 55, text: "appreciation for an experience arising from being a polyglot?", answer: "D" },
+    { num: 56, text: "the prospect of changing their language-learning goal?", answer: "C" }
+  ]
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    let optHtml = "";
+    ["A","B","C","D"].forEach(l => {
+      optHtml += `<button class="option-btn" id="opt-${q.num}-${l}" onclick="selectOption(${q.num},'${l}')"><span class="option-letter">${l}</span> Person ${l}</button>`;
+    });
+    card.innerHTML = `<div class="q-num-label">Question ${q.num}</div><div class="q-text">${q.text}</div><div class="options-list">${optHtml}</div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qNum, letter) {
+  ["A","B","C","D"].forEach(l => {
+    const btn = document.getElementById(`opt-${qNum}-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  const selectedBtn = document.getElementById(`opt-${qNum}-${letter}`);
+  if (selectedBtn) selectedBtn.classList.add("selected");
+  selections[qNum] = letter;
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < EXAM.questions.length) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of ${EXAM.questions.length} questions. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosen = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosen === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = "";
+    if (isCorrect) {
+      detailHTML = `<span class="correct-answer">✓ ${correct}</span>`;
+    } else if (chosen) {
+      detailHTML = `<span class="wrong-answer">${chosen}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}</span>`;
+    } else {
+      detailHTML = `<span style="color:var(--text-muted);font-style:italic;">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ ${correct}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct);
+}
+
+async function saveToSupabase(score, pct) {
+  const status = document.getElementById("save-status");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num, student_answer: selections[q.num] || null,
+    correct_answer: q.answer, is_correct: (selections[q.num] === q.answer)
+  }));
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher.";
+    status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
+</DOCUMENT>

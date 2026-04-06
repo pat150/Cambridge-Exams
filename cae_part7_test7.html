@@ -1,0 +1,326 @@
+<DOCUMENT filename="cae_part7_test7.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambridge English Advanced – Part 7 · Test 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e; --text-muted: #6b6b6b;
+    --correct: #2d7a4f; --correct-bg: #eaf5ee; --wrong: #b83232; --wrong-bg: #fdf0f0; --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 28px 24px 22px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .header-left .exam-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
+  .header-left h1 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 600; }
+  .header-left h1 span { color: var(--gold-light); }
+  .header-right { text-align: right; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-shrink: 0; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 24px 60px; }
+  .screen { display: none; } .screen.active { display: block; }
+
+  .entry-card { background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); padding: 40px; max-width: 480px; margin: 40px auto 0; box-shadow: 0 2px 16px rgba(26,39,68,0.07); }
+  .entry-card h2 { font-family: 'Source Serif 4', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .entry-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--navy); margin-bottom: 7px; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  .field input:focus { border-color: var(--navy); background: white; }
+  .entry-error { font-size: 13px; color: var(--wrong); margin-bottom: 16px; display: none; }
+  .btn-primary { width: 100%; padding: 13px; background: var(--navy); color: white; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--navy-mid); }
+
+  .exam-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .meta-pill { background: var(--navy); color: white; font-size: 12px; font-weight: 600; letter-spacing: 0.6px; padding: 5px 12px; border-radius: 20px; }
+  .meta-student { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+  .part7-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 700px) { .part7-layout { grid-template-columns: 1fr; } }
+
+  .article-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 1px 8px rgba(26,39,68,0.05); position: sticky; top: 16px; max-height: 80vh; overflow-y: auto; }
+  .article-card h2 { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 600; margin-bottom: 16px; color: var(--navy); text-align: center; }
+  .article-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.85; color: var(--text); }
+  .article-text p { margin-bottom: 14px; }
+  .gap { display: inline-block; background: var(--cream-dark); border-bottom: 2px solid var(--navy); padding: 4px 12px; min-width: 280px; font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 600; color: var(--navy); border-radius: 4px; margin: 6px 0; vertical-align: baseline; white-space: pre-wrap; }
+
+  .questions-col { display: flex; flex-direction: column; gap: 14px; }
+  .instructions-banner { background: var(--navy); color: white; border-radius: var(--radius); padding: 14px 18px; font-size: 13.5px; line-height: 1.5; margin-bottom: 4px; }
+  .instructions-banner strong { color: var(--gold-light); }
+
+  .question-card { background: white; border: 1px solid var(--cream-dark); border-radius: var(--radius); padding: 18px 20px; box-shadow: 0 1px 6px rgba(26,39,68,0.04); }
+  .q-num-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .q-text { font-family: 'Source Serif 4', serif; font-size: 14.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+  .options-list { display: flex; flex-direction: column; gap: 6px; }
+  .option-btn { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border: 1.5px solid var(--cream-dark); border-radius: var(--radius); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text); transition: all 0.15s; text-align: left; line-height: 1.4; }
+  .option-btn:hover { border-color: var(--navy); background: var(--cream); }
+  .option-btn.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .option-letter { font-weight: 700; font-size: 13px; min-width: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .submit-row { display: flex; align-items: center; gap: 20px; margin-top: 8px; }
+  .submit-row .btn-primary { width: auto; padding: 12px 32px; }
+  .progress-note { font-size: 13px; color: var(--text-muted); }
+
+  .results-header { display: flex; align-items: center; gap: 28px; background: var(--navy); color: white; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; }
+  .score-circle { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .score-num { font-family: 'Source Serif 4', serif; font-size: 34px; font-weight: 600; line-height: 1; }
+  .score-denom { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .results-info h2 { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .results-info p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+  .pct { font-size: 28px; font-weight: 700; color: var(--gold-light); }
+  .results-list { display: flex; flex-direction: column; gap: 8px; }
+  .result-item { display: grid; grid-template-columns: 28px 1fr 28px; gap: 12px; align-items: start; padding: 12px 16px; border-radius: var(--radius); }
+  .result-item.correct { background: var(--correct-bg); } .result-item.wrong { background: var(--wrong-bg); }
+  .result-num { font-weight: 700; font-size: 14px; color: var(--navy); padding-top: 2px; }
+  .correct-answer { color: var(--correct); font-weight: 600; } .wrong-answer { color: var(--wrong); }
+  .result-badge { font-size: 16px; text-align: center; }
+  .result-item.correct .result-badge { color: var(--correct); } .result-item.wrong .result-badge { color: var(--wrong); }
+  .save-status { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; padding: 12px; background: white; border-radius: var(--radius); border: 1px solid var(--cream-dark); }
+  .save-status.saved { color: var(--correct); } .save-status.error { color: var(--wrong); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="exam-label">Cambridge English · Advanced</div>
+      <h1>Reading & Use of English &nbsp;<span>Part 7</span></h1>
+    </div>
+    <div class="header-right">Test 7<br>Questions 41–46</div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<main>
+  <!-- ENTRY -->
+  <div id="screen-entry" class="screen active">
+    <div class="entry-card">
+      <h2>Student login</h2>
+      <p>Enter your details before beginning the exercise.</p>
+      <div class="field"><label>Full name</label><input type="text" id="input-name" placeholder="e.g. Ana García" autocomplete="off"></div>
+      <div class="field"><label>Class code</label><input type="text" id="input-class" placeholder="e.g. CAE-7" autocomplete="off"></div>
+      <div class="entry-error" id="entry-error">Please enter your name and class code.</div>
+      <button class="btn-primary" onclick="startExam()">Start exercise</button>
+    </div>
+  </div>
+
+  <!-- EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="exam-meta">
+      <div class="meta-pill">Advanced · Part 7</div>
+      <div class="meta-pill">Gapped Text</div>
+      <div class="meta-student" id="meta-student"></div>
+    </div>
+
+    <div class="part7-layout">
+      <!-- Article -->
+      <div class="article-card">
+        <h2>Taking Dinosaurs Apart</h2>
+        <div class="article-text">
+          <p>Pulling apart limbs, sawing through ribs and separating skull bones are activities usually associated with surgeons rather than museum staff. However, that is exactly what is going on at the Smithsonian's National Museum of Natural History in Washington DC, USA. Renovations to the museum's dinosaur hall, which started recently, have necessitated the dismantling and removal of its collection of dinosaur and extinct mammal skeletons, some of which weigh as much as five tons.</p>
+          <p><span class="gap" id="gap-41"></span></p>
+          <p>One particular specimen which curator Matthew Carrano can't wait to get hold of is a meat-eating Jurassic dinosaur called Allosaurus, which has been on display for 30 years. 'Scientifically, this particular Allosaurus is well known,' he explains, because 'for a long time, it was one of the only Allosaurus specimens that represented a single individual animal.'</p>
+          <p><span class="gap" id="gap-42"></span></p>
+          <p>The Smithsonian's five-meter-long Allosaurus, however, is definitely one unique individual. So once the crystallized glue holding it together is removed, researchers and conservators can get a better sense of how the creature's joints actually fitted together in life.</p>
+          <p><span class="gap" id="gap-43"></span></p>
+          <p>Another modification the museum plans to make to its Allosaurus is removing a couple of centimeters from its tail, which is not original fossil but casts of vertebrae. 'The tail on the Smithsonian's specimen is too long,' says Peter May, owner and president of the company in charge of dismantling, conserving, and remounting the 58 specimens in the museum's dinosaur hall. He <span class="gap" id="gap-44"></span> explains that the skeleton on display has over 50 vertebrae, when it should have something closer to 45.</p>
+          <p>Slicing a thin cross-section out of a leg or rib bone can help with that. By placing a slice under a microscope, researchers will be able to count growth rings on the bone, the number of which would have increased throughout the creature's life, very much like the rings on a cross-section of a tree trunk.</p>
+          <p><span class="gap" id="gap-45"></span></p>
+          <p>One example which Carrano wishes to investigate further is an apparent blow to the Allosaurus's left side. 'The shoulder blade looks like it has healed improperly,' he explains. If the damaged shoulder blade can be fitted together with the ribs which are held in storage, paleontologists might be able to determine the severity and cause of the damage.</p>
+          <p>Finally, Carrano hopes to be able to compare the Allosaurus with another dinosaur in the collection called Labrosaurus. Labrosaurus is known only from a single bone – a lower jaw with a distortion which is believed to have been caused by disease or injury. 'The two front teeth are missing and there's an abscess there,' Carrano explains.</p>
+          <p><span class="gap" id="gap-46"></span></p>
+          <p>But in order to confirm their suspicion, Carrano and his colleagues will have to wait a while. 'A lot of what we hope to learn won't be accessible to us until the exhibits have been taken down and we can have a good look at them,' he says. So he won't be able to get his hands on the Allosaurus quite yet.</p>
+        </div>
+      </div>
+
+      <!-- Questions -->
+      <div class="questions-col">
+        <div class="instructions-banner">
+          For questions <strong>41–46</strong>, choose from the paragraphs <strong>A–G</strong> the one which fits each gap. There is one extra paragraph which you do not need to use.
+        </div>
+        <div id="questions-container"></div>
+        <div class="submit-row">
+          <button class="btn-primary" onclick="submitExam()">Submit answers</button>
+          <div class="progress-note">Answered: <span id="answered-count">0</span> / 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <div class="score-circle">
+        <div class="score-num" id="res-score">0</div>
+        <div class="score-denom">out of 6</div>
+      </div>
+      <div class="results-info">
+        <h2 id="res-name">Results</h2>
+        <p id="res-class"></p>
+        <div class="pct" id="res-pct"></div>
+      </div>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="save-status" id="save-status">Saving results…</div>
+  </div>
+</main>
+
+<script>
+const EXAM = {
+  title: "CAE Part 7 – Test 7",
+  level: "Advanced",
+  part: 7,
+  questions: [
+    { num: 41, answer: "C" },
+    { num: 42, answer: "G" },
+    { num: 43, answer: "D" },
+    { num: 44, answer: "F" },
+    { num: 45, answer: "A" },
+    { num: 46, answer: "E" }
+  ]
+};
+
+const PARAGRAPHS = {
+  A: "Dismantling the Allosaurus and removing the plaster and glue covering it can also reveal whether the animal suffered any injuries when alive.",
+  B: "The Smithsonian's team should be able to take it apart in large chunks in a single day, but even once they've dismantled it they'll still have hours of work ahead of them, breaking the skeleton down further into individual bones and cleaning them.",
+  C: "These endeavors will modernize a space which has never seen a major overhaul. It will also give researchers a chance to make detailed studies of the exhibits – some of which haven't been touched in decades.",
+  D: "There are also plans to slim it down a little. When the museum first displayed the Allosaurus, preparators decided to use plaster casts of the ribs instead of the actual specimens, which resulted in a heavier-looking skeleton. Curators hope that the final, remounted skeleton will more closely resemble the dinosaur's natural shape.",
+  E: "However, this dinosaur, previously classified as a separate species is now thought to be a type of Allosaurus. Both of the specimens come from the same quarry, and what's more the Allosaurus is missing the exact same bone, so it's entirely possible that it actually belongs to the Smithsonian Allosaurus.",
+  F: "In addition to correcting mistakes such as this, Carrano would also like to determine the age of the Allosaurus.",
+  G: "There are Allosaurus skeletons in museum collections across the world, but most consist of bones from a number of different examples of the species. This has made it difficult for scientists to work out how the entire skeleton fits together."
+};
+
+const SUPABASE_URL = "https://rgcjrkvkwonfmvmxpyxu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2pya3Zrd29uZm12bXhweXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMDg5MTYsImV4cCI6MjA4OTg4NDkxNn0.9O7F5TfO2NNgGSDBNXlwNV2P5d52fh3OArqvehsxHGk";
+
+let studentName = "", classCode = "", selections = {};
+
+function buildQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+  ["A","B","C","D","E","F","G"].forEach(l => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.innerHTML = `
+      <div class="q-num-label">Paragraph ${l}</div>
+      <div class="options-list">
+        <button class="option-btn" id="opt-${l}" onclick="selectOption('${l}')">
+          <span class="option-letter">${l}</span>${PARAGRAPHS[l]}
+        </button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(letter) {
+  ["A","B","C","D","E","F","G"].forEach(l => {
+    const btn = document.getElementById(`opt-${l}`);
+    if (btn) btn.classList.remove("selected");
+  });
+  const selectedBtn = document.getElementById(`opt-${letter}`);
+  if (selectedBtn) selectedBtn.classList.add("selected");
+
+  // Find first unanswered gap and populate it
+  for (let i = 41; i <= 46; i++) {
+    const gap = document.getElementById(`gap-${i}`);
+    if (gap && !gap.hasAttribute("data-filled")) {
+      gap.textContent = PARAGRAPHS[letter];
+      gap.setAttribute("data-filled", letter);
+      selections[i] = letter;
+      break;
+    }
+  }
+  document.getElementById("answered-count").textContent = Object.keys(selections).length;
+}
+
+function startExam() {
+  const name = document.getElementById("input-name").value.trim();
+  const code = document.getElementById("input-class").value.trim().toUpperCase();
+  const err = document.getElementById("entry-error");
+  if (!name || !code) { err.style.display = "block"; return; }
+  err.style.display = "none";
+  studentName = name; classCode = code;
+  document.getElementById("meta-student").textContent = `${name}  ·  ${code}`;
+  buildQuestions();
+  showScreen("screen-exam");
+}
+
+function submitExam() {
+  if (Object.keys(selections).length < 6) {
+    if (!confirm(`You have only answered ${Object.keys(selections).length} of 6 gaps. Submit anyway?`)) return;
+  }
+  showResults();
+}
+
+function showResults() {
+  let score = 0;
+  const list = document.getElementById("results-list");
+  list.innerHTML = "";
+  EXAM.questions.forEach(q => {
+    const chosenLetter = selections[q.num] || null;
+    const correct = q.answer;
+    const isCorrect = chosenLetter === correct;
+    if (isCorrect) score++;
+    const item = document.createElement("div");
+    item.className = `result-item ${isCorrect ? "correct" : "wrong"}`;
+    let detailHTML = "";
+    if (isCorrect) {
+      detailHTML = `<span class="correct-answer">✓ Paragraph ${correct}</span>`;
+    } else if (chosenLetter) {
+      detailHTML = `<span class="wrong-answer">Paragraph ${chosenLetter}</span> &nbsp;→&nbsp; <span class="correct-answer">✓ Paragraph ${correct}</span>`;
+    } else {
+      detailHTML = `<span style="color:var(--text-muted);font-style:italic;">Not answered</span> &nbsp;→&nbsp; <span class="correct-answer">✓ Paragraph ${correct}</span>`;
+    }
+    item.innerHTML = `<div class="result-num">${q.num}</div><div class="result-detail">${detailHTML}</div><div class="result-badge">${isCorrect ? "✓" : "✗"}</div>`;
+    list.appendChild(item);
+  });
+  const pct = Math.round((score / EXAM.questions.length) * 100);
+  document.getElementById("res-score").textContent = score;
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-class").textContent = `Class: ${classCode} · ${EXAM.title}`;
+  document.getElementById("res-pct").textContent = `${pct}%`;
+  showScreen("screen-results");
+  saveToSupabase(score, pct);
+}
+
+async function saveToSupabase(score, pct) {
+  const status = document.getElementById("save-status");
+  const answers = EXAM.questions.map(q => ({
+    question_number: q.num,
+    student_answer: selections[q.num] || null,
+    correct_answer: q.answer,
+    is_correct: (selections[q.num] === q.answer)
+  }));
+  const payload = {
+    student_name: studentName, class_code: classCode, exam_title: EXAM.title,
+    exam_level: EXAM.level, exam_part: EXAM.part, score, total_questions: EXAM.questions.length,
+    percentage: pct, answers, submitted_at: new Date().toISOString()
+  };
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/exam_results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { status.textContent = "✓ Results saved successfully."; status.className = "save-status saved"; }
+    else { status.textContent = "Results could not be saved. Please notify your teacher."; status.className = "save-status error"; }
+  } catch (e) {
+    status.textContent = "Results could not be saved (network error). Please notify your teacher.";
+    status.className = "save-status error";
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
+</DOCUMENT>
