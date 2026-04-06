@@ -3,42 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cambridge Exams Platform</title>
+<title>Cambridge Exams Practice</title>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root { --navy: #1a2744; --gold: #c8973a; --cream: #f9f6f0; --cream-dark: #efe9df; }
-  * { box-sizing: border-box; margin:0; padding:0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); }
-  header { background: var(--navy); color: white; padding: 32px 24px 24px; }
-  .header-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; }
-  h1 { font-family: 'Source Serif 4', serif; font-size: 32px; }
-  h1 span { color: var(--gold); }
-  main { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
-  h2 { font-family: 'Source Serif 4', serif; font-size: 28px; text-align: center; margin-bottom: 40px; color: var(--navy); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-  .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(26,39,68,0.08); cursor: pointer; transition: all 0.3s; }
-  .card:hover { transform: translateY(-8px); }
-  .card-header { background: var(--navy); color: white; padding: 28px; text-align: center; }
-  .card-header h3 { font-family: 'Source Serif 4', serif; font-size: 28px; margin: 0; }
-  .card-body { padding: 24px; text-align: center; font-size: 15px; color: var(--text-muted); }
-  .teacher-btn { display: block; margin: 80px auto 0; width: fit-content; padding: 18px 48px; background: var(--gold); color: var(--navy); font-size: 18px; font-weight: 600; border-radius: 12px; text-decoration: none; }
+  :root {
+    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
+    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; padding: 28px 24px; text-align: center; }
+  header h1 { font-family: 'Source Serif 4', serif; font-size: 32px; font-weight: 600; }
+  header p { color: var(--gold-light); font-size: 15px; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .card { background: white; border-radius: 12px; border: 1px solid var(--cream-dark); padding: 32px 28px; text-align: center; box-shadow: 0 4px 20px rgba(26,39,68,0.08); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(26,39,68,0.15); }
+  .card h2 { font-family: 'Source Serif 4', serif; font-size: 24px; margin-bottom: 8px; color: var(--navy); }
+  .card .count { font-size: 15px; color: var(--gold); font-weight: 600; margin-bottom: 16px; }
+  .card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .teacher-btn { display: inline-block; margin-top: 40px; padding: 14px 32px; background: var(--navy); color: white; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; }
+  .teacher-btn:hover { background: var(--navy-mid); }
 </style>
 </head>
 <body>
+
 <header>
-  <div class="header-inner">
-    <h1>Cambridge Exams <span>Platform</span></h1>
-  </div>
+  <h1>Cambridge Exams</h1>
+  <p>Interactive practice tests • Reading & Use of English</p>
 </header>
-<main>
-  <h2>Choose your exam</h2>
+
+<div class="container">
   <div class="cards">
-    <div class="card" onclick="window.location.href='cae.html'"><div class="card-header"><h3>CAE</h3></div><div class="card-body">Certificate in Advanced English<br>6 full tests available</div></div>
-    <div class="card" onclick="window.location.href='cpe.html'"><div class="card-header"><h3>CPE</h3></div><div class="card-body">Certificate of Proficiency in English<br>4 full tests available</div></div>
-    <div class="card" onclick="window.location.href='fce.html'"><div class="card-header"><h3>FCE</h3></div><div class="card-body">First Certificate in English<br>4 full tests available</div></div>
-    <div class="card" onclick="window.location.href='first.html'"><div class="card-header"><h3>First for Schools</h3></div><div class="card-body">First Certificate in English for Schools<br>4 full tests available</div></div>
+
+    <!-- FCE -->
+    <div class="card" onclick="window.location.href='fce.html'">
+      <h2>FCE</h2>
+      <div class="count">5 full tests available</div>
+      <p>First Certificate in English<br>Reading & Use of English + Speaking</p>
+    </div>
+
+    <!-- CAE -->
+    <div class="card" onclick="window.location.href='cae.html'">
+      <h2>CAE</h2>
+      <div class="count">8 full tests available</div>
+      <p>Advanced (C1 Advanced)<br>Reading & Use of English + Speaking</p>
+    </div>
+
+    <!-- CPE -->
+    <div class="card" onclick="window.location.href='cpe.html'">
+      <h2>CPE</h2>
+      <div class="count">5 full tests available</div>
+      <p>Proficiency (C2 Proficiency)<br>Reading & Use of English + Speaking</p>
+    </div>
+
+    <!-- First for Schools -->
+    <div class="card" onclick="window.location.href='first.html'">
+      <h2>First for Schools</h2>
+      <div class="count">4 full tests available</div>
+      <p>B2 First for Schools<br>Reading & Use of English + Speaking</p>
+    </div>
+
   </div>
-  <a href="teacher.html" class="teacher-btn">👩‍🏫 Teacher Dashboard</a>
-</main>
+
+  <center>
+    <a href="teacher.html" class="teacher-btn">👩‍🏫 Teacher Dashboard (password: 1996)</a>
+  </center>
+</div>
+
 </body>
 </html>

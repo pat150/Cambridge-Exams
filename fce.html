@@ -6,30 +6,34 @@
 <title>FCE – First Certificate</title>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root { --navy: #1a2744; --gold: #c8973a; --cream: #f9f6f0; --cream-dark: #efe9df; }
+  :root { --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d; --cream: #f9f6f0; --cream-dark: #efe9df; }
   * { box-sizing: border-box; margin:0; padding:0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); }
-  header { background: var(--navy); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
-  h1 { font-family: 'Source Serif 4', serif; font-size: 28px; }
-  main { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
-  .back { color: var(--gold); text-decoration: none; font-weight: 600; }
-  h2 { font-family: 'Source Serif 4', serif; font-size: 26px; margin: 40px 0 20px; color: var(--navy); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-  .card { background: white; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(26,39,68,0.06); }
-  .card h3 { font-family: 'Source Serif 4', serif; font-size: 20px; margin-bottom: 12px; color: var(--navy); }
-  .part-links { display: flex; flex-wrap: wrap; gap: 6px; }
-  .part-btn { background: var(--navy); color: white; padding: 6px 14px; border-radius: 9999px; font-size: 13px; text-decoration: none; }
-  .part-btn:hover { background: #243258; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: #1e1e1e; }
+  header { background: var(--navy); color: white; padding: 28px 24px; text-align: center; }
+  header h1 { font-family: 'Source Serif 4', serif; font-size: 28px; }
+  .back { color: var(--gold-light); text-decoration: none; font-size: 14px; margin-bottom: 8px; display: inline-block; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+  h2 { font-family: 'Source Serif 4', serif; font-size: 24px; margin: 40px 0 16px; color: var(--navy); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .card { background: white; border: 1px solid var(--cream-dark); border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 15px rgba(26,39,68,0.06); }
+  .card h3 { margin-bottom: 12px; color: var(--navy); }
+  .part-links { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .part-btn { display: inline-block; width: 32px; height: 32px; line-height: 32px; background: var(--navy); color: white; border-radius: 50%; text-decoration: none; font-weight: 600; font-size: 13px; }
+  .part-btn:hover { background: var(--gold); }
+  .teacher-btn { display: inline-block; margin-top: 40px; padding: 14px 32px; background: var(--navy); color: white; border-radius: 30px; text-decoration: none; font-weight: 600; }
 </style>
 </head>
 <body>
+
 <header>
+  <a href="index.html" class="back">← Home</a>
   <h1>FCE – First Certificate</h1>
-  <a href="index.html" style="color:var(--gold);text-decoration:none;font-weight:600;">← Home</a>
 </header>
-<main>
+
+<div class="container">
   <h2>Reading & Use of English</h2>
   <div class="grid">
+    <!-- Tests 1 to 5 with parts 1-7 -->
     <div class="card"><h3>Test 1</h3><div class="part-links">
       <a href="fce_part1_test1.html" class="part-btn">1</a><a href="fce_part2_test1.html" class="part-btn">2</a><a href="fce_part3_test1.html" class="part-btn">3</a><a href="fce_part4_test1.html" class="part-btn">4</a><a href="fce_part5_test1.html" class="part-btn">5</a><a href="fce_part6_test1.html" class="part-btn">6</a><a href="fce_part7_test1.html" class="part-btn">7</a>
     </div></div>
@@ -42,16 +46,20 @@
     <div class="card"><h3>Test 4</h3><div class="part-links">
       <a href="fce_part1_test4.html" class="part-btn">1</a><a href="fce_part2_test4.html" class="part-btn">2</a><a href="fce_part3_test4.html" class="part-btn">3</a><a href="fce_part4_test4.html" class="part-btn">4</a><a href="fce_part5_test4.html" class="part-btn">5</a><a href="fce_part6_test4.html" class="part-btn">6</a><a href="fce_part7_test4.html" class="part-btn">7</a>
     </div></div>
+    <div class="card"><h3>Test 5</h3><div class="part-links">
+      <a href="fce_part1_test5.html" class="part-btn">1</a><a href="fce_part2_test5.html" class="part-btn">2</a><a href="fce_part3_test5.html" class="part-btn">3</a><a href="fce_part4_test5.html" class="part-btn">4</a><a href="fce_part5_test5.html" class="part-btn">5</a><a href="fce_part6_test5.html" class="part-btn">6</a><a href="fce_part7_test5.html" class="part-btn">7</a>
+    </div></div>
   </div>
 
   <h2>SPEAKING ACTIVITIES</h2>
   <div class="grid">
-    <div class="card"><h3>Part 1 Flashcards</h3><a href="fce_speaking_part1_flashcards.html" class="part-btn">Start</a></div>
+    <div class="card"><h3>Part 1</h3><a href="fce_speaking_part1.html" class="part-btn">Start</a></div>
     <div class="card"><h3>Part 2</h3><a href="fce_speaking_part2.html" class="part-btn">Start</a></div>
     <div class="card"><h3>Part 3</h3><a href="fce_speaking_part3.html" class="part-btn">Start</a></div>
+    <div class="card"><h3>Part 4</h3><a href="fce_speaking_part4.html" class="part-btn">Start</a></div>
   </div>
 
-  <a href="teacher.html" style="display:block;margin:60px auto;width:fit-content;padding:16px 40px;background:var(--gold);color:var(--navy);font-size:18px;font-weight:600;border-radius:12px;text-decoration:none;">Teacher Dashboard</a>
-</main>
+  <center><a href="teacher.html" class="teacher-btn">👩‍🏫 Teacher Dashboard (password: 1996)</a></center>
+</div>
 </body>
 </html>
