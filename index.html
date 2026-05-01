@@ -4,72 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cambridge Exams Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #1a2744; --navy-mid: #243258; --gold: #c8973a; --gold-light: #e8b86d;
-    --cream: #f9f6f0; --cream-dark: #efe9df; --text: #1e1e1e;
+    --navy: #1a2744; --gold: #c8973a; --cream: #f9f6f0;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
-  header { background: var(--navy); color: white; padding: 28px 24px; text-align: center; }
-  header h1 { font-family: 'Source Serif 4', serif; font-size: 32px; font-weight: 600; }
-  header p { color: var(--gold-light); font-size: 15px; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-  .card { background: white; border-radius: 12px; border: 1px solid var(--cream-dark); padding: 32px 28px; text-align: center; box-shadow: 0 4px 20px rgba(26,39,68,0.08); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(26,39,68,0.15); }
-  .card h2 { font-family: 'Source Serif 4', serif; font-size: 24px; margin-bottom: 8px; color: var(--navy); }
-  .card .count { font-size: 15px; color: var(--gold); font-weight: 600; margin-bottom: 16px; }
-  .card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-  .teacher-btn { display: inline-block; margin-top: 40px; padding: 14px 32px; background: var(--navy); color: white; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; }
-  .teacher-btn:hover { background: var(--navy-mid); }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); margin: 0; padding: 0; }
+  header { background: var(--navy); color: white; padding: 40px 20px; text-align: center; }
+  h1 { font-family: 'Source Serif 4', serif; font-size: 2.8rem; margin: 0; }
+  .subtitle { font-size: 1.1rem; opacity: 0.9; }
+  main { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .level-card { background: white; border-radius: 12px; padding: 30px 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.2s; }
+  .level-card:hover { transform: translateY(-8px); }
+  .level-card h2 { font-family: 'Source Serif 4', serif; color: var(--navy); margin-bottom: 8px; }
+  .level-card p { color: #555; margin-bottom: 20px; }
+  .btn { display: inline-block; background: var(--navy); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+  .btn:hover { background: #243258; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Cambridge Exams</h1>
-  <p>Interactive practice tests • Reading & Use of English</p>
+  <h1>Cambridge Exams Practice</h1>
+  <p class="subtitle">Interactive practice for FCE, CAE, CPE, B1 and more</p>
 </header>
 
-<div class="container">
-  <div class="cards">
+<main>
+  <div class="level-grid">
 
-    <!-- FCE -->
-    <div class="card" onclick="window.location.href='fce.html'">
-      <h2>FCE</h2>
-      <div class="count">5 full tests available</div>
-      <p>First Certificate in English<br>Reading & Use of English + Speaking</p>
+    <div class="level-card">
+      <h2>B1 Preliminary</h2>
+      <p>Tests 1–3</p>
+      <a href="b1.html" class="btn">Go to B1</a>
     </div>
 
-    <!-- CAE -->
-    <div class="card" onclick="window.location.href='cae.html'">
-      <h2>CAE</h2>
-      <div class="count">8 full tests available</div>
-      <p>Advanced (C1 Advanced)<br>Reading & Use of English + Speaking</p>
+    <div class="level-card">
+      <h2>B1 Preliminary for Schools</h2>
+      <p>Tests 1–4</p>
+      <a href="b1_schools.html" class="btn">Go to B1 Schools</a>
     </div>
 
-    <!-- CPE -->
-    <div class="card" onclick="window.location.href='cpe.html'">
-      <h2>CPE</h2>
-      <div class="count">5 full tests available</div>
-      <p>Proficiency (C2 Proficiency)<br>Reading & Use of English + Speaking</p>
+    <div class="level-card">
+      <h2>FCE / First</h2>
+      <p>Tests 1–5 + Speaking</p>
+      <a href="fce.html" class="btn">Go to FCE</a>
     </div>
 
-    <!-- First for Schools -->
-    <div class="card" onclick="window.location.href='first.html'">
+    <div class="level-card">
+      <h2>CAE / Advanced</h2>
+      <p>Tests 1–8</p>
+      <a href="cae.html" class="btn">Go to CAE</a>
+    </div>
+
+    <div class="level-card">
+      <h2>CPE / Proficiency</h2>
+      <p>Tests 1–5</p>
+      <a href="cpe.html" class="btn">Go to CPE</a>
+    </div>
+
+    <div class="level-card">
       <h2>First for Schools</h2>
-      <div class="count">4 full tests available</div>
-      <p>B2 First for Schools<br>Reading & Use of English + Speaking</p>
+      <p>Tests 1–4 + Speaking</p>
+      <a href="first.html" class="btn">Go to First for Schools</a>
     </div>
 
   </div>
-
-  <center>
-    <a href="teacher.html" class="teacher-btn">👩‍🏫 Teacher Dashboard</a>
-  </center>
-</div>
+</main>
 
 </body>
 </html>
