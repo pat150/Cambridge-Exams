@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1 Preliminary: Speaking Parts 3 &amp; 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1a2c4e; --navy-light:#243659; --gold:#c9a84c; --gold-light:#e0c070;
+  --cream:#f8f3e8; --cream-dark:#ede6d4; --text:#1a2c4e; --muted:#5a6a82;
+  --white:#ffffff; --red:#c0392b; --radius:12px; --shadow:0 8px 32px rgba(26,44,78,.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);min-height:100vh;
+  color:var(--text);padding:24px 16px 60px;display:flex;flex-direction:column;align-items:center}
+header{text-align:center;margin-bottom:20px;max-width:960px;width:100%}
+.badge{display:inline-block;background:var(--navy);color:var(--gold);font-size:11px;
+  font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;
+  border-radius:20px;margin-bottom:8px}
+h1{font-family:'Source Serif 4',serif;font-size:clamp(1.4rem,3.5vw,2rem);
+  color:var(--navy);font-weight:600}
+.test-nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:18px;max-width:960px;width:100%}
+.test-btn{padding:7px 18px;border-radius:8px;border:2px solid var(--cream-dark);
+  background:var(--white);color:var(--muted);font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.test-btn:hover{border-color:var(--gold);color:var(--navy)}
+.test-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.tab-bar{display:flex;max-width:960px;width:100%;background:var(--white);
+  border-radius:12px 12px 0 0;border:2px solid var(--cream-dark);border-bottom:none;overflow:hidden}
+.tab{flex:1;padding:14px;text-align:center;font-weight:600;font-size:14px;cursor:pointer;
+  color:var(--muted);border:none;background:none;font-family:'DM Sans',sans-serif;
+  transition:all .2s;border-bottom:3px solid transparent}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);background:var(--cream)}
+.main-card{max-width:960px;width:100%;background:var(--white);
+  border-radius:0 0 16px 16px;box-shadow:var(--shadow);
+  border:2px solid var(--cream-dark);border-top:none;overflow:hidden}
+.panel{display:none}
+.panel.active{display:block}
+.spider-section{background:var(--navy);padding:28px 32px}
+.part-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px}
+.discuss-q{font-family:'Source Serif 4',serif;font-size:clamp(.95rem,2vw,1.15rem);
+  color:var(--white);line-height:1.5;font-style:italic}
+.spider-wrap{display:flex;justify-content:center;align-items:center;margin-top:20px;flex-wrap:wrap;gap:16px}
+.prompt-btn{background:var(--gold);color:var(--navy);border:none;padding:10px 16px;
+  border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;transition:all .15s}
+.prompt-btn:hover{opacity:.85}
+.phase-bar{display:flex;background:var(--cream);border-bottom:2px solid var(--cream-dark)}
+.phase-block{flex:1;padding:14px 18px;display:flex;flex-direction:column;gap:8px;
+  border-right:2px solid var(--cream-dark)}
+.phase-block:last-child{border-right:none;flex:0.75}
+.phase-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.phase-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.timer-row{display:flex;align-items:center;gap:10px}
+.tdisp{font-family:'Source Serif 4',serif;font-size:1.9rem;font-weight:600;
+  color:var(--navy);letter-spacing:2px;min-width:64px}
+.tdisp.warn{color:var(--red)}
+.tbar-wrap{flex:1;height:5px;background:var(--cream-dark);border-radius:3px;overflow:hidden}
+.tbar{height:100%;width:100%;background:var(--gold);border-radius:3px;transition:width 1s linear,background 1s}
+.tbar.warn{background:var(--red)}
+.btn-row{display:flex;gap:6px}
+.btn{padding:7px 14px;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn:hover{opacity:.85}
+.btn-go{background:var(--navy);color:var(--gold)}
+.btn-rst{background:var(--cream-dark);color:var(--muted)}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--cream-dark)}
+.partner-col{padding:20px 24px;border-right:2px solid var(--cream-dark)}
+.lang-col{padding:20px 24px}
+.col-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px}
+.chat-win{background:var(--cream);border-radius:10px;padding:14px;min-height:110px;
+  max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.bubble{max-width:90%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5}
+.bubble.partner{background:var(--navy);color:var(--white);align-self:flex-start;
+  border-bottom-left-radius:3px}
+.btype{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:3px}
+.bubble.sys{background:var(--cream-dark);color:var(--muted);font-size:12px;
+  align-self:center;font-style:italic;max-width:100%;text-align:center}
+.partner-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-pt{background:var(--navy);color:var(--gold)}
+.btn-dec{background:var(--gold);color:var(--navy)}
+.lang-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.ltab{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;
+  border:1.5px solid var(--cream-dark);background:var(--cream);color:var(--muted);
+  cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.ltab.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.lang-items{display:flex;flex-direction:column;gap:5px}
+.litem{background:var(--cream);border-left:3px solid var(--gold);
+  border-radius:0 6px 6px 0;padding:6px 10px;font-size:12.5px;color:var(--navy);line-height:1.4}
+.litem em{display:block;font-style:normal;font-size:10.5px;color:var(--muted);margin-top:2px}
+.p4-header{background:var(--navy);padding:20px 28px}
+.p4-intro{color:var(--white);font-size:14px;margin-top:8px;line-height:1.5}
+.p4-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 28px}
+.q-card{background:var(--cream);border-radius:10px;padding:20px}
+.q-num{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:10px}
+.q-prog{height:4px;background:var(--cream-dark);border-radius:2px;margin-bottom:14px;overflow:hidden}
+.q-prog-bar{height:100%;background:var(--gold);border-radius:2px;transition:width .3s}
+.q-text{font-family:'Source Serif 4',serif;font-size:16px;color:var(--navy);line-height:1.6;margin-bottom:16px}
+.q-nav{display:flex;gap:8px;margin-top:16px}
+.btn-prev,.btn-next{flex:1;padding:8px 14px;border-radius:8px;border:none;font-weight:600;cursor:pointer}
+.btn-prev{background:var(--cream-dark);color:var(--muted)}
+.btn-next{background:var(--navy);color:var(--gold)}
+.p4-timer{padding:20px;background:var(--cream);border-radius:10px}
+.p4-reactions{padding:20px;background:var(--cream);border-radius:10px;display:flex;flex-direction:column;gap:8px}
+.react-btn{background:var(--navy);color:var(--gold);padding:8px 14px;border-radius:8px;border:none;font-weight:600;cursor:pointer;font-size:12px}
+.react-btn:hover{opacity:.85}
+@media(max-width:600px){
+  .bottom-grid{grid-template-columns:1fr}
+  .partner-col{border-right:none;border-bottom:2px solid var(--cream-dark)}
+  .p4-body{grid-template-columns:1fr}
+  .spider-wrap{gap:8px}
+  .prompt-btn{font-size:12px;padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">B1 Preliminary &middot; Speaking</div>
+  <h1>Parts 3 &amp; 4 &mdash; Discussion &amp; Follow-up</h1>
+</header>
+
+<div class="test-nav" id="testNav"></div>
+
+<div class="tab-bar">
+  <button class="tab active" onclick="switchTab('p3')">Part 3 &mdash; Discussion</button>
+  <button class="tab" onclick="switchTab('p4')">Part 4 &mdash; Follow-up</button>
+</div>
+
+<div class="main-card">
+
+  <!-- PART 3 -->
+  <div class="panel active" id="p3Panel">
+    <div class="spider-section">
+      <div class="part-label">Part 3 &middot; 3 minutes &middot; Talk together</div>
+      <div class="discuss-q" id="discussQ"></div>
+      <div class="spider-wrap" id="promptsContainer"></div>
+    </div>
+
+    <div class="phase-bar">
+      <div class="phase-block">
+        <div class="phase-title">Phase 1 &mdash; Discuss the prompts</div>
+        <div class="phase-desc">Talk about each prompt with your partner.</div>
+        <div class="timer-row">
+          <div class="tdisp" id="td_a">2:00</div>
+          <div class="tbar-wrap"><div class="tbar" id="tb_a"></div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-go" id="btn_a" onclick="toggleTimer('a')">Start</button>
+          <button class="btn btn-rst" onclick="resetTimer('a')">Reset</button>
+        </div>
+      </div>
+      <div class="phase-block">
+        <div class="phase-title">Phase 2 &mdash; Make a decision</div>
+        <div class="phase-desc" id="decideQ"></div>
+        <div class="timer-row">
+          <div class="tdisp" id="td_b">1:00</div>
+          <div class="tbar-wrap"><div class="tbar" id="tb_b"></div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-go" id="btn_b" onclick="toggleTimer('b')">Start</button>
+          <button class="btn btn-rst" onclick="resetTimer('b')">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="partner-col">
+        <div class="col-title">Simulated Partner</div>
+        <div class="chat-win" id="chatWin">
+          <div class="bubble sys">Click a prompt to start the discussion.</div>
+        </div>
+        <div class="partner-btns">
+          <button class="btn btn-pt" onclick="partnerSpeak()">Partner speaks</button>
+          <button class="btn btn-dec" onclick="partnerDecide()">Decision phase</button>
+        </div>
+      </div>
+      <div class="lang-col">
+        <div class="col-title">Useful Language</div>
+        <div class="lang-tabs">
+          <button class="ltab active" data-tab="opinion" onclick="showLang('opinion')">Opinion</button>
+          <button class="ltab" data-tab="agree" onclick="showLang('agree')">Agree</button>
+          <button class="ltab" data-tab="disagree" onclick="showLang('disagree')">Disagree</button>
+          <button class="ltab" data-tab="speculate" onclick="showLang('speculate')">Speculate</button>
+          <button class="ltab" data-tab="question" onclick="showLang('question')">Ask</button>
+        </div>
+        <div class="lang-items" id="langItems"></div>
+      </div>
+    </div>
+  </div><!-- /p3 -->
+
+  <!-- PART 4 -->
+  <div class="panel" id="p4Panel">
+    <div class="p4-header">
+      <div class="part-label">Part 4 &middot; 2 minutes &middot; Follow-up questions</div>
+      <div class="p4-intro" id="p4Intro"></div>
+    </div>
+    <div class="p4-body">
+      <div class="q-card">
+        <div class="q-num" id="p4QNum">Question 1 of 4</div>
+        <div class="q-prog"><div class="q-prog-bar" id="p4ProgBar"></div></div>
+        <div class="q-text" id="p4QText"></div>
+        <div class="q-nav">
+          <button class="btn btn-prev" id="btnPrev" onclick="p4Nav(-1)" disabled>Prev</button>
+          <button class="btn btn-next" id="btnNext" onclick="p4Nav(1)">Next</button>
+        </div>
+      </div>
+      <div class="p4-right">
+        <div class="p4-timer">
+          <div class="phase-title">Answer timer (40 sec)</div>
+          <div class="timer-row">
+            <div class="tdisp" id="td_p4">0:40</div>
+            <div class="tbar-wrap"><div class="tbar" id="tb_p4"></div></div>
+          </div>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn btn-go" id="btn_p4" onclick="toggleTimer('p4')">Start</button>
+            <button class="btn btn-rst" onclick="resetTimer('p4')">Reset</button>
+          </div>
+        </div>
+        <div class="p4-reactions" id="reactionsBox"></div>
+      </div>
+    </div>
+  </div><!-- /p4 -->
+
+</div>
+
+<script>
+const LANG = {"opinion": [{"text": "I think...", "note": "giving your view"}, {"text": "In my opinion...", "note": "straightforward opener"}, {"text": "I believe...", "note": "stating your view"}, {"text": "It seems to me that...", "note": "hedged opinion"}, {"text": "I would say that...", "note": "softer opinion"}, {"text": "I feel that...", "note": "personal view"}], "agree": [{"text": "I agree with you.", "note": "full agreement"}, {"text": "That is a good point.", "note": "validating partner"}, {"text": "I think you are right.", "note": "agree then extend"}, {"text": "Yes, that is true.", "note": "casual agreement"}, {"text": "I see what you mean.", "note": "partial agreement"}, {"text": "That makes sense.", "note": "understanding their point"}], "disagree": [{"text": "I do not agree, because...", "note": "polite disagreement"}, {"text": "That is interesting, but...", "note": "acknowledge then counter"}, {"text": "I think differently because...", "note": "balanced disagreement"}, {"text": "I am not sure about that.", "note": "expressing doubt"}, {"text": "I see your point, but...", "note": "polite counter"}, {"text": "That might be true, but...", "note": "questioning"}], "speculate": [{"text": "It could be because...", "note": "cautious speculation"}, {"text": "Maybe it is because...", "note": "gentle speculation"}, {"text": "It might depend on...", "note": "introducing conditions"}, {"text": "Perhaps it is because...", "note": "hedging"}, {"text": "It could also be that...", "note": "alternative explanation"}, {"text": "I think it could be...", "note": "tentative speculation"}], "question": [{"text": "What do you think about...?", "note": "inviting a view"}, {"text": "Do you agree?", "note": "simple prompt"}, {"text": "What about...?", "note": "adding a point"}, {"text": "How do you feel about that?", "note": "personal reaction"}, {"text": "Why do you think that?", "note": "asking for reasons"}, {"text": "Shall we move on to...?", "note": "managing discussion"}]};
+const TESTS = [{"id": 1, "part3": {"title": "Things to take for a walk in the mountains", "question": "Which things are most important to take?", "prompts": ["a map", "a hat", "an umbrella", "water", "snacks", "a camera"], "discuss_q": "Talk to each other about which things are most important to take for a walk in the mountains.", "decide_q": "Now decide together: which thing is most important to take?"}, "part4": {"intro": "The examiner will ask you further questions about outdoor activities and nature.", "questions": ["What do you like most about spending time in nature?", "Do you think it is important to exercise? Why?", "Would you like to go camping? Why or why not?", "What is your favourite outdoor activity?"], "reactions": [["That is interesting.", "Do you agree?", "What about you?"], ["I see.", "Do most people think that?", "What do you think?"], ["Good point.", "Do you agree?", "And you?"], ["Right.", "Do you enjoy outdoor activities too?", "What about you?"]]}, "partner_lines": {"a map": [{"type": "opinion", "text": "I think a map is the most important thing because you need to know where you are going. Do you agree?"}, {"type": "question", "text": "But what if you just follow a path? Do you still need a map?"}], "a hat": [{"type": "opinion", "text": "A hat is really important because it protects you from the sun and keeps you warm."}, {"type": "question", "text": "Is a hat more important than water?"}], "an umbrella": [{"type": "opinion", "text": "I think an umbrella is essential because it keeps you dry in the rain."}, {"type": "question", "text": "But is it easy to carry an umbrella while you are walking?"}], "water": [{"type": "opinion", "text": "Water is the most important thing because you need to stay hydrated when you exercise."}, {"type": "question", "text": "Do you think water is more important than other things?"}], "snacks": [{"type": "opinion", "text": "Snacks are important because they give you energy during the walk."}, {"type": "question", "text": "Are snacks more important than a map?"}], "a camera": [{"type": "opinion", "text": "A camera is nice because you can take pictures of the beautiful views."}, {"type": "question", "text": "But is a camera more important than water or a map?"}], "decide": [{"type": "question", "text": "So which thing do you think is most important to take?"}, {"type": "opinion", "text": "I think water is the most important because your health comes first. Do you agree?"}]}}, {"id": 2, "part3": {"title": "Ways to find out about the history of the local area", "question": "Which ways are best for learning about local history?", "prompts": ["visiting a museum", "talking to older people", "reading books", "looking at old buildings", "watching documentaries", "using the Internet"], "discuss_q": "Talk to each other about which ways are best for finding out about the history of the local area.", "decide_q": "Now decide together: which way is the best?"}, "part4": {"intro": "The examiner will ask you further questions about history and local communities.", "questions": ["Do you like learning about history? Why or why not?", "What is interesting about your local area?", "Would you like to visit a museum? Why?", "Do you think it is important to understand local history?"], "reactions": [["That is a good point.", "Do you agree?", "And you?"], ["Interesting.", "Why do you think that?", "What do you think?"], ["Right.", "Do you enjoy museums?", "And you?"], ["I see.", "Do most people think that?", "What about you?"]]}, "partner_lines": {"visiting a museum": [{"type": "opinion", "text": "I think visiting a museum is the best way because you can see real objects from the past."}, {"type": "question", "text": "But do you think museums are expensive to visit?"}], "talking to older people": [{"type": "opinion", "text": "Talking to older people is really good because they have personal stories and memories."}, {"type": "question", "text": "Is that better than reading books?"}], "reading books": [{"type": "opinion", "text": "Books are important because they have detailed information about history."}, {"type": "question", "text": "But do you think young people like reading books?"}], "looking at old buildings": [{"type": "opinion", "text": "Old buildings are interesting because they show you how people lived in the past."}, {"type": "question", "text": "Is looking at buildings better than visiting a museum?"}], "watching documentaries": [{"type": "opinion", "text": "Documentaries are good because they show you information with pictures and sounds."}, {"type": "question", "text": "Do you think documentaries are better than books?"}], "using the Internet": [{"type": "opinion", "text": "The Internet is useful because you can find information quickly and easily."}, {"type": "question", "text": "But is all information on the Internet reliable?"}], "decide": [{"type": "question", "text": "So which way do you think is best for learning about local history?"}, {"type": "opinion", "text": "I think talking to older people is best because they can tell you real stories. Do you agree?"}]}}, {"id": 3, "part3": {"title": "Ways to create a school fashion project", "question": "Which ways are best for creating a fashion project?", "prompts": ["designing clothes", "using social media", "organising a fashion show", "researching fashion trends", "interviewing designers", "visiting fashion shops"], "discuss_q": "Talk to each other about which ways are best for creating a school fashion project.", "decide_q": "Now decide together: which way is best?"}, "part4": {"intro": "The examiner will ask you further questions about fashion and creativity.", "questions": ["Do you care about fashion? Why or why not?", "What fashion trends do you like?", "Would you like to be a fashion designer? Why?", "How important is fashion in your life?"], "reactions": [["Interesting.", "Do you agree?", "What about you?"], ["Right.", "Do you follow those trends?", "And you?"], ["That is a good idea.", "Why would you like that?", "What do you think?"], ["I see.", "Do you think it is important?", "And you?"]]}, "partner_lines": {"designing clothes": [{"type": "opinion", "text": "I think designing clothes is the best part of a fashion project because it shows creativity."}, {"type": "question", "text": "But do you need special skills to design clothes?"}], "using social media": [{"type": "opinion", "text": "Social media is important because you can share your ideas with many people."}, {"type": "question", "text": "Is social media better than a fashion show?"}], "organising a fashion show": [{"type": "opinion", "text": "A fashion show is the best way because people can see the clothes and models."}, {"type": "question", "text": "But is a fashion show expensive to organise?"}], "researching fashion trends": [{"type": "opinion", "text": "Research is important because you need to understand what people like."}, {"type": "question", "text": "Do you think research is more important than designing?"}], "interviewing designers": [{"type": "opinion", "text": "Interviewing designers is good because you can learn from professionals."}, {"type": "question", "text": "Would that be difficult for a school project?"}], "visiting fashion shops": [{"type": "opinion", "text": "Visiting shops helps you see different styles and get inspiration."}, {"type": "question", "text": "Is that as useful as researching online?"}], "decide": [{"type": "question", "text": "So which way do you think is best for a fashion project?"}, {"type": "opinion", "text": "I think designing clothes is the most important part. Do you agree?"}]}}, {"id": 4, "part3": {"title": "Activities to do on a long train journey", "question": "Which activities are best for a long train journey?", "prompts": ["eating with friends", "singing together", "playing games", "watching the views", "using a laptop", "sleeping"], "discuss_q": "Talk to each other about which activities are best to do on a long train journey.", "decide_q": "Now decide together: which activity is best?"}, "part4": {"intro": "The examiner will ask you further questions about travel and entertainment.", "questions": ["Do you like travelling by train? Why or why not?", "What is the best way to travel long distances?", "What do you usually do when you travel?", "Would you like to go on a long journey? Why?"], "reactions": [["That is interesting.", "Do you agree?", "And you?"], ["I see.", "Do you think that is comfortable?", "What do you think?"], ["Right.", "Is that what most people do?", "And you?"], ["Good.", "Where would you like to go?", "What about you?"]]}, "partner_lines": {"eating with friends": [{"type": "opinion", "text": "I think eating with friends is the best activity because it is fun and social."}, {"type": "question", "text": "But what if you want to sleep?"}], "singing together": [{"type": "opinion", "text": "Singing is fun because everyone enjoys it and it makes the journey exciting."}, {"type": "question", "text": "But do other passengers want to hear you sing?"}], "playing games": [{"type": "opinion", "text": "Games are good because they keep you entertained for a long time."}, {"type": "question", "text": "Is playing games better than watching the views?"}], "watching the views": [{"type": "opinion", "text": "Watching the views is relaxing and you can see beautiful places."}, {"type": "question", "text": "But is that enough for a very long journey?"}], "using a laptop": [{"type": "opinion", "text": "A laptop is useful because you can watch films or do work."}, {"type": "question", "text": "But does the battery last long on a train?"}], "sleeping": [{"type": "opinion", "text": "Sleep is important because you arrive feeling fresh and rested."}, {"type": "question", "text": "Can you really sleep well on a train?"}], "decide": [{"type": "question", "text": "So which activity do you think is best for a long train journey?"}, {"type": "opinion", "text": "I think playing games with friends is the best because it is fun and social. Do you agree?"}]}}];
+
+var curTest = 0;
+var activePrompt = null;
+var promptIdx = {};
+var p4Idx = 0;
+var reactStep = 0;
+
+var timers = {
+  a:  { secs:120, total:120, running:false, iv:null },
+  b:  { secs:60,  total:60,  running:false, iv:null },
+  p4: { secs:40,  total:40,  running:false, iv:null }
+};
+
+function init() {
+  buildNav();
+  loadTest(0);
+  showLang('opinion');
+}
+
+function buildNav() {
+  var nav = document.getElementById("testNav");
+  TESTS.forEach(function(t, i) {
+    var btn = document.createElement("button");
+    btn.className = "test-btn" + (i===0?" active":"");
+    btn.textContent = "Test " + (i+1);
+    btn.onclick = (function(idx){ return function(){ loadTest(idx); }; })(i);
+    nav.appendChild(btn);
+  });
+}
+
+function loadTest(idx) {
+  curTest = idx;
+  var t = TESTS[idx];
+  document.querySelectorAll(".test-btn").forEach(function(b,i){ b.classList.toggle("active",i===idx); });
+  
+  // Part 3
+  document.getElementById("discussQ").textContent = t.part3.discuss_q;
+  document.getElementById("decideQ").textContent = t.part3.decide_q;
+  
+  // Build prompts
+  var container = document.getElementById("promptsContainer");
+  container.innerHTML = "";
+  t.part3.prompts.forEach(function(p, i) {
+    var btn = document.createElement("button");
+    btn.className = "prompt-btn";
+    btn.textContent = p;
+    btn.id = "circ"+i;
+    btn.onclick = (function(idx){ return function(){ selectPrompt(idx); }; })(i);
+    container.appendChild(btn);
+  });
+  
+  // Part 4
+  document.getElementById("p4Intro").textContent = t.part4.intro;
+  p4Idx = 0;
+  promptIdx = {};
+  resetChat();
+  resetTimer('a');
+  resetTimer('b');
+  resetTimer('p4');
+  loadP4Question();
+}
+
+function selectPrompt(idx) {
+  activePrompt = idx;
+  var t = TESTS[curTest];
+  var key = t.part3.prompts[idx];
+  var lines = t.partner_lines[key];
+  if (!promptIdx[key]) promptIdx[key] = 0;
+  var line = lines[promptIdx[key] % lines.length];
+  promptIdx[key]++;
+  addBubble(line.type, line.text);
+}
+
+function addBubble(type, text) {
+  var cw = document.getElementById("chatWin");
+  var b = document.createElement("div");
+  b.className = "bubble partner";
+  var label = type === "question" ? "Question" : "Opinion";
+  b.innerHTML = "<div class='btype'>" + label + "</div>" + text;
+  cw.appendChild(b);
+  cw.scrollTop = cw.scrollHeight;
+}
+
+function partnerSpeak() {
+  if (activePrompt === null) {
+    var cw = document.getElementById("chatWin");
+    var b = document.createElement("div");
+    b.className = "bubble sys";
+    b.textContent = "Click a prompt first.";
+    cw.appendChild(b);
+    cw.scrollTop = cw.scrollHeight;
+    return;
+  }
+  selectPrompt(activePrompt);
+}
+
+function partnerDecide() {
+  var t = TESTS[curTest];
+  var lines = t.partner_lines["decide"];
+  var line = lines[Math.floor(Math.random()*lines.length)];
+  activePrompt = null;
+  var buttons = document.querySelectorAll(".prompt-btn");
+  buttons.forEach(function(b) { b.style.opacity = "0.5"; b.disabled = true; });
+  addBubble(line.type, line.text);
+}
+
+function resetChat() {
+  var cw = document.getElementById("chatWin");
+  cw.innerHTML = "<div class='bubble sys'>Click a prompt to start the discussion.</div>";
+}
+
+function showLang(tab) {
+  document.querySelectorAll(".ltab").forEach(function(b) {
+    b.classList.toggle("active", b.dataset.tab === tab);
+  });
+  var items = document.getElementById("langItems");
+  items.innerHTML = LANG[tab].map(function(l) {
+    return "<div class='litem'>" + l.text + "<em>" + l.note + "</em></div>";
+  }).join("");
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab").forEach(function(t, i) {
+    t.classList.toggle("active", (tab==='p3' && i===0) || (tab==='p4' && i===1));
+  });
+  document.querySelectorAll(".panel").forEach(function(p) {
+    p.classList.toggle("active", (tab==='p3' && p.id==='p3Panel') || (tab==='p4' && p.id==='p4Panel'));
+  });
+}
+
+function loadP4Question() {
+  var t = TESTS[curTest];
+  var q = t.part4.questions[p4Idx];
+  document.getElementById("p4QText").textContent = q;
+  document.getElementById("p4QNum").textContent = "Question " + (p4Idx+1) + " of " + t.part4.questions.length;
+  var pct = (p4Idx+1) / t.part4.questions.length * 100;
+  document.getElementById("p4ProgBar").style.width = pct + "%";
+  
+  document.getElementById("btnPrev").disabled = (p4Idx === 0);
+  document.getElementById("btnNext").disabled = (p4Idx === t.part4.questions.length - 1);
+  
+  loadReactions();
+}
+
+function p4Nav(dir) {
+  p4Idx += dir;
+  resetTimer('p4');
+  loadP4Question();
+}
+
+function loadReactions() {
+  var t = TESTS[curTest];
+  var reactions = t.part4.reactions[p4Idx];
+  var box = document.getElementById("reactionsBox");
+  box.innerHTML = "<div class='phase-title' style='margin-bottom:10px'>Examiner responses</div>";
+  reactions.forEach(function(r) {
+    var btn = document.createElement("button");
+    btn.className = "react-btn";
+    btn.textContent = r;
+    box.appendChild(btn);
+  });
+}
+
+function toggleTimer(ph) {
+  var tm = timers[ph];
+  var ids = ph==="a" ? {d:"td_a",b:"tb_a",btn:"btn_a"} : (ph==="b" ? {d:"td_b",b:"tb_b",btn:"btn_b"} : {d:"td_p4",b:"tb_p4",btn:"btn_p4"});
+  if (tm.running) {
+    clearInterval(tm.iv); tm.running = false;
+    document.getElementById(ids.btn).textContent = "Resume";
+  } else {
+    if (tm.secs <= 0) return;
+    tm.running = true;
+    document.getElementById(ids.btn).textContent = "Pause";
+    tm.iv = setInterval(function() {
+      tm.secs--;
+      updateTUI(ids.d, ids.b, tm.secs, tm.total);
+      if (tm.secs <= 0) {
+        clearInterval(tm.iv); tm.running = false;
+        document.getElementById(ids.btn).textContent = "Start";
+        beep();
+      }
+    }, 1000);
+  }
+}
+
+function resetTimer(ph) {
+  var tm = timers[ph];
+  clearInterval(tm.iv); tm.running = false; tm.secs = tm.total;
+  var ids = ph==="a" ? {d:"td_a",b:"tb_a",btn:"btn_a"} : (ph==="b" ? {d:"td_b",b:"tb_b",btn:"btn_b"} : {d:"td_p4",b:"tb_p4",btn:"btn_p4"});
+  var m=Math.floor(tm.total/60), s=tm.total%60;
+  document.getElementById(ids.d).textContent = m+":"+(s<10?"0"+s:s);
+  document.getElementById(ids.d).classList.remove("warn");
+  document.getElementById(ids.b).style.width = "100%";
+  document.getElementById(ids.b).classList.remove("warn");
+  document.getElementById(ids.btn).textContent = "Start";
+}
+
+function updateTUI(dispId, barId, secs, total) {
+  var m=Math.floor(secs/60), s=secs%60;
+  var d = document.getElementById(dispId);
+  var b = document.getElementById(barId);
+  d.textContent = m+":"+(s<10?"0"+s:s);
+  b.style.width = (secs/total*100)+"%";
+  var warn = secs <= 10;
+  d.classList.toggle("warn", warn);
+  b.classList.toggle("warn", warn);
+}
+
+function beep() {
+  try {
+    var ctx = new(window.AudioContext||window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    osc.connect(ctx.destination);
+    osc.frequency.value = 880;
+    osc.start();
+    setTimeout(function(){osc.stop();}, 600);
+  } catch(e){}
+}
+
+window.onload = init;
+</script>
+
+</body>
+</html>

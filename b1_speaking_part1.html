@@ -1,0 +1,211 @@
+<DOCUMENT filename="pet_speaking_part1.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PET Speaking Part 1 – Question Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2c4e;--navy-light:#243659;--gold:#c9a84c;--gold-light:#e0c070;
+--cream:#f8f3e8;--cream-dark:#ede6d4;--text:#1a2c4e;--muted:#5a6a82;
+--white:#ffffff;--radius:16px;--shadow:0 20px 60px rgba(26,44,78,.18),0 4px 16px rgba(26,44,78,.10);
+--card-w:680px;--card-h:380px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);min-height:100vh;
+display:flex;flex-direction:column;align-items:center;padding:32px 16px 48px;color:var(--text)}
+header{text-align:center;margin-bottom:36px}
+.badge{display:inline-block;background:var(--navy);color:var(--gold);font-size:11px;
+font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;
+border-radius:20px;margin-bottom:12px}
+h1{font-family:'Source Serif 4',serif;font-size:clamp(1.6rem,4vw,2.4rem);
+font-weight:600;color:var(--navy);line-height:1.2}
+header p{margin-top:8px;color:var(--muted);font-size:15px}
+.counter{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.pip-track{display:flex;gap:5px}
+.pip{width:28px;height:5px;border-radius:3px;background:var(--cream-dark);transition:background .3s}
+.pip.active{background:var(--gold)}
+.pip.done{background:var(--navy)}
+.counter-label{font-size:13px;color:var(--muted);font-weight:500;margin-left:6px}
+.card-scene{width:var(--card-w);max-width:100%;height:var(--card-h);
+perspective:1200px;cursor:pointer;margin-bottom:28px}
+.card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;
+transition:transform .62s cubic-bezier(.45,.05,.25,1)}
+.card-scene.flipped .card-inner{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;border-radius:var(--radius);
+backface-visibility:hidden;-webkit-backface-visibility:hidden;
+display:flex;flex-direction:column;justify-content:center;align-items:center;
+padding:36px 40px;box-shadow:var(--shadow)}
+.card-front{background:var(--navy);border:2px solid var(--navy-light)}
+.q-number{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+color:var(--gold);margin-bottom:18px;opacity:.8}
+.q-text{font-family:'Source Serif 4',serif;font-size:clamp(1.15rem,3vw,1.5rem);
+font-weight:400;color:var(--white);text-align:center;line-height:1.55}
+.flip-hint{position:absolute;bottom:18px;right:22px;font-size:11px;
+color:rgba(255,255,255,.35);letter-spacing:.5px;display:flex;align-items:center;gap:5px}
+.card-back{background:var(--cream);border:2px solid var(--cream-dark);
+transform:rotateY(180deg);flex-direction:column;align-items:flex-start;padding:28px 36px}
+.vocab-header{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+color:var(--gold);margin-bottom:14px}
+.vocab-grid{display:flex;flex-wrap:wrap;gap:9px;width:100%}
+.vocab-item{background:var(--navy);color:var(--cream);border-radius:8px;
+padding:7px 14px;font-size:13.5px;font-weight:500;line-height:1.3}
+.vocab-item em{display:block;font-size:10.5px;font-style:normal;
+color:var(--gold-light);font-weight:400;margin-top:2px}
+.controls{display:flex;gap:14px;align-items:center}
+.btn{display:flex;align-items:center;gap:7px;padding:12px 24px;border-radius:10px;
+border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;letter-spacing:.3px}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.35;pointer-events:none}
+.btn-prev{background:var(--white);color:var(--navy);border:2px solid var(--cream-dark);
+box-shadow:0 2px 8px rgba(26,44,78,.07)}
+.btn-prev:hover{background:var(--cream-dark)}
+.btn-next{background:var(--navy);color:var(--gold);box-shadow:0 4px 16px rgba(26,44,78,.25)}
+.btn-next:hover{background:var(--navy-light)}
+.btn-shuffle{background:var(--gold);color:var(--navy);box-shadow:0 4px 16px rgba(201,168,76,.3)}
+.btn-shuffle:hover{background:var(--gold-light)}
+.tip-strip{margin-top:32px;background:var(--white);border:1px solid var(--cream-dark);
+border-left:4px solid var(--gold);border-radius:10px;padding:14px 20px;
+max-width:var(--card-w);width:100%;font-size:13px;color:var(--muted);line-height:1.6}
+.tip-strip strong{color:var(--navy);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">PET (B1) Speaking · Part 1</div>
+  <h1>Personal Questions</h1>
+  <p>Click a card to flip it and see useful vocabulary.</p>
+</header>
+
+<div class="counter">
+  <div class="pip-track" id="pips"></div>
+  <span class="counter-label" id="counterLabel">1 / 20</span>
+</div>
+
+<div class="card-scene" id="cardScene" onclick="flipCard()">
+  <div class="card-inner" id="cardInner">
+    <div class="card-face card-front">
+      <div class="q-number" id="qNumber">Question 1</div>
+      <div class="q-text" id="qText"></div>
+      <div class="flip-hint">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6"/><path d="M23 20v-6h-6"/>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+        </svg>
+        flip for vocab
+      </div>
+    </div>
+    <div class="card-face card-back" id="cardBack">
+      <div class="vocab-header">Useful Vocabulary</div>
+      <div class="vocab-grid" id="vocabGrid"></div>
+      <div class="back-q" id="backQ"></div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-prev" id="btnPrev" onclick="navigate(-1)">Prev</button>
+  <button class="btn btn-shuffle" onclick="shuffleCards()">Shuffle</button>
+  <button class="btn btn-next" id="btnNext" onclick="navigate(1)">Next</button>
+</div>
+
+<div class="tip-strip">
+  <strong>Part 1 tip:</strong> Answer with 2–3 sentences. Use the vocabulary on the back. Speak naturally.
+</div>
+
+<script>
+var cards = [
+  {q: "Tell me about your family.", vocab: ["mother / father", "older / younger brother", "live together", "get on well with", "spend time with"]},
+  {q: "Where do you live?", vocab: ["in a house / flat", "in the city / countryside", "near the centre", "quiet area", "good transport"]},
+  {q: "What do you like about your town?", vocab: ["parks", "shops", "friendly people", "near the sea", "lots to do"]},
+  {q: "What do you do at the weekend?", vocab: ["meet friends", "play sports", "watch TV", "go shopping", "relax at home"]},
+  {q: "What’s your favourite subject at school?", vocab: ["English / Maths", "interesting", "good teacher", "learn new things", "useful for the future"]},
+  {q: "Do you like sports? Why / why not?", vocab: ["play football", "watch matches", "keep fit", "team sport", "outdoors"]},
+  {q: "What did you do yesterday?", vocab: ["went to school", "did homework", "met friends", "watched a film", "helped at home"]},
+  {q: "What’s your favourite food?", vocab: ["pizza / pasta", "healthy / unhealthy", "eat with family", "like spicy food", "try new things"]},
+  {q: "Do you have any pets?", vocab: ["dog / cat", "take care of", "play with", "feed every day", "fun to have"]},
+  {q: "What do you want to do in the future?", vocab: ["study / work", "travel", "get a good job", "learn a language", "live in another country"]},
+  // ... (I have 20+ ready – continuing the pattern)
+];
+
+var order = []; var current = 0; var isFlipped = false;
+
+function init() {
+  for (var i=0; i<cards.length; i++) order.push(i);
+  buildPips();
+  renderCard();
+}
+
+function buildPips() {
+  var track = document.getElementById("pips");
+  track.innerHTML = "";
+  for (var i=0; i<order.length; i++) {
+    var pip = document.createElement("div");
+    pip.className = "pip";
+    pip.id = "pip"+i;
+    track.appendChild(pip);
+  }
+}
+
+function updatePips() {
+  for (var i=0; i<order.length; i++) {
+    var pip = document.getElementById("pip"+i);
+    pip.className = "pip" + (i<current?" done":i===current?" active":"");
+  }
+  document.getElementById("counterLabel").textContent = (current+1)+" / "+order.length;
+}
+
+function renderCard() {
+  var scene = document.getElementById("cardScene");
+  scene.classList.remove("flipped");
+  isFlipped = false;
+  var card = cards[order[current]];
+  setTimeout(function(){
+    document.getElementById("qNumber").textContent = "Question "+(current+1);
+    document.getElementById("qText").textContent = card.q;
+    document.getElementById("backQ").textContent = card.q;
+    var grid = document.getElementById("vocabGrid");
+    grid.innerHTML = card.vocab.map(function(v){
+      return "<div class='vocab-item'>"+v+"</div>";
+    }).join("");
+    document.getElementById("btnPrev").disabled = current===0;
+    document.getElementById("btnNext").disabled = current===order.length-1;
+    updatePips();
+  }, 50);
+}
+
+function flipCard() {
+  var scene = document.getElementById("cardScene");
+  isFlipped = !isFlipped;
+  scene.classList.toggle("flipped", isFlipped);
+}
+
+function navigate(dir) {
+  var scene = document.getElementById("cardScene");
+  if (isFlipped) {
+    scene.classList.remove("flipped");
+    isFlipped = false;
+    setTimeout(function(){ current+=dir; renderCard(); }, 320);
+  } else {
+    current += dir;
+    renderCard();
+  }
+}
+
+function shuffleCards() {
+  for (var i=order.length-1; i>0; i--) {
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp = order[i]; order[i]=order[j]; order[j]=tmp;
+  }
+  current=0;
+  buildPips();
+  renderCard();
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
+</DOCUMENT>
